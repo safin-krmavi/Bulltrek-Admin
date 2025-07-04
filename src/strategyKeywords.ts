@@ -6,7 +6,7 @@ export const STRATEGY_KEYWORDS = {
     "Head & Shoulders", "Morning Star", "Bullish Engulfing", "Double Top", "Triple Bottom"
   ],
   indicators: [
-    "EMA", "VWAP", "ADX", "RSI Divergence", "Bollinger Bands", "MACD", "SMA"
+    "EMA", "VWAP", "ADX", "RSI Divergence", "Bollinger Bands", "MACD", "SMA", "RSI"
   ],
   tradingConditions: [
     "Stop-Loss", "Buy Limit", "Sell Limit", "Market Price", "QML", "Trend level", "Trigger Limits", "Support", "Resistance"
@@ -15,16 +15,16 @@ export const STRATEGY_KEYWORDS = {
     "Liquidity Wick", "Breakeven", "Order Blocks", "Price Action", "Fair Value Gap", "Liquidity Pool"
   ],
   actions: [
-    "Buy", "Sell", "Close", "Open", "Increase", "Decrease"
+    "Buy", "Sell", "Close", "Open", "Increase", "Decrease", "crosses above", "crosses below", "greater than", "less than", "equals"
   ],
   assets: [
-    "BTCUSD", "ETHUSD", "XAUUSD", "AAPL", "EURUSD"
+    "BTCUSD", "ETHUSD", "XAUUSD", "AAPL", "EURUSD", "BTC/USDT", "ETH/USDT"
   ],
   numbers: [
     "1", "2", "3", "5", "10", "20", "50", "100"
   ],
   operators: [
-    ">", "<", ">=", "<=", "=", "crosses above", "crosses below"
+    "AND", "OR"
   ],
   connectors: [
     "and", "or", "then", "after", "before", "if", "when"

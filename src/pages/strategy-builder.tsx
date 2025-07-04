@@ -3,139 +3,26 @@ import { Button } from "@/components/ui/button";
 import apiClient from "@/api/apiClient";
 import { STRATEGY_KEYWORDS } from "../strategyKeywords";
 
-const STAGES = [
-  "indicator",         // 1. Indicator
-  "indicatorAction",   // 2. Indicator Action
-  "value",             // 3. Value
-  "direction",         // 4. Direction
-  "quantity",          // 5. Quantity
-  "asset",             // 6. Asset
-] as const;
-type Stage = typeof STAGES[number];
-
-// Add type for STRATEGY_KEYWORDS
-const STRATEGY_KEYWORDS_TYPED: Record<string, string[]> = STRATEGY_KEYWORDS;
-
-function getOptionLabel(stage: Stage, option: any) {
-  // Handle custom inputs
-  if (option.isCustom) {
-    return option[stage] || option.value || option.name || "";
-  }
-  
-  switch (stage) {
-    case "direction": return option.direction;
-    case "quantity": return option.quantity;
-    case "asset": return option.symbol;
-    case "indicator": return option.name;
-    case "indicatorAction": return option.action;
-    case "value": return option.value;
-    default: return option.name || "";
-  }
-}
-
-// Helper to determine the type of a token
-function getTokenType(token: any): string {
-  for (const [type, list] of Object.entries(STRATEGY_KEYWORDS_TYPED)) {
-    if (list.includes(token.value || token.name || token)) {
-      return type;
-    }
-  }
-  if (token.stage) return token.stage;
-  return "unknown";
-}
-
-// Check if the current sentence is complete
-function isSentenceComplete(selected: any[]): boolean {
-  // Define the required types in order for a valid sentence
-  const requiredTypes = ["numbers", "timeframes", "connectors", "actions", "assets"];
-  let idx = 0;
-  for (const reqType of requiredTypes) {
-    if (idx >= selected.length) return false;
-    const tokenType = getTokenType(selected[idx]);
-    if (tokenType !== reqType) return false;
-    idx++;
-  }
-  return true;
-}
-
-// Helper: Parse a sentence (array of tokens) into backend payload fields
-function parseStrategySentence(tokens: any[]) {
-  // Example: [If, RSI, buy, 70, OR, MACD, crosses below, 20, then, buy, 2, BTC/USDT]
-  // We'll extract conditions, operators, direction, quantity, asset
-  const conditions = [];
-  const operators = [];
-  let i = 0;
-  let direction = null;
-  let quantity = null;
-  let asset = null;
-  let inThen = false;
-
-  while (i < tokens.length) {
-    const token = tokens[i];
-    const val = (token.value || token.name || token.id || '').toString();
-    // Detect 'then' (or similar) to switch to action part
-    if (/then/i.test(val)) {
-      inThen = true;
-      i++;
-      continue;
-    }
-    if (!inThen) {
-      // Parse condition: indicator, action, value
-      // Look ahead for indicator, action, value
-      let indicator = null, action = null, value = null;
-      // Indicator
-      if (STRATEGY_KEYWORDS.indicators.includes(val)) {
-        indicator = val;
-        // Action (next token)
-        if (i + 1 < tokens.length && STRATEGY_KEYWORDS.actions.includes((tokens[i + 1].value || tokens[i + 1].name || tokens[i + 1].id || '').toString())) {
-          action = (tokens[i + 1].value || tokens[i + 1].name || tokens[i + 1].id || '').toString();
-          i++;
-        } else if (i + 1 < tokens.length && STRATEGY_KEYWORDS.operators.includes((tokens[i + 1].value || tokens[i + 1].name || tokens[i + 1].id || '').toString())) {
-          action = (tokens[i + 1].value || tokens[i + 1].name || tokens[i + 1].id || '').toString();
-          i++;
-        }
-        // Value (next token)
-        if (i + 1 < tokens.length && (STRATEGY_KEYWORDS.numbers.includes((tokens[i + 1].value || tokens[i + 1].name || tokens[i + 1].id || '').toString()) || !isNaN(Number(tokens[i + 1].value || tokens[i + 1].name || tokens[i + 1].id)))) {
-          value = (tokens[i + 1].value || tokens[i + 1].name || tokens[i + 1].id || '').toString();
-          i++;
-        }
-        conditions.push({ indicator, action, value });
-      } else if (STRATEGY_KEYWORDS.operators.includes(val)) {
-        // Operator between conditions
-        operators.push(val.toUpperCase());
-      }
-      // else: skip (could be 'If', 'when', etc.)
-    } else {
-      // After 'then': direction, quantity, asset
-      if (!direction && STRATEGY_KEYWORDS.actions.includes(val)) {
-        direction = val.toLowerCase();
-      } else if (!quantity && (STRATEGY_KEYWORDS.numbers.includes(val) || !isNaN(Number(val)))) {
-        quantity = Number(val);
-      } else if (!asset && STRATEGY_KEYWORDS.assets.includes(val)) {
-        asset = val;
-      }
-    }
-    i++;
-  }
-  return { conditions, operators, direction, quantity, asset };
-}
+const ACTIONS = STRATEGY_KEYWORDS.actions || [];
+const INDICATORS = STRATEGY_KEYWORDS.indicators || [];
+const OPERATORS = STRATEGY_KEYWORDS.operators || ["AND", "OR"];
+const ASSETS = STRATEGY_KEYWORDS.assets || [];
 
 export default function StrategyBuilderPage() {
   const [strategyName, setStrategyName] = useState("");
-  const [step, setStep] = useState<"entry" | "exit">("entry");
-  const [selected, setSelected] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [entryConditions, setEntryConditions] = useState<any[][]>([]);
-  const [exitConditions, setExitConditions] = useState<any[][]>([]);
-  const [customInput, setCustomInput] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-  const [openPackage, setOpenPackage] = useState<string | null>(null); // For package selection
-
-  // API data for assets and indicators
+  const [conditions, setConditions] = useState<any[]>([]);
+  const [operators, setOperators] = useState<string[]>([]);
+  const [currentCondition, setCurrentCondition] = useState({ indicator: '', action: '', value: '' });
+  const [currentOperator, setCurrentOperator] = useState('AND');
+  const [direction, setDirection] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [asset, setAsset] = useState('');
   const [apiAssets, setApiAssets] = useState<any[]>([]);
   const [apiIndicators, setApiIndicators] = useState<any[]>([]);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
-  // Fetch API data for assets and indicators once
   useEffect(() => {
     const fetchApiData = async () => {
       setLoading(true);
@@ -146,7 +33,9 @@ export default function StrategyBuilderPage() {
         ]);
         setApiAssets(assetsRes.data?.data || []);
         setApiIndicators(indicatorsRes.data?.data || []);
-      } catch {
+        console.log('API Data loaded:', { assets: assetsRes.data, indicators: indicatorsRes.data });
+      } catch (error) {
+        console.error('Failed to load API data:', error);
         setApiAssets([]);
         setApiIndicators([]);
       }
@@ -155,172 +44,177 @@ export default function StrategyBuilderPage() {
     fetchApiData();
   }, []);
 
-  // --- PACKAGE RECOMMENDATION SYSTEM ---
-  // Always show all packages (categories) from STRATEGY_KEYWORDS
-  const getAllPackages = () => {
-    return Object.keys(STRATEGY_KEYWORDS);
-  };
-
-  // Get options for a given package
-  const getOptionsForPackage = (pkg: string) => {
-    let options: any[] = [];
-    if (pkg === "assets") {
-      options = apiAssets.map((a) => ({ ...a, value: a.symbol || a.name || a.asset || a.id }));
-    } else if (pkg === "indicators") {
-      options = apiIndicators.map((i) => ({ ...i, value: i.name || i.indicator || i.id }));
-    } else if ((Object.keys(STRATEGY_KEYWORDS) as string[]).includes(pkg)) {
-      options = (STRATEGY_KEYWORDS as Record<string, string[]>)[pkg].map((val: string) => ({ id: val, value: val }));
-    }
-    // Remove duplicates by value
-    const seen = new Set();
-    return options.filter((opt) => {
-      if (seen.has(opt.value)) return false;
-      seen.add(opt.value);
-      return true;
-    });
-  };
-
-  const allPackages = getAllPackages();
-  const packageOptions = openPackage ? getOptionsForPackage(openPackage) : [];
-
-  // Handle selection at each stage
-  const handleSelect = (option: any) => {
-    setSelected((prev) => [...prev, option]);
-    setIsEditing(false);
-  };
-
-  // Remove a selected token
-  const handleRemove = (idx: number) => {
-    setSelected(selected.slice(0, idx));
-  };
-
-  // Add another condition
-  const handleAddCondition = () => {
-    if (selected.length > 0) {
-      if (step === "entry") {
-        setEntryConditions((prev) => [...prev, selected]);
-      } else {
-        setExitConditions((prev) => [...prev, selected]);
-      }
-      setSelected([]);
+  // Test API connection
+  const testApiConnection = async () => {
+    try {
+      const token = localStorage.getItem("AUTH_TOKEN");
+      console.log('Testing API connection with token:', token ? 'Present' : 'Missing');
+      
+      const response = await apiClient.get("/api/v1/assets");
+      console.log('API connection test successful:', response.data);
+      alert('API connection successful!');
+    } catch (error: any) {
+      console.error('API connection test failed:', error);
+      const errorMessage = error.response?.data?.message || error.message || "Unknown error";
+      alert(`API connection failed: ${errorMessage}`);
     }
   };
 
-  // Next button logic
-  const handleNext = () => {
-    if (selected.length > 0) {
-      if (step === "entry") {
-        setEntryConditions((prev) => [...prev, selected]);
-        setSelected([]);
-        setStep("exit");
-      } else {
-        setExitConditions((prev) => [...prev, selected]);
-        setSelected([]);
-      }
-    }
-  };
-
-  // Handle custom input submission
-  const handleCustomInputSubmit = () => {
-    if (customInput.trim()) {
-      const customOption = {
-        id: `custom-${Date.now()}`,
-        value: customInput.trim(),
-        isCustom: true,
+  // Create bot function
+  const createBotForStrategy = async (strategyId: number) => {
+    try {
+      const token = localStorage.getItem("AUTH_TOKEN");
+      const botPayload = {
+        name: `${strategyName} Bot`,
+        strategy_id: strategyId,
+        mode: "paper",
+        execution_type: "manual"
       };
-      handleSelect(customOption);
-      setCustomInput("");
-      setIsEditing(false);
+      
+      console.log('Creating bot with payload:', botPayload);
+      
+      const response = await apiClient.post("/api/v1/bots", botPayload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      
+      console.log('Bot creation response:', response.data);
+      alert(`Bot created successfully! Bot ID: ${response.data?.data?.id || 'N/A'}`);
+      return response.data;
+    } catch (error: any) {
+      console.error('Bot creation error:', error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to create bot";
+      alert(`Failed to create bot: ${errorMessage}`);
+      throw error;
     }
   };
 
-  // Handle custom input key press
-  const handleCustomInputKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleCustomInputSubmit();
-    } else if (e.key === "Escape") {
-      setCustomInput("");
-      setIsEditing(false);
+  // Build options for dropdowns
+  const indicatorOptions = [
+    ...INDICATORS.map((i: string) => ({ value: i, label: i })),
+    ...apiIndicators.map((i: any) => ({ value: i.name || i.indicator || i.id, label: i.name || i.indicator || i.id }))
+  ];
+  const actionOptions = ACTIONS.map((a: string) => ({ value: a, label: a }));
+  const assetOptions = [
+    ...ASSETS.map((a: string) => ({ value: a, label: a })),
+    ...apiAssets.map((a: any) => ({ value: a.symbol || a.name || a.asset || a.id, label: a.symbol || a.name || a.asset || a.id }))
+  ];
+
+  // Add a condition
+  const handleAddCondition = () => {
+    if (currentCondition.indicator && currentCondition.action && currentCondition.value) {
+      setConditions((prev) => [...prev, { ...currentCondition }]);
+      if (conditions.length > 0) {
+        setOperators((prev) => [...prev, currentOperator]);
+      }
+      setCurrentCondition({ indicator: '', action: '', value: '' });
+      setCurrentOperator('AND');
+    } else {
+      alert('Please fill all fields for the condition.');
     }
   };
 
-  // Handle clicking on the sentence builder area
-  const handleSentenceBuilderClick = () => {
-    setIsEditing(true);
+  // Remove a condition
+  const handleRemoveCondition = (idx: number) => {
+    setConditions(conditions.filter((_, i) => i !== idx));
+    setOperators(operators.filter((_, i) => i !== idx));
   };
 
-  // Build readable sentence
-  const buildSentence = (arr: any[]) =>
-    arr.map((opt, idx) => (
-      <span key={idx} style={{ marginRight: 8 }}>
-      {getOptionLabel(STAGES[idx], opt)}
-    </span>
-    ));
-
-  // Build current sentence (with remove buttons)
-  const buildCurrentSentence = () =>
-    selected.map((opt, idx) => (
-      <span
-        key={idx}
-        className="inline-flex items-center bg-[#F3E8E8] text-[#4A0D0D] rounded px-3 py-1 mr-2 mb-2 text-base font-medium"
-        style={{ borderBottom: "2px solid #7B2323" }}
-      >
-        {opt.value || opt.name || opt.id}
-        <button
-          className="ml-2 text-xs text-[#7B2323] hover:text-red-400"
-          onClick={() => handleRemove(idx)}
-          tabIndex={-1}
-        >
-          ×
-        </button>
-      </span>
-    ));
-
-  // Submit both strategies
+  // Submit strategy
   const handleSubmit = async () => {
     if (!strategyName.trim()) {
       alert("Please enter a strategy name");
       return;
     }
+    if (conditions.length === 0) {
+      alert("Please add at least one condition");
+      return;
+    }
+    if (!direction) {
+      alert("Please select a direction");
+      return;
+    }
+    if (!quantity) {
+      alert("Please enter a quantity");
+      return;
+    }
+    if (!asset) {
+      alert("Please select an asset");
+      return;
+    }
+    // Validate all conditions
+    for (const cond of conditions) {
+      if (!cond.indicator || !cond.action || !cond.value) {
+        alert("All conditions must have indicator, action, and value.");
+        return;
+      }
+    }
     setLoading(true);
     try {
       const token = localStorage.getItem("AUTH_TOKEN");
-      // Parse entry and exit strategies
-      const entryParsed = entryConditions.map(parseStrategySentence);
-      // For now, only send the first entry/exit (can be extended for multiple)
-      const entry = entryParsed[0] || {};
-      // Compose payload (send both entry and exit as separate strategies if needed)
+      
+      // Convert condition values to numbers and ensure proper data types
+      const processedConditions = conditions.map(cond => ({
+        ...cond,
+        value: Number(cond.value) // Ensure value is a number
+      }));
+      
       const payload = {
+        user_id: 20, // TODO: Replace with actual user id if available
         name: strategyName.trim(),
-        user_id: 1, // TODO: Replace with actual user id if available
-        // Use entry as main
-        conditions: entry.conditions || [],
-        operators: entry.operators || [],
-        direction: entry.direction || '',
-        quantity: entry.quantity || '',
-        asset: entry.asset || '',
-        // Optionally, add time fields if you want to parse them from tokens
-        // start_time: ...,
-        // end_time: ...,
+        conditions: processedConditions,
+        operators,
+        direction,
+        quantity: Number(quantity),
+        asset
       };
-      await apiClient.post("/api/v1/strategies", payload, {
+      
+      console.log('Sending strategy payload:', payload);
+      
+      const response = await apiClient.post("/api/v1/strategies", payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      alert("Strategy created successfully!");
-      // Optionally reset state
-      setEntryConditions([]);
-      setExitConditions([]);
-      setSelected([]);
-      setStrategyName("");
-    } catch (err) {
-      alert("Failed to create strategy");
+      
+      console.log('Strategy creation response:', response.data);
+      
+      // Always create a bot after successful strategy creation
+      const strategyId = response.data?.data?.id;
+      if (strategyId) {
+        try {
+          await createBotForStrategy(strategyId);
+          setSuccessMessage(`Strategy and Bot created successfully! Strategy ID: ${strategyId}`);
+        } catch (botError) {
+          console.error('Bot creation failed but strategy was created:', botError);
+          setSuccessMessage(`Strategy created successfully! (Bot creation failed)`);
+        }
+      } else {
+        setSuccessMessage("Strategy created but couldn't get strategy ID for bot creation");
+      }
+      
+      setShowSuccessPopup(true);
+      
+      // Auto-hide popup after 5 seconds
+      setTimeout(() => {
+        setShowSuccessPopup(false);
+      }, 5000);
+      
+      setConditions([]);
+      setOperators([]);
+      setCurrentCondition({ indicator: '', action: '', value: '' });
+      setDirection('');
+      setQuantity('');
+      setAsset('');
+      setStrategyName('');
+    } catch (err: any) {
+      console.error('Strategy creation error:', err);
+      const errorMessage = err.response?.data?.message || err.message || "Failed to create strategy";
+      alert(`Failed to create strategy: ${errorMessage}`);
     }
     setLoading(false);
   };
 
   return (
     <div className="min-h-screen w-full bg-[#F5F6FA] flex flex-col items-center justify-start">
-     <div className="w-full max-w-4xl mx-auto my-12 bg-white p-10 border  rounded-xl shadow-lg flex flex-col" style={{boxShadow: '0 2px 16px 0 rgba(44, 39, 56, 0.10)'}}>
+      <div className="w-full max-w-4xl mx-auto my-12 bg-white p-10 border rounded-xl shadow-lg flex flex-col" style={{ boxShadow: '0 2px 16px 0 rgba(44, 39, 56, 0.10)' }}>
         {/* Strategy Name Input */}
         <div className="mb-8">
           <label htmlFor="strategyName" className="block text-lg font-semibold text-[#7B2323] mb-2">
@@ -335,163 +229,153 @@ export default function StrategyBuilderPage() {
             className="w-full px-4 py-3 border border-[#FF8C00] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF8C00] focus:border-transparent text-[#7B2323] placeholder-gray-400"
           />
         </div>
-
-        {/* Stepper */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="flex items-center w-full max-w-4xl mx-auto">
-            <div className="flex-1 flex flex-col items-center">
-              <span className={`font-semibold text-lg ${step === "entry" ? "text-[#7B2323]" : "text-gray-400"}`}>Entry Strategy</span>
-              <div className={`w-4 h-4 ${step === "entry" ? "bg-[#FF8C00]" : "bg-gray-200"} rounded-full mt-2`} />
+        {/* Entry Conditions Builder */}
+        <div className="mb-8">
+          <div className="text-lg text-[#7B2323] mb-2 font-semibold">Add Entry Conditions</div>
+          <div className="flex flex-col md:flex-row gap-4 mb-4">
+            <select
+              className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              value={currentCondition.indicator}
+              onChange={e => setCurrentCondition({ ...currentCondition, indicator: e.target.value })}
+            >
+              <option value="">Select Indicator</option>
+              {indicatorOptions.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+            <select
+              className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              value={currentCondition.action}
+              onChange={e => setCurrentCondition({ ...currentCondition, action: e.target.value })}
+            >
+              <option value="">Select Action</option>
+              {actionOptions.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+            <input
+              type="number"
+              className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              placeholder="Value"
+              value={currentCondition.value}
+              onChange={e => setCurrentCondition({ ...currentCondition, value: e.target.value })}
+            />
+            {conditions.length > 0 && (
+              <select
+                className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+                value={currentOperator}
+                onChange={e => setCurrentOperator(e.target.value)}
+              >
+                {OPERATORS.map(opt => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+            )}
+            <Button className="bg-[#FF8C00] text-white hover:bg-[#FFA500] px-6" onClick={handleAddCondition}>
+              Add Condition
+            </Button>
+          </div>
+          {/* List of added conditions */}
+          {conditions.length > 0 && (
+            <div className="mb-4">
+              {conditions.map((cond, idx) => (
+                <div key={idx} className="flex items-center bg-[#FFF3E0] text-[#7B2323] rounded px-4 py-2 mb-2 text-base font-medium border border-[#FF8C00]">
+                  <span className="mr-2">{`Condition ${idx + 1}: ${cond.indicator} ${cond.action} ${cond.value}`}</span>
+                  {idx > 0 && <span className="mx-2 text-[#FF8C00]">{operators[idx - 1]}</span>}
+                  <button className="ml-auto text-red-500 hover:text-red-700" onClick={() => handleRemoveCondition(idx)}>×</button>
+                </div>
+              ))}
             </div>
-            <div className="flex-1 h-1 bg-gray-200 mx-2 relative">
-              <div className="absolute left-0 top-0 h-1 bg-[#FF8C00]" style={{ width: step === "entry" ? "50%" : "100%" }} />
-            </div>
-            <div className="flex-1 flex flex-col items-center">
-              <span className={`font-semibold text-lg ${step === "exit" ? "text-[#7B2323]" : "text-gray-400"}`}>Exit Strategy</span>
-              <div className={`w-4 h-4 ${step === "exit" ? "bg-[#FF8C00]" : "bg-gray-200"} rounded-full mt-2`} />
-            </div>
+          )}
+        </div>
+        {/* Direction, Quantity, Asset */}
+        <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-[#7B2323] font-semibold mb-2">Direction</label>
+            <select
+              className="w-full px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              value={direction}
+              onChange={e => setDirection(e.target.value)}
+            >
+              <option value="">Select Direction</option>
+              <option value="buy">Buy</option>
+              <option value="sell">Sell</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-[#7B2323] font-semibold mb-2">Quantity</label>
+            <input
+              type="number"
+              className="w-full px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              placeholder="Quantity"
+              value={quantity}
+              onChange={e => setQuantity(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-[#7B2323] font-semibold mb-2">Asset</label>
+            <select
+              className="w-full px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              value={asset}
+              onChange={e => setAsset(e.target.value)}
+            >
+              <option value="">Select Asset</option>
+              {assetOptions.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
           </div>
         </div>
-
-        {/* Render entry/exit conditions for the current step */}
-        {step === "entry" && entryConditions.length > 0 && (
-          <div className="mb-4">
-            {entryConditions.map((cond, idx) => (
-              <div key={idx} className="bg-[#FFF3E0] text-[#7B2323] rounded px-4 py-2 mb-2 text-base font-medium border border-[#FF8C00]">
-                Entry Condition {idx + 1}: {buildSentence(cond)}
-              </div>
-            ))}
-          </div>
-        )}
-        {step === "exit" && exitConditions.length > 0 && (
-          <div className="mb-4">
-            {exitConditions.map((cond, idx) => (
-              <div key={idx} className="bg-[#E3F2FD] text-[#1E3A8A] rounded px-4 py-2 mb-2 text-base font-medium border border-[#90CAF9]">
-                Exit Condition {idx + 1}: {buildSentence(cond)}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Input-like sentence builder */}
-        <div className="mb-6">
-          <div className="text-lg text-[#7B2323] mb-2">
-            Type or select keywords to describe your {step} strategy
-            {isSentenceComplete(selected) && (
-              <span className="ml-4 text-green-600 font-semibold">Sentence Complete!</span>
-            )}
-          </div>
-          <div 
-            className="min-h-[48px] flex flex-wrap items-center border-b border-[#FF8C00] pb-2 bg-white px-2 cursor-text"
-            onClick={handleSentenceBuilderClick}
-          >
-            {buildCurrentSentence()}
-            {!isEditing && (
-              <span className="text-gray-400 italic">
-                {packageOptions.length > 0 ? "Select or type next..." : "No suggestions"}
-              </span>
-            )}
-            {isEditing && (
-              <input
-                type="text"
-                value={customInput}
-                onChange={(e) => setCustomInput(e.target.value)}
-                onKeyPress={handleCustomInputKeyPress}
-                onBlur={handleCustomInputSubmit}
-                placeholder={`Type next keyword...`}
-                className="flex-1 min-w-[200px] px-2 py-1 border-none outline-none bg-transparent text-black placeholder-gray-400"
-                autoFocus
-              />
-            )}
-          </div>
-        </div>
-
-        {/* Option Buttons - horizontal scroll */}
-        <div className="w-full overflow-x-auto mb-8 scrollbar-hide">
-          <div className="flex gap-2 min-w-fit scrollbar-hide">
-            {/* Show all packages if none open, else show options for open package */}
-            {!openPackage ? (
-              allPackages.length === 0 ? (
-                <span className="text-[#7B2323]">No packages available.</span>
-              ) : (
-                allPackages.map((pkg) => (
-                  <button
-                    key={pkg}
-                    type="button"
-                    className="px-4 py-2 rounded border bg-white text-[#7B2323] border-[#FF8C00] hover:bg-[#FF8C00] hover:text-white transition font-semibold"
-                    onClick={() => setOpenPackage(pkg)}
-                  >
-                    {pkg.charAt(0).toUpperCase() + pkg.slice(1)}
-                  </button>
-                ))
-              )
-            ) : (
-              <>
-                <button
-                  className="px-2 text-gray-400 hover:text-[#7B2323]"
-                  onClick={() => setOpenPackage(null)}
-                >
-                  &#8592; Back
-                </button>
-                {packageOptions.length === 0 ? (
-                  <span className="text-[#7B2323]">No options in this package.</span>
-                ) : (
-                  packageOptions.map((option) => (
-                    <button
-                      key={option.id}
-                      type="button"
-                      className="px-4 py-2 rounded border bg-white text-[#7B2323] border-[#FF8C00] hover:bg-[#FF8C00] hover:text-white transition"
-                      onClick={() => {
-                        handleSelect(option);
-                        setOpenPackage(null);
-                      }}
-                    >
-                      {option.value}
-                    </button>
-                  ))
-                )}
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Action Buttons */}
+        {/* Submit Button */}
         <div className="flex gap-4 justify-end">
           <Button
-            className="bg-[#7B2323] text-white hover:bg-[#FF8C00] px-8"
-            onClick={handleNext}
+            className="bg-gray-500 text-white hover:bg-gray-600 px-6"
+            onClick={testApiConnection}
+            disabled={loading}
           >
-            {step === "entry" ? "Next (to Exit)" : "Finish"}
+            Test API
           </Button>
           <Button
-            className="bg-[#FF8C00] text-white hover:bg-[#FFA500] px-8"
-            onClick={handleAddCondition}
+            className="bg-[#7B2323] text-white hover:bg-[#FF8C00] px-8"
+            onClick={handleSubmit}
+            disabled={loading}
           >
-            Add another Condition
+            {loading ? "Submitting..." : "Create Strategy"}
           </Button>
         </div>
-
         {/* Show completed strategies summary at the bottom */}
-        {entryConditions.length > 0 && exitConditions.length > 0 && (
+        {conditions.length > 0 && (
           <div className="mt-8">
             <div className="text-green-700 mb-2">
               <b>Entry Strategy:</b>
-              {entryConditions.map((cond, idx) => (
-                <span key={idx} className="ml-2">[{buildSentence(cond)}]</span>
+              {conditions.map((cond, idx) => (
+                <span key={idx} className="ml-2">[{cond.indicator} {cond.action} {cond.value}]</span>
               ))}
             </div>
-            <div className="text-blue-700 mb-2">
-              <b>Exit Strategy:</b>
-              {exitConditions.map((cond, idx) => (
-                <span key={idx} className="ml-2">[{buildSentence(cond)}]</span>
-              ))}
-            </div>
-            <Button className="bg-[#4A0D0D] text-white hover:bg-[#7B2323] px-8 mt-4" onClick={handleSubmit} disabled={loading}>
-              {loading ? "Submitting..." : "Create Strategy"}
-            </Button>
           </div>
         )}
       </div>
+      {showSuccessPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn">
+          <div className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full mx-4 transform animate-scaleIn">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-[#7B2323] mb-2">Success!</h2>
+              <p className="text-gray-600 mb-6">{successMessage}</p>
+              <Button
+                className="bg-[#FF8C00] text-white hover:bg-[#FFA500] px-8 py-2 rounded-lg transition-colors duration-200"
+                onClick={() => setShowSuccessPopup(false)}
+              >
+                Continue
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

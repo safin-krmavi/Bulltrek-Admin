@@ -25,6 +25,7 @@ import { useIndicatorActions } from "@/hooks/useIndicatorAction";
 import { useQuantities } from "@/hooks/useQuantity";
 import { useTradeMappings } from "@/hooks/useTradeMapping";
 import { useIndicatorValues } from "@/hooks/useValue";
+import { useBotManagement } from "@/hooks/useBotManagement";
 import {
   ChevronDown,
   MessageSquare,
@@ -83,6 +84,27 @@ interface LiveOrder {
   selfTradePreventionMode: string;
 }
 
+interface StrategyDataItem {
+  id: number;
+  broker: string;
+  api: string;
+  strategy: string;
+  assetSymbol: string;
+  quantity: number;
+  direction: string;
+  runTime: string;
+  availableInvestment: number;
+  frozenInvestment: number;
+  unrealizedPL: number;
+  netPL: number;
+  netPLPercentage: number;
+  tradesExecuted: number;
+  status: "Active" | "Inactive";
+  botName: string;
+  botMode: string;
+  botExecutionType: string;
+}
+
 function useStrategies() {
   return useQuery({
     queryKey: ["strategies"],
@@ -134,37 +156,32 @@ export default function Dashboard({ userId }: { userId?: string }) {
     error: mappingsError,
   } = useTradeMappings();
   const {
-    indicators,
     isLoading: isIndicatorsLoading,
     error: indicatorsError,
   } = useIndicators();
   const {
-    actions: indicatorActions,
     isLoading: isActionsLoading,
     error: actionsError,
   } = useIndicatorActions();
   const {
-    assets,
     isLoading: isAssetsLoading,
     error: assetsError,
   } = useAssets();
   const {
-    values: indicatorValues,
     isLoading: isValuesLoading,
     error: valuesError,
   } = useIndicatorValues();
   const {
-    quantities,
     isLoading: isQuantitiesLoading,
     error: quantitiesError,
   } = useQuantities();
   const {
-    directions,
     isLoading: isDirectionsLoading,
     error: directionsError,
   } = useDirections();
   const { getBrokerageDetails } = useBrokerageManagement();
   const { data: liveOrders, isLoading: isLiveOrdersLoading } = useLiveOrders();
+  const { bots, isLoading: isBotsLoading } = useBotManagement();
 
   // Combined loading state
   const isLoading =
@@ -174,7 +191,8 @@ export default function Dashboard({ userId }: { userId?: string }) {
     isAssetsLoading ||
     isValuesLoading ||
     isQuantitiesLoading ||
-    isDirectionsLoading;
+    isDirectionsLoading ||
+    isBotsLoading;
 
   // Combined error state
   const error =
@@ -225,84 +243,103 @@ export default function Dashboard({ userId }: { userId?: string }) {
     );
   }
 
-  // Transform trade mappings into strategy data for the table
+  // Transform strategies and bots into strategy data for the table
   const strategyData = (() => {
     // Debug logging
-    console.log("Trade Mappings:", tradeMappings);
-    console.log("Assets:", assets);
-    console.log("Indicators:", indicators);
-    console.log("Actions:", indicatorActions);
-    console.log("Quantities:", quantities);
-    console.log("Directions:", directions);
-    console.log("Values:", indicatorValues);
+    console.log("Strategies:", strategies);
+    console.log("Bots:", bots);
 
-    // Ensure tradeMappings is an array
-    if (!Array.isArray(tradeMappings)) {
-      console.error("tradeMappings is not an array:", tradeMappings);
+    // Ensure strategies and bots are arrays
+    if (!Array.isArray(strategies?.data)) {
+      console.error("strategies is not an array:", strategies);
       return [];
     }
 
-    return tradeMappings
-      .map((mapping) => {
-        // Ensure all required data exists
-        if (!mapping) {
-          console.error("Invalid mapping:", mapping);
+    if (!Array.isArray(bots?.data)) {
+      console.error("bots is not an array:", bots);
+      return [];
+    }
+
+    return strategies.data
+      .map((strategy: any) => {
+        // Find the corresponding bot for this strategy
+        const bot = bots?.data?.find((b: any) => b.strategy_id === strategy.id);
+        
+        if (!strategy) {
+          console.error("Invalid strategy:", strategy);
           return null;
         }
 
-        const asset = Array.isArray(assets)
-          ? assets.find((a) => a?.id === mapping.asset_id)
-          : null;
-        const indicator = Array.isArray(indicators)
-          ? indicators.find((i) => i?.id === mapping.indicator_id)
-          : null;
-        const action = Array.isArray(indicatorActions)
-          ? indicatorActions.find((a) => a?.id === mapping.indicator_action_id)
-          : null;
-        const quantity = Array.isArray(quantities)
-          ? quantities.find((q) => q?.id === mapping.quantity_id)
-          : null;
-        const direction = Array.isArray(directions)
-          ? directions.find((d) => d?.id === mapping.direction_id)
-          : null;
-        const value = Array.isArray(indicatorValues)
-          ? indicatorValues.find((v) => v?.id === mapping.value_id)
-          : null;
+        // Debug logging for strategy and bot matching
+        console.log(`Strategy ${strategy.id}:`, {
+          strategyName: strategy.name,
+          botFound: !!bot,
+          botStatus: bot?.status,
+          botName: bot?.name
+        });
+
+        // Parse strategy conditions to create a readable strategy rule
+        const strategyRule = (() => {
+          if (strategy.conditions && Array.isArray(strategy.conditions)) {
+            return strategy.conditions
+              .map((condition: any, index: number) => {
+                const operator = strategy.operators && strategy.operators[index - 1] ? ` ${strategy.operators[index - 1]} ` : '';
+                return `${condition.indicator} ${condition.action} ${condition.value}${operator}`;
+              })
+              .join('');
+          }
+          return strategy.name || "N/A";
+        })();
+
+        // Determine strategy status based on bot status
+        const getStrategyStatus = () => {
+          if (!bot) {
+            console.log(`Strategy ${strategy.id} has no associated bot`);
+            return "Inactive" as const;
+          }
+          
+          switch (bot.status) {
+            case 'running':
+              return "Active" as const;
+            case 'idle':
+            case 'stopped':
+            default:
+              return "Inactive" as const;
+          }
+        };
 
         const strategyData = {
-          id: mapping.id,
-          broker: getBrokerageDetails.data?.brokerage_name || "Not Connected",
+          id: strategy.id,
+          broker: "Binance", // Default to Binance as requested
           api: "REST API",
-          strategy: `${indicator?.name || "N/A"} ${value?.value || "N/A"} → ${
-            action?.action || "N/A"
-          }`,
-          assetSymbol: asset?.symbol || "N/A",
-          quantity: quantity?.quantity || 0,
-          direction: direction?.direction || "N/A",
+          strategy: strategyRule,
+          assetSymbol: strategy.asset || "N/A",
+          quantity: strategy.quantity || 0,
+          direction: strategy.direction || "N/A",
           runTime: "2 Hrs",
-          availableInvestment: 45600,
-          frozenInvestment: 5600,
-          unrealizedPL: 600,
-          netPL: Math.random() > 0.5 ? -50000 : 50000,
-          netPLPercentage: Math.random() * 100,
-          tradesExecuted: 300,
-          status: "Active" as const,
+          availableInvestment: 0, // Set to 0 instead of static value
+          frozenInvestment: 0, // Set to 0 instead of static value
+          unrealizedPL: 0, // Set to 0 instead of static value
+          netPL: 0, // Set to 0 instead of random value
+          netPLPercentage: 0, // Set to 0 instead of random value
+          tradesExecuted: 0, // Set to 0 instead of static value
+          status: getStrategyStatus(),
+          botName: bot?.name || "N/A",
+          botMode: bot?.mode || "N/A",
+          botExecutionType: bot?.execution_type || "N/A",
         };
 
         return strategyData;
       })
-      .filter((item): item is NonNullable<typeof item> => item !== null);
+      .filter((item: any): item is NonNullable<typeof item> => item !== null);
   })();
 
-  // Calculate summary data (must be after strategyData is defined)
-  const totalStrategies = Array.isArray(tradeMappings) ? tradeMappings.length : 0;
-
-  // Use strategyData for dynamic values if available
-  const totalTradesExecuted = Array.isArray(strategyData)
+  // Use strategyData for dynamic values if available, default to 0 if no data
+  const totalTradesExecuted = Array.isArray(strategyData) && strategyData.length > 0
     ? strategyData.reduce((sum, s) => sum + (s.tradesExecuted || 0), 0)
     : 0;
 
-  const netPL = Array.isArray(strategyData)
+  const netPL = Array.isArray(strategyData) && strategyData.length > 0
     ? strategyData.reduce((sum, s) => sum + (s.netPL || 0), 0)
     : 0;
 
@@ -348,9 +385,22 @@ export default function Dashboard({ userId }: { userId?: string }) {
     }));
   };
 
-  console.log("Trade Mappings:", tradeMappings);
-  console.log("Strategies API response:", strategies);
-  console.log("First strategy:", strategies?.data?.[0]);
+  console.log("Strategies:", strategies);
+  console.log("Bots:", bots);
+  console.log("Strategy Data:", strategyData);
+  
+  // Debug summary
+  console.log("=== DASHBOARD DEBUG SUMMARY ===");
+  console.log("Total Strategies:", Array.isArray(strategies?.data) ? strategies.data.length : 0);
+  console.log("Total Bots:", Array.isArray(bots?.data) ? bots.data.length : 0);
+  console.log("Active Strategies:", strategyData.filter((s: StrategyDataItem) => s.status === "Active").length);
+  console.log("Inactive Strategies:", strategyData.filter((s: StrategyDataItem) => s.status === "Inactive").length);
+  console.log("Strategies without bots:", strategyData.filter((s: StrategyDataItem) => s.botName === "N/A").length);
+  console.log("Total Trades Executed:", totalTradesExecuted);
+  console.log("Net P/L:", netPL);
+  console.log("Net P/L Percentage:", netPLPercentage);
+  console.log("=================================");
+
   return (
     <div className="min-h-screen bg-[#F8F8F8] w-full">
       <main className="max-w-7xl mx-auto  py-6 w-full">
@@ -378,7 +428,9 @@ export default function Dashboard({ userId }: { userId?: string }) {
                     <div className="text-sm text-gray-600">
                       Strategies Active
                     </div>
-                    <div className="text-2xl font-bold">{totalStrategies}</div>
+                    <div className="text-2xl font-bold">
+                      {Array.isArray(strategies?.data) ? strategies.data.length : 0}
+                    </div>
                   </CardContent>
                 </Card>
                 <Card className="bg-[#FFE6E6] border-none">
@@ -451,18 +503,20 @@ export default function Dashboard({ userId }: { userId?: string }) {
                           <TableHead>Asset</TableHead>
                           <TableHead>Quantity</TableHead>
                           <TableHead>Direction</TableHead>
+                          <TableHead>Bot</TableHead>
                           <TableHead>Status</TableHead>
                           <TableHead>Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {strategyData.map((strategy, i) => (
+                        {strategyData.map((strategy: any, i: number) => (
                           <TableRow key={i}>
                             <TableCell>{strategy.broker}</TableCell>
                             <TableCell>{strategy.strategy}</TableCell>
                             <TableCell>{strategy.assetSymbol}</TableCell>
                             <TableCell>{strategy.quantity}</TableCell>
                             <TableCell>{strategy.direction}</TableCell>
+                            <TableCell>{strategy.botName}</TableCell>
                             <TableCell>
                               <div className="flex items-center gap-2">
                                 <div
