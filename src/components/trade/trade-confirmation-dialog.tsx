@@ -42,6 +42,11 @@ interface BacktestResponse {
   };
 }
 
+// Add this interface for the backtest results
+interface BacktestResultResponse {
+  result: string;
+}
+
 // Add this interface for the paper trade response
 interface PaperTradeResponse {
   message: string;
@@ -58,17 +63,46 @@ export function TradeConfirmationDialog({
   const [isPaperTrading, setIsPaperTrading] = useState(false);
   const [showPaperTradeAlert, setShowPaperTradeAlert] = useState(false);
   const [paperTradeMessage, setPaperTradeMessage] = useState<string>("");
+  
+  // New state for backtest results
+  const [backtestResults, setBacktestResults] = useState<BacktestResultResponse | null>(null);
+  const [showBacktestResults, setShowBacktestResults] = useState(false);
+  const [isLoadingResults, setIsLoadingResults] = useState(false);
 
   // Add useEffect for auto-closing
   useEffect(() => {
     if (showBacktestAlert) {
       const timer = setTimeout(() => {
         setShowBacktestAlert(false);
-      }, 3000);
+        // Fetch backtest results after 5 seconds
+        fetchBacktestResults();
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
   }, [showBacktestAlert]);
+
+  // Function to fetch backtest results
+  const fetchBacktestResults = async () => {
+    if (!selectedBot) {
+      toast.error("No bot selected");
+      return;
+    }
+
+    setIsLoadingResults(true);
+    try {
+      const response = await apiClient.get<BacktestResultResponse>(
+        `/api/v1/bots/${selectedBot.id}/backtest-result`
+      );
+      
+      setBacktestResults(response.data);
+      setShowBacktestResults(true);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to fetch backtest results");
+    } finally {
+      setIsLoadingResults(false);
+    }
+  };
 
   // Add useEffect for auto-closing paper trade alert
   useEffect(() => {
@@ -278,6 +312,67 @@ export function TradeConfirmationDialog({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setShowPaperTradeAlert(false)}>
+              Close
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Backtest Results Dialog */}
+      <AlertDialog open={showBacktestResults} onOpenChange={setShowBacktestResults}>
+        <AlertDialogContent className="bg-white max-w-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-bold text-gray-800">
+              Backtest Results
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600">
+              {isLoadingResults ? (
+                <div className="flex items-center justify-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
+                  <span className="ml-2">Loading results...</span>
+                </div>
+              ) : backtestResults ? (
+                <div className="space-y-6">
+                  {/* Result Display */}
+                  <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                    <h3 className="font-semibold text-blue-800 mb-3">Backtest Result</h3>
+                    <div className="text-blue-700 text-lg">
+                      {backtestResults.result}
+                    </div>
+                  </div>
+                  
+                  {/* Additional Info */}
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <h3 className="font-semibold text-gray-800 mb-3">Test Information</h3>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <div className="text-gray-600">Bot ID</div>
+                        <div className="font-semibold">{selectedBot?.id}</div>
+                      </div>
+                      <div>
+                        <div className="text-gray-600">Bot Name</div>
+                        <div className="font-semibold">{selectedBot?.name}</div>
+                      </div>
+                      <div>
+                        <div className="text-gray-600">Test Type</div>
+                        <div className="font-semibold">Historical Backtest</div>
+                      </div>
+                      <div>
+                        <div className="text-gray-600">Status</div>
+                        <div className="font-semibold text-green-600">Completed</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  No results available
+                </div>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowBacktestResults(false)}>
               Close
             </AlertDialogCancel>
           </AlertDialogFooter>

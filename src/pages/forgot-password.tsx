@@ -2,23 +2,28 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import apiClient from "@/api/apiClient";
+import { toast } from "sonner";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
-    setError("");
+    
     try {
       await apiClient.post("/api/v1/forgot-password", { email });
-      setMessage("If this email is registered, a password reset link has been sent.");
+      toast.success("Reset Link Sent", {
+        description: "If this email is registered, a password reset link has been sent to your email address.",
+        duration: 5000,
+      });
+      setEmail(""); // Clear the form
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to send reset email. Please try again.");
+      toast.error("Failed to Send Reset Link", {
+        description: err.response?.data?.message || "Failed to send reset email. Please try again.",
+        duration: 5000,
+      });
     }
     setLoading(false);
   };
@@ -38,8 +43,6 @@ const ForgotPasswordPage = () => {
         <Button type="submit" className="w-full text-[20px] py-6" disabled={loading}>
           {loading ? "Sending..." : "Send Reset Link"}
         </Button>
-        {message && <div className="text-green-600 text-center">{message}</div>}
-        {error && <div className="text-red-600 text-center">{error}</div>}
       </form>
     </div>
   );
