@@ -25,6 +25,8 @@ const RegisterPage = () => {
 
   const registerForm = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
+    mode: 'onChange',
+    reValidateMode: 'onBlur',
     defaultValues: {
       first_name: "",
       last_name: "",
@@ -52,7 +54,7 @@ const RegisterPage = () => {
       setTimeout(() => {
         toast.success(
           "validation mail has been sent to your registered email",
-          { duration: 4000 }
+          { duration: Infinity }
         );
       }, 1000);
     } catch (error: any) {
@@ -117,128 +119,133 @@ const RegisterPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-8 items-center h-full w-full justify-center">
-      <h1 className="font-medium text-[32px] text-center pt-16">Register</h1>
-      <div className="flex justify-center w-full">
+    <div className="flex flex-col min-h-screen items-center justify-center bg-white py-2">
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+        .animate-fadeIn { animation: fadeIn 0.8s cubic-bezier(0.4,0,0.2,1) both; }
+      `}</style>
+      <h1 className="font-medium text-[28px] text-center mb-3">Register</h1>
+      <div className="w-full max-w-xl mx-auto bg-white rounded-xl shadow-lg p-4 md:p-6 animate-fadeIn">
         <Form {...registerForm}>
           <form
             onSubmit={registerForm.handleSubmit(onSubmit)}
-            className="flex flex-col gap-10 items-center"
+            className="flex flex-col gap-5"
           >
-            <div className="w-full flex flex-col gap-1">
-              <div className="flex gap-4 w-full">
-                <FormField
-                  control={registerForm.control}
-                  name="first_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>First Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter First Name"
-                          className="rounded-lg px-[28px] w-[19rem] py-[24px] text-[16px] text-greyText"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={registerForm.control}
-                  name="last_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Last Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter Last Name"
-                          className="rounded-lg px-[28px] w-[19rem] py-[24px] text-[16px] text-greyText"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex gap-4">
-                <FormField
-                  control={registerForm.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter Email"
-                          className="rounded-lg px-[28px] w-[19rem] py-[24px] text-[16px] text-greyText"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={registerForm.control}
-                  name="mobile"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Mobile Number</FormLabel>
-                      <FormControl>
-                        <PhoneInput
-                          defaultCountry="IN"
-                          placeholder="Enter Mobile Number"
-                          className="rounded-lg w-[19rem] h-full text-[16px] text-greyText"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex gap-4">
-                <FormField
-                  control={registerForm.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <PasswordInput
-                          placeholder="Enter Password"
-                          className="rounded-lg px-[28px] w-[19rem] py-[24px] text-[16px] text-greyText"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={registerForm.control}
-                  name="password_confirmation"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
-                      <FormControl>
-                        <PasswordInput
-                          placeholder="Re-Enter password"
-                          className="rounded-lg px-[28px] w-[19rem] py-[24px] text-[16px] text-greyText"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+            {/* Name fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={registerForm.control}
+                name="first_name"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter First Name"
+                        className="rounded-lg px-4 w-full py-2 text-[16px] text-greyText"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="mt-1" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={registerForm.control}
+                name="last_name"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter Last Name"
+                        className="rounded-lg px-4 w-full py-2 text-[16px] text-greyText"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="mt-1" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* Email and Mobile fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={registerForm.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter Email"
+                        className="rounded-lg px-4 w-full py-2 text-[16px] text-greyText"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="mt-1" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={registerForm.control}
+                name="mobile"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel>Mobile Number</FormLabel>
+                    <FormControl>
+                      <PhoneInput
+                        defaultCountry="IN"
+                        placeholder="Enter Mobile Number"
+                        className="rounded-lg w-full h-full py-2 text-[16px] text-greyText"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="mt-1" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* Password fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={registerForm.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <PasswordInput
+                        placeholder="Enter Password"
+                        className="rounded-lg px-4 w-full py-2 text-[16px] text-greyText"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="mt-1" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={registerForm.control}
+                name="password_confirmation"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <PasswordInput
+                        placeholder="Re-Enter password"
+                        className="rounded-lg px-4 w-full py-2 text-[16px] text-greyText"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="mt-1" />
+                  </FormItem>
+                )}
+              />
             </div>
             <Button
               type="submit"
-              className="w-full border-none text-[20px] shadow-none bg-secondary-50 text-white py-6"
+              className="w-full border-none text-[18px] shadow-none bg-secondary-50 text-white py-3 mt-1 rounded-lg transition-transform duration-200 hover:scale-105 active:scale-100"
               disabled={register.isPending}
             >
               {register.isPending ? (
@@ -253,17 +260,17 @@ const RegisterPage = () => {
           </form>
         </Form>
       </div>
-      <div className="flex flex-col gap-2 items-center">
+      <div className="flex flex-col gap-2 items-center mt-3">
         <p className="text-[#525252] text-[12px]">Or continue with</p>
-        <div className="flex gap-4">
-          <button className="border-none">
-            <img src="/icons/google.svg" alt="Google login" />
+        <div className="flex gap-4 mt-1">
+          <button className="border-none rounded-full shadow-md p-2 bg-white hover:bg-gray-100 transition-transform duration-200 hover:scale-110 active:scale-100">
+            <img src="/icons/google.svg" alt="Google login" className="w-8 h-8" />
           </button>
-          <button className="border-none">
-            <img src="/icons/facebook.svg" alt="Facebook login" />
+          <button className="border-none rounded-full shadow-md p-2 bg-white hover:bg-gray-100 transition-transform duration-200 hover:scale-110 active:scale-100">
+            <img src="/icons/facebook.svg" alt="Facebook login" className="w-8 h-8" />
           </button>
         </div>
-        <Link to="/login" className="text-[#8F8F8F] text-[14px] underline">
+        <Link to="/login" className="text-[#8F8F8F] text-[14px] underline mt-1">
           Already a User?
         </Link>
       </div>

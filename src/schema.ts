@@ -9,10 +9,18 @@ export const loginSchema = z.object({
 export type LoginInput = z.infer<typeof loginSchema>;
 
 export const registerSchema = z.object({
-    first_name: z.string().min(1, "First name is required"),
-    last_name: z.string().min(1, "Last name is required"),
+    first_name: z
+        .string()
+        .min(1, "First name is required")
+        .max(30, "First name too long")
+        .regex(/^[A-Za-z ]+$/, "First name must only contain letters and spaces"),
+    last_name: z
+        .string()
+        .min(1, "Last name is required")
+        .max(30, "Last name too long")
+        .regex(/^[A-Za-z ]+$/, "Last name must only contain letters and spaces"),
     email: z.string().email("Invalid email address"),
-    mobile: z.string().min(1, "Mobile number is required"),
+    mobile: z.string(),
     password: z.string().min(6, "Password must be at least 6 characters"),
     password_confirmation: z.string()
 }).refine((data) => data.password === data.password_confirmation, {
@@ -28,3 +36,9 @@ export const newPasswordSchema = z.object({
 });
 
 export type NewPasswordInput = z.infer<typeof newPasswordSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
+
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;

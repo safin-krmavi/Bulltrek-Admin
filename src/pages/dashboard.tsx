@@ -348,29 +348,9 @@ export default function Dashboard({ userId }: { userId?: string }) {
     : 0;
 
   // Placeholder data for other sections
-  const scanners: ScannerData[] = [
-    {
-      name: "RSI Scanner",
-      dateTime: new Date().toLocaleString(),
-      pairs: "BTC/USD, ETH/USD",
-      status: "Active" as const,
-    },
-    {
-      name: "MACD Scanner",
-      dateTime: new Date().toLocaleString(),
-      pairs: "AAPL, MSFT",
-      status: "Closed" as const,
-    },
-  ];
-
-  const supportTickets: SupportTicketData[] = [
-    { number: "TST123", createdOn: "12 Aug 2024", status: "Resolved" as const },
-    {
-      number: "TST124",
-      createdOn: "13 Aug 2024",
-      status: "In Progress" as const,
-    },
-  ];
+  // For new users, these arrays should be empty
+  const scanners: ScannerData[] = [];
+  const supportTickets: SupportTicketData[] = [];
 
   const plan: PlanData = {
     name: "Gold Membership",
@@ -413,7 +393,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="w-full">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card className="bg-[#FFE6E6] border-none">
+                <Card className="bg-white border-none">
                   <CardContent className="p-4">
                     <div className="text-sm text-gray-600">Platforms Added</div>
                     <div className="text-2xl font-bold">
@@ -423,7 +403,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="bg-[#FFE6E6] border-none">
+                <Card className="bg-white border-none">
                   <CardContent className="p-4">
                     <div className="text-sm text-gray-600">
                       Strategies Active
@@ -433,7 +413,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="bg-[#FFE6E6] border-none">
+                <Card className="bg-white border-none">
                   <CardContent className="p-4">
                     <div className="text-sm text-gray-600">Trades Executed</div>
                     <div className="text-2xl font-bold">
@@ -441,7 +421,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="bg-[#FFE6E6] border-none">
+                <Card className="bg-white border-none">
                   <CardContent className="p-4">
                     <div className="text-sm text-gray-600">Net P/L</div>
                     <div className="text-2xl font-bold text-green-600">
@@ -606,25 +586,33 @@ export default function Dashboard({ userId }: { userId?: string }) {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {scanners.map((scanner, i) => (
-                          <TableRow key={i}>
-                            <TableCell>{scanner.name}</TableCell>
-                            <TableCell>{scanner.dateTime}</TableCell>
-                            <TableCell>{scanner.pairs}</TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-2">
-                                <div
-                                  className={`h-2 w-2 rounded-full ${
-                                    scanner.status === "Active"
-                                      ? "bg-green-500"
-                                      : "bg-red-500"
-                                  }`}
-                                />
-                                {scanner.status}
-                              </div>
+                        {scanners.length === 0 ? (
+                          <TableRow>
+                            <TableCell colSpan={4} className="text-center py-4">
+                              No data available
                             </TableCell>
                           </TableRow>
-                        ))}
+                        ) : (
+                          scanners.map((scanner, i) => (
+                            <TableRow key={i}>
+                              <TableCell>{scanner.name}</TableCell>
+                              <TableCell>{scanner.dateTime}</TableCell>
+                              <TableCell>{scanner.pairs}</TableCell>
+                              <TableCell>
+                                <div className="flex items-center gap-2">
+                                  <div
+                                    className={`h-2 w-2 rounded-full ${
+                                      scanner.status === "Active"
+                                        ? "bg-green-500"
+                                        : "bg-red-500"
+                                    }`}
+                                  />
+                                  {scanner.status}
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        )}
                       </TableBody>
                     </Table>
                   </CardContent>
@@ -743,23 +731,31 @@ export default function Dashboard({ userId }: { userId?: string }) {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {supportTickets.map((ticket, i) => (
-                          <TableRow key={i}>
-                            <TableCell>{ticket.number}</TableCell>
-                            <TableCell>{ticket.createdOn}</TableCell>
-                            <TableCell>
-                              <Badge
-                                variant={
-                                  ticket.status === "Resolved"
-                                    ? "default"
-                                    : "destructive"
-                                }
-                              >
-                                {ticket.status}
-                              </Badge>
+                        {supportTickets.length === 0 ? (
+                          <TableRow>
+                            <TableCell colSpan={3} className="text-center py-4">
+                              No data available
                             </TableCell>
                           </TableRow>
-                        ))}
+                        ) : (
+                          supportTickets.map((ticket, i) => (
+                            <TableRow key={i}>
+                              <TableCell>{ticket.number}</TableCell>
+                              <TableCell>{ticket.createdOn}</TableCell>
+                              <TableCell>
+                                <Badge
+                                  variant={
+                                    ticket.status === "Resolved"
+                                      ? "default"
+                                      : "destructive"
+                                  }
+                                >
+                                  {ticket.status}
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        )}
                       </TableBody>
                     </Table>
                     <div className="p-4 text-center">
