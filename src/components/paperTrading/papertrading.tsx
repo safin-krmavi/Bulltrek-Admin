@@ -13,7 +13,7 @@ export function PaperTradingTables({ botId }: PaperTradingTablesProps) {
   const renderTradesTable = (trades: string[], status: "OPEN" | "CLOSED") => (
     <div className="max-h-[400px] overflow-y-auto">
       <Table>
-        <TableHeader className="sticky top-0 bg-white z-10">
+        <TableHeader className="sticky top-0 bg-white dark:bg-[#232326] z-10">
           <TableRow>
             <TableHead>Symbol</TableHead>
             <TableHead>Status</TableHead>

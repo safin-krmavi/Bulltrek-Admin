@@ -327,10 +327,10 @@ export default function AccountPage() {
                             <div className="flex items-center gap-2 max-w-[200px]">
                             <Clock className="h-4 w-4 text-muted-foreground" />
                             <Select value={timeZone} onValueChange={setTimeZone}>
-                                <SelectTrigger>
+                                <SelectTrigger className="bg-white dark:bg-[#232326] text-black dark:text-white">
                                 <SelectValue />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="bg-white dark:bg-[#232326] text-black dark:text-white">
                                 <SelectItem value="GMT, India">GMT, India</SelectItem>
                                 <SelectItem value="PST, USA">PST, USA</SelectItem>
                                 <SelectItem value="EST, USA">EST, USA</SelectItem>
@@ -547,7 +547,7 @@ export default function AccountPage() {
 
 {showPasswordModal && (
   <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div className="bg-white p-6 rounded-lg w-[400px]">
+    <div className=" dark:bg-[#232326] p-6 rounded-lg w-[400px]">
       <h2 className="text-xl font-semibold mb-4">Change Password</h2>
       <div className="space-y-4">
         <div>
@@ -638,7 +638,7 @@ export default function AccountPage() {
       {/* Create Bot Modal */}
       {showCreateBotModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg w-[500px]">
+          <div className="dark:bg-[#232326] p-6 rounded-lg w-[500px]">
             <h2 className="text-xl font-semibold mb-4">Create New Bot</h2>
             <div className="space-y-4">
               <div>
@@ -702,7 +702,7 @@ export default function AccountPage() {
       {/* Edit Bot Modal */}
       {showEditBotModal && selectedBot && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg w-[500px]">
+          <div className=" dark:bg-[#232326] p-6 rounded-lg w-[500px]">
             <h2 className="text-xl font-semibold mb-4">Edit Bot</h2>
             <div className="space-y-4">
               <div>
@@ -776,7 +776,7 @@ export default function AccountPage() {
 
       {/* Add the Alert Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent className="bg-white">
+        <AlertDialogContent className=" dark:bg-[#232326]">
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -817,7 +817,7 @@ export default function AccountPage() {
             
             <div className="max-h-[400px] overflow-y-auto">
               <Table>
-                <TableHeader className="sticky top-0 bg-white z-10">
+                <TableHeader className="sticky top-0 dark:bg-[#232326] z-10">
                   <TableRow>
                     <TableHead>Symbol</TableHead>
                     <TableHead>Order ID</TableHead>

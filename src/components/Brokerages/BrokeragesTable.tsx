@@ -128,7 +128,7 @@ export function BrokeragesTable() {
   };
 
   return (
-    <Card className="border bg-white rounded-lg shadow-sm">
+    <Card className="border bg-white dark:bg-[#232326] rounded-lg shadow-sm">
       <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg">
   <div className="flex items-center justify-between">
     <CardTitle className="text-lg font-medium">Brokerages</CardTitle>
@@ -139,7 +139,7 @@ export function BrokeragesTable() {
           placeholder="Search by ID"
           value={searchId}
           onChange={(e) => setSearchId(e.target.value)}
-          className="w-[200px] bg-white text-black"
+          className="w-[200px] bg-white dark:bg-[#232326] text-black dark:text-white"
         />
         <Button
           type="submit"
@@ -165,7 +165,7 @@ export function BrokeragesTable() {
       <CardContent className="p-0">
         <div className="max-h-[400px] overflow-y-auto">
           <Table>
-            <TableHeader className="sticky top-0 bg-white z-10">
+            <TableHeader className="sticky top-0 bg-white dark:bg-[#232326] z-10">
               <TableRow>
                 <TableHead>ID</TableHead>
                 <TableHead>Name</TableHead>

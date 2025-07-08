@@ -220,10 +220,10 @@ export default function Dashboard({ userId }: { userId?: string }) {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#F8F8F8] w-full flex items-center justify-center">
+      <div className="min-h-screen bg-background dark:bg-[#18181b] w-full flex items-center justify-center transition-colors duration-300">
         <div className="text-center">
           <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading dashboard data...</p>
+          <p className="text-muted-foreground">Loading dashboard data...</p>
         </div>
       </div>
     );
@@ -232,12 +232,12 @@ export default function Dashboard({ userId }: { userId?: string }) {
   // Show error state
   if (error) {
     return (
-      <div className="min-h-screen bg-[#F8F8F8] w-full flex items-center justify-center">
+      <div className="min-h-screen bg-background dark:bg-[#18181b] w-full flex items-center justify-center transition-colors duration-300">
         <div className="text-center">
           <h2 className="text-xl font-semibold text-red-600">
             Error Loading Dashboard
           </h2>
-          <p className="text-gray-600 mt-2">Please try refreshing the page</p>
+          <p className="text-muted-foreground mt-2">Please try refreshing the page</p>
         </div>
       </div>
     );
@@ -382,7 +382,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
   console.log("=================================");
 
   return (
-    <div className="min-h-screen bg-[#F8F8F8] w-full">
+    <div className="min-h-screen bg-background dark:bg-[#18181b] text-foreground dark:text-white w-full transition-colors duration-300">
       <main className="max-w-7xl mx-auto  py-6 w-full">
         {/* Add Make a Strategy Button */}
         {/* Summary Section */}
@@ -393,9 +393,9 @@ export default function Dashboard({ userId }: { userId?: string }) {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="w-full">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card className="bg-white border-none">
+                <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
                   <CardContent className="p-4">
-                    <div className="text-sm text-gray-600">Platforms Added</div>
+                    <div className="text-sm text-muted-foreground dark:text-white/80">Platforms Added</div>
                     <div className="text-2xl font-bold">
                       {Array.isArray(getBrokerageDetails.data?.data)
                         ? getBrokerageDetails.data.data.length
@@ -403,9 +403,9 @@ export default function Dashboard({ userId }: { userId?: string }) {
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="bg-white border-none">
+                <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
                   <CardContent className="p-4">
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground dark:text-white/80">
                       Strategies Active
                     </div>
                     <div className="text-2xl font-bold">
@@ -413,18 +413,18 @@ export default function Dashboard({ userId }: { userId?: string }) {
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="bg-white border-none">
+                <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
                   <CardContent className="p-4">
-                    <div className="text-sm text-gray-600">Trades Executed</div>
+                    <div className="text-sm text-muted-foreground dark:text-white/80">Trades Executed</div>
                     <div className="text-2xl font-bold">
                       {totalTradesExecuted}
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="bg-white border-none">
+                <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
                   <CardContent className="p-4">
-                    <div className="text-sm text-gray-600">Net P/L</div>
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-sm text-muted-foreground dark:text-white/80">Net P/L</div>
+                    <div className="text-2xl font-bold text-green-600 dark:text-green-400 dark:text-white">
                       ${netPL}
                     </div>
                     <div className="text-sm text-green-600">
@@ -454,7 +454,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
           className="mt-6"
         >
           <Card className="border-0">
-            <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg">
+            <CardHeader className="bg-[#4A0D0D] dark:bg-red-900 text-white rounded-t-lg transition-colors duration-300 dark:text-white">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CardTitle className="text-lg font-medium">
@@ -475,29 +475,29 @@ export default function Dashboard({ userId }: { userId?: string }) {
                   </div>
                 ) : (
                   <>
-                    <Table>
+                    <Table className="bg-card dark:bg-[#232326] text-foreground dark:text-white transition-colors duration-300">
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Broker/Exchange</TableHead>
-                          <TableHead>Strategy Rule</TableHead>
-                          <TableHead>Asset</TableHead>
-                          <TableHead>Quantity</TableHead>
-                          <TableHead>Direction</TableHead>
-                          <TableHead>Bot</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Actions</TableHead>
+                          <TableHead className="text-foreground dark:text-white">Broker/Exchange</TableHead>
+                          <TableHead className="text-foreground dark:text-white">Strategy Rule</TableHead>
+                          <TableHead className="text-foreground dark:text-white">Asset</TableHead>
+                          <TableHead className="text-foreground dark:text-white">Quantity</TableHead>
+                          <TableHead className="text-foreground dark:text-white">Direction</TableHead>
+                          <TableHead className="text-foreground dark:text-white">Bot</TableHead>
+                          <TableHead className="text-foreground dark:text-white">Status</TableHead>
+                          <TableHead className="text-foreground dark:text-white">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {strategyData.map((strategy: any, i: number) => (
-                          <TableRow key={i}>
-                            <TableCell>{strategy.broker}</TableCell>
-                            <TableCell>{strategy.strategy}</TableCell>
-                            <TableCell>{strategy.assetSymbol}</TableCell>
-                            <TableCell>{strategy.quantity}</TableCell>
-                            <TableCell>{strategy.direction}</TableCell>
-                            <TableCell>{strategy.botName}</TableCell>
-                            <TableCell>
+                          <TableRow key={i} className="border-border dark:text-white">
+                            <TableCell className="text-foreground dark:text-white">{strategy.broker}</TableCell>
+                            <TableCell className="text-foreground dark:text-white">{strategy.strategy}</TableCell>
+                            <TableCell className="text-foreground dark:text-white">{strategy.assetSymbol}</TableCell>
+                            <TableCell className="text-foreground dark:text-white">{strategy.quantity}</TableCell>
+                            <TableCell className="text-foreground dark:text-white">{strategy.direction}</TableCell>
+                            <TableCell className="text-foreground dark:text-white">{strategy.botName}</TableCell>
+                            <TableCell className="text-foreground dark:text-white">
                               <div className="flex items-center gap-2">
                                 <div
                                   className={`h-2 w-2 rounded-full ${
@@ -509,7 +509,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
                                 {strategy.status}
                               </div>
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="text-foreground dark:text-white">
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -560,7 +560,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
               open={openSections.scanner}
               onOpenChange={() => toggleSection("scanner")}
             >
-              <Card className="border-0">
+              <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
                 <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -625,7 +625,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
               onOpenChange={() => toggleSection("plan")}
               className="mt-6"
             >
-              <Card className="border-0">
+              <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
                 <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -706,7 +706,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
               open={openSections.support}
               onOpenChange={() => toggleSection("support")}
             >
-              <Card className="border-0">
+              <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
                 <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -772,7 +772,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
         </div>
 
         {/* Live Orders Section */}
-        <Card className="border bg-white rounded-lg shadow-sm mt-6 mb-6">
+        <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg shadow-sm mt-6 mb-6 transition-colors duration-300">
           <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg flex">
             <CardTitle className="text-lg font-medium">
               Binance Live Orders
@@ -782,7 +782,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
           <CardContent className="p-0">
             <div className="max-h-[400px] overflow-y-auto">
               <Table>
-                <TableHeader className="sticky top-0 bg-white z-10">
+                <TableHeader className="sticky top-0 z-10">
                   <TableRow>
                     <TableHead>Symbol</TableHead>
                     <TableHead>Order ID</TableHead>
@@ -859,7 +859,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
         </Card>
         {/* Create Strategy Button above the Strategy Table */}
         {/* Strategy Table Section */}
-        <Card className="border bg-white rounded-lg shadow-sm mt-0">
+        <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg shadow-sm mt-0 transition-colors duration-300">
           <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg font-medium">
