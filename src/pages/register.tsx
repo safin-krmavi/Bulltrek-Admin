@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterInput, registerSchema } from "../schema";
 import { toast } from "react-hot-toast";
+import { X } from "lucide-react";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -52,10 +53,15 @@ const RegisterPage = () => {
       setShowSuccess(true);
       toast.success("Registration successful!");
       setTimeout(() => {
-        toast.success(
-          "validation mail has been sent to your registered email",
-          { duration: Infinity }
-        );
+        toast.custom((t) => (
+          <div className="flex items-center gap-2 bg-white rounded shadow p-3 pr-4 border border-gray-200" style={{ minWidth: 260 }}>
+            <span className="text-green-500"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="#fff"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4" /></svg></span>
+            <span className="text-sm text-black">validation mail has been sent to your registered email</span>
+            <button onClick={() => toast.dismiss(t.id)} className="ml-auto p-1 text-gray-400 hover:text-gray-700">
+              <X size={16} />
+            </button>
+          </div>
+        ), { duration: Infinity });
       }, 1000);
     } catch (error: any) {
       // Log the error response for debugging
