@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-// import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 // import { cn } from "@/lib/utils"
 import { AccountDetailsCard } from "@/components/trade/AccountDetailsCard"
 import { useEffect } from "react"
@@ -38,20 +38,20 @@ export default function HumanGrid() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-md p-4">
-         <AccountDetailsCard
-     selectedApi={selectedApi}
-     setSelectedApi={setSelectedApi}
-     isBrokeragesLoading={isBrokeragesLoading}
-     brokerages={brokerages}
-   />
-      <form className="space-y-4">
+    <Card className="mx-auto max-w-md bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
+      <AccountDetailsCard
+        selectedApi={selectedApi}
+        setSelectedApi={setSelectedApi}
+        isBrokeragesLoading={isBrokeragesLoading}
+        brokerages={brokerages}
+      />
+      <form className="space-y-4 p-4">
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1515] p-4 font-medium text-white hover:bg-[#5A2525]">
+          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1C24] text-white p-4 font-medium hover:bg-[#5A2525] transition-colors duration-200">
             <span>Human Grid</span>
             <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
           </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 rounded-b-md border border-t-0 p-4">
+          <CollapsibleContent className="space-y-4 rounded-b-md border border-border border-t-0 bg-card p-4">
             <div className="space-y-2">
               <Label className="flex items-center gap-2">
                 Strategy Name
@@ -75,7 +75,7 @@ export default function HumanGrid() {
               </Label>
               <div className="flex gap-2">
                 <Input placeholder="Value" />
-                <div className="w-[100px] rounded-md border px-3 py-2">USTD</div>
+                <div className="w-[100px] rounded-md border border-border bg-background px-3 py-2 text-foreground">USTD</div>
               </div>
               <p className="text-sm text-orange-500">Avbl: 389 USTD</p>
             </div>
@@ -87,7 +87,7 @@ export default function HumanGrid() {
               </Label>
               <div className="flex gap-2">
                 <Input placeholder="Value" />
-                <div className="w-[100px] rounded-md border px-3 py-2">USTD</div>
+                <div className="w-[100px] rounded-md border border-border bg-background px-3 py-2 text-foreground">USTD</div>
               </div>
             </div>
 
@@ -96,14 +96,14 @@ export default function HumanGrid() {
                 <Label>Lower Limit</Label>
                 <div className="flex gap-2">
                   <Input placeholder="Value" />
-                  <div className="w-[100px] rounded-md border px-3 py-2">USTD</div>
+                  <div className="w-[100px] rounded-md border border-border bg-background px-3 py-2 text-foreground">USTD</div>
                 </div>
               </div>
               <div className="space-y-2">
                 <Label>Upper Limit</Label>
                 <div className="flex gap-2">
                   <Input placeholder="Value" />
-                  <div className="w-[100px] rounded-md border px-3 py-2">USTD</div>
+                  <div className="w-[100px] rounded-md border border-border bg-background px-3 py-2 text-foreground">USTD</div>
                 </div>
               </div>
             </div>
@@ -158,14 +158,14 @@ export default function HumanGrid() {
           </CollapsibleContent>
         </Collapsible>
 
-        <div className="flex gap-4">
-          <Button className="flex-1 bg-[#4A1515] hover:bg-[#5A2525]">Proceed</Button>
-          <Button variant="outline" className="flex-1 bg-[#D97706] text-white hover:bg-[#B45309]">
+        <div className="flex justify-center gap-4 pt-2">
+          <Button className="w-fit px-6 bg-[#4A1C24] hover:bg-[#5A2525] text-white shadow-md transition-colors duration-200">Proceed</Button>
+          <Button className="w-fit px-4 bg-[#D97706] hover:bg-[#B45309] text-white shadow-md transition-colors duration-200">
             Reset
           </Button>
         </div>
       </form>
-    </div>
+    </Card>
   )
 }
 

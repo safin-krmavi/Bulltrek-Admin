@@ -19,7 +19,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="border-b border-border bg-white/90 dark:bg-gray-800/90 w-full transition-colors duration-300 shadow-sm backdrop-blur-md">
+    <header className="border-b border-border bg-background/90 w-full transition-colors duration-300 shadow-sm backdrop-blur-md">
       <div className="max-w-[1400px] mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-8">
@@ -27,7 +27,7 @@ const Header: React.FC = () => {
             <nav className="flex items-center gap-6">
               <Link to="/dashboard" className="text-foreground dark:text-white hover:text-primary transition-colors">Dashboard</Link>
               <Select onValueChange={(value) => handleSelectChange(value)}>
-                <SelectTrigger className="min-w-[100px] truncate  border-transparent dark:border-border bg-secondary text-foreground dark:text-white" >
+                <SelectTrigger className="min-w-[100px] truncate border-transparent bg-secondary text-secondary-foreground dark:text-white" >
                   <SelectValue placeholder="Trade" />
                 </SelectTrigger>
                 <SelectContent>
@@ -41,7 +41,7 @@ const Header: React.FC = () => {
                 </SelectContent>
               </Select>
               <Select onValueChange={(value) => handleSelectChange(value)}>
-                <SelectTrigger className="min-w-[100px]  border-transparent dark:border-border bg-secondary text-foreground dark:text-white" >
+                <SelectTrigger className="min-w-[100px] border-transparent bg-secondary text-secondary-foreground dark:text-white" >
                   <SelectValue placeholder="Analysis" />
                 </SelectTrigger>
                 <SelectContent>
@@ -49,7 +49,7 @@ const Header: React.FC = () => {
                 </SelectContent>
               </Select>
               <Select onValueChange={(value) => handleSelectChange(value)}>
-                <SelectTrigger className="w-[130px]  border-transparent dark:border-border bg-secondary text-foreground dark:text-white" >
+                <SelectTrigger className="w-[130px] border-transparent bg-secondary text-secondary-foreground dark:text-white" >
                   <SelectValue placeholder="Copy Trade" />
                 </SelectTrigger>
                 <SelectContent>
@@ -70,7 +70,7 @@ const Header: React.FC = () => {
                 </SelectContent>
               </Select>
               <Select onValueChange={(value) => handleSelectChange(value)}>
-                <SelectTrigger className="min-w-[130px]   dark:border-border bg-secondary text-foreground dark:text-white" >
+                <SelectTrigger className="min-w-[130px] bg-secondary text-secondary-foreground dark:text-white" >
                   <SelectValue placeholder="Market Place" />
                 </SelectTrigger>
                 <SelectContent>
@@ -100,11 +100,11 @@ const Header: React.FC = () => {
               <HelpCircle className="h-5 w-5 text-foreground" />
             </Button>
             <div
-              className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 border border-border cursor-pointer"
+              className="h-8 w-8 rounded-full bg-muted border border-border cursor-pointer"
               onClick={() => navigate("/account ")}
             />
             <Button
-              className="bg-[#4A0D0D] text-white rounded-2xl hover:bg-[#3A0808] shadow-md"
+              className="bg-primary text-primary-foreground rounded-2xl hover:bg-primary/90 shadow-md"
               onClick={() => navigate("/tutorial")}
             >
               Tutorial
@@ -122,13 +122,13 @@ const ThemeToggleButton = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 shadow-md hover:scale-110 transition-transform"
+      className="p-2 rounded-full bg-muted shadow-md hover:scale-110 transition-transform"
       aria-label="Toggle theme"
     >
       {theme === 'dark' ? (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8.66-8.66l-.71.71M4.05 4.05l-.71.71M21 12h-1M4 12H3m16.95 7.95l-.71-.71M4.05 19.95l-.71-.71M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
       ) : (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" /></svg>
       )}
     </button>
   );

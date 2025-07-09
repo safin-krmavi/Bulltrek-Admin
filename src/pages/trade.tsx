@@ -146,15 +146,15 @@ export default function TradePage() {
       <div
         id="chartContainer"
         ref={chartContainerRef}
-        className="w-full !h-fit mb-4 border"
+        className="w-full !h-fit mb-4 border border-border"
       ></div>
 
       {pathName === "/trade" && (
         <div className="max-w-[400px] w-full h-full mx-auto p-4 space-y-4">
           {/* Account Details */}
-          <Card className="border bg-white rounded-lg shadow-sm">
+          <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
             <CardHeader
-              className="flex flex-row items-center justify-between cursor-pointer p-4"
+              className="bg-[#4A1C24] text-white cursor-pointer flex flex-row items-center justify-between p-4 rounded-t-lg"
               onClick={() => toggleSection("accountDetails")}
             >
               <CardTitle className="text-base font-medium">
@@ -176,7 +176,7 @@ export default function TradePage() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">API Key</label>
                   <Select value={selectedApi} onValueChange={setSelectedApi}>
-                    <SelectTrigger className="w-full bg-white border rounded">
+                    <SelectTrigger className="w-full bg-background border border-border rounded">
                       <SelectValue placeholder="Select API connection" />
                     </SelectTrigger>
                     <SelectContent>
@@ -203,7 +203,7 @@ export default function TradePage() {
                     Enter Coin/Stock/Pairs
                   </label>
                   <Select>
-                    <SelectTrigger className="w-full bg-white border rounded">
+                    <SelectTrigger className="w-full bg-background border border-border rounded">
                       <SelectValue placeholder="Name equal pairs" />
                     </SelectTrigger>
                     <SelectContent>
@@ -217,9 +217,9 @@ export default function TradePage() {
           </Card>
 
           {/* BOT Name */}
-          <Card className="border bg-white rounded-lg shadow-sm">
+          <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
             <CardHeader
-              className="flex flex-row items-center justify-between cursor-pointer p-4"
+              className="bg-[#4A1C24] text-white cursor-pointer flex flex-row items-center justify-between p-4 rounded-t-lg"
               onClick={() => toggleSection("botName")}
             >
               <CardTitle className="text-base font-medium">BOT Name</CardTitle>
@@ -239,7 +239,7 @@ export default function TradePage() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Select Bot</label>
                   <Select value={selectedBot} onValueChange={setSelectedBot}>
-                    <SelectTrigger className="w-full bg-white border rounded">
+                    <SelectTrigger className="w-full bg-background border border-border rounded">
                       <SelectValue placeholder="Select a bot" />
                     </SelectTrigger>
                     <SelectContent>
@@ -264,14 +264,14 @@ export default function TradePage() {
 
                 {/* Bot Details */}
                 {selectedBot && (
-                  <div className="mt-4 space-y-3 border-t pt-4">
+                  <div className="mt-4 space-y-3 border-t border-border pt-4">
                     <h3 className="font-medium">Bot Details</h3>
                     {getBotDetails.isLoading ? (
                       <div className="text-sm text-muted-foreground">
                         Loading bot details...
                       </div>
                     ) : getBotDetails.error ? (
-                      <div className="text-sm text-red-500">
+                      <div className="text-sm text-destructive">
                         Error loading bot details
                       </div>
                     ) : selectedBotDetails ? (
@@ -340,9 +340,9 @@ export default function TradePage() {
           </Card>
 
           {/* Advanced Settings */}
-          <Card className="border bg-white rounded-lg shadow-sm">
+          <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
             <CardHeader
-              className="flex flex-row items-center justify-between cursor-pointer p-4"
+              className="bg-[#4A1C24] text-white cursor-pointer flex flex-row items-center justify-between p-4 rounded-t-lg"
               onClick={() => toggleSection("advancedSettings")}
             >
               <CardTitle className="text-base font-medium">
@@ -369,14 +369,14 @@ export default function TradePage() {
           {/* Action Buttons */}
           <div className="flex justify-center gap-4 pt-2">
             <Button
-              className="w-fit px-6 bg-[#4A1C24] text-white hover:bg-[#3A161C]"
+              className="w-fit px-6 bg-[#4A1C24] hover:bg-[#5A2525] text-white shadow-md transition-colors duration-200"
               onClick={handleProceed}
               disabled={!selectedApi || !selectedBot}
             >
               Proceed
             </Button>
             <Button
-              className="w-fit px-4 bg-[#D97706] text-white hover:bg-[#B45309]"
+              className="w-fit px-4 bg-[#D97706] hover:bg-[#B45309] text-white shadow-md transition-colors duration-200"
               onClick={() => console.log("Reset clicked")}
             >
               Reset

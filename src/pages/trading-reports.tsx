@@ -60,10 +60,10 @@ export default function TradingReportsPage() {
 
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <span className="font-medium">Export By:</span>
+            <span className="font-medium dark:text-white">Export By:</span>
             <div className="flex flex-wrap gap-2">
               <Button 
-                className="bg-[#4A1C24] text-white hover:bg-[#3A161C]"
+                className="bg-[#4A1C24] text-white hover:bg-[#3A161C] dark:text-white"
                 onClick={() => handleExport('financial-year')}
               >
                 Financial Year
@@ -89,7 +89,7 @@ export default function TradingReportsPage() {
             </div>
           </div>
 
-          <div className="flex gap-8 items-center w-full">
+          <div className="flex gap-8 items-center w-full dark:text-white">
             <div className="font-medium">Filters:</div>
             <div className="flex gap-4 w-full">
               <div className="space-y-2 w-fit">
@@ -108,7 +108,7 @@ export default function TradingReportsPage() {
                         {fromDate ? fromDate.toLocaleDateString() : "From"}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
+                    <PopoverContent className="w-auto p-0 bg-white dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
                       <Calendar
                         mode="single"
                         selected={fromDate}
@@ -130,7 +130,7 @@ export default function TradingReportsPage() {
                         {toDate ? toDate.toLocaleDateString() : "To"}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
+                    <PopoverContent className="w-auto p-0 bg-white dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
                       <Calendar
                         mode="single"
                         selected={toDate}
@@ -193,20 +193,20 @@ export default function TradingReportsPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border overflow-hidden">
+        <div className="rounded-lg border overflow-hidden bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
           <Table>
             <TableHeader>
-              <TableRow className="bg-[#4A1C24] hover:bg-[#4A1C24]">
-                <TableHead className="text-white border-r-2">S.no</TableHead>
-                <TableHead className="text-white border-r-2">Platform</TableHead>
-                <TableHead className="text-white border-r-2">Account/API Name</TableHead>
-                <TableHead className="text-white border-r-2">Bot Name</TableHead>
-                <TableHead className="text-white border-r-2">Date & Time</TableHead>
-                <TableHead className="text-white border-r-2">Coin/Stock/Pairs</TableHead>
-                <TableHead className="text-white border-r-2">Buy</TableHead>
-                <TableHead className="text-white border-r-2">Sell</TableHead>
-                <TableHead className="text-white border-r-2">Quantity</TableHead>
-                <TableHead className="text-white border-r-2">P/L</TableHead>
+              <TableRow className="bg-[#4A1C24] hover:bg-[#4A1C24] text-white">
+                <TableHead className="text-white border-r-2 dark:border-gray-700">S.no</TableHead>
+                <TableHead className="text-white border-r-2 dark:border-gray-700">Platform</TableHead>
+                <TableHead className="text-white border-r-2 dark:border-gray-700">Account/API Name</TableHead>
+                <TableHead className="text-white border-r-2 dark:border-gray-700">Bot Name</TableHead>
+                <TableHead className="text-white border-r-2 dark:border-gray-700">Date & Time</TableHead>
+                <TableHead className="text-white border-r-2 dark:border-gray-700">Coin/Stock/Pairs</TableHead>
+                <TableHead className="text-white border-r-2 dark:border-gray-700">Buy</TableHead>
+                <TableHead className="text-white border-r-2 dark:border-gray-700">Sell</TableHead>
+                <TableHead className="text-white border-r-2 dark:border-gray-700">Quantity</TableHead>
+                <TableHead className="text-white border-r-2 dark:border-gray-700">P/L</TableHead>
                 <TableHead className="text-white">Transaction ID</TableHead>
               </TableRow>
             </TableHeader>
@@ -214,17 +214,17 @@ export default function TradingReportsPage() {
   {currentData.map((row, rowIndex) => (
     <TableRow
       key={row.id}
-      className="hover:bg-muted/50" 
+      className="hover:bg-muted/50 dark:hover:bg-[#2d2d30] dark:text-white"
     >
       {Object.entries(row).map(([key, value], cellIndex) => (
         <TableCell
           key={key}
           className={cn(
-            rowIndex < currentData.length - 1 ? "border-b-2 " : "",
-            cellIndex < Object.keys(row).length - 1 ? "border-r-2 " : "" ,
+            rowIndex < currentData.length - 1 ? "border-b-2 dark:border-gray-700" : "",
+            cellIndex < Object.keys(row).length - 1 ? "border-r-2 dark:border-gray-700" : "" ,
             "p-4",
             key === "pl" || key === "id" ? "text-center" : "",
-           
+            "dark:text-white"
           )}
         >
           {key === "pl" ? ( 

@@ -53,9 +53,9 @@ export default function GrowthDCA() {
 
   return (
     <div className="mx-auto max-w-md p-4">
-      <Card className="border bg-white rounded-lg shadow-sm">
+      <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
         <CardHeader
-          className="flex flex-row items-center justify-between cursor-pointer p-4"
+          className="bg-[#4A1C24] text-white cursor-pointer flex flex-row items-center justify-between p-4 rounded-t-lg"
           onClick={() => setAccountDetailsOpen((open) => !open)}
         >
           <CardTitle className="text-base font-medium">
@@ -74,7 +74,7 @@ export default function GrowthDCA() {
             <div className="space-y-2">
               <label className="text-sm font-medium">API Key</label>
               <Select value={selectedApi} onValueChange={setSelectedApi}>
-                <SelectTrigger className="w-full bg-white border rounded">
+                <SelectTrigger className="w-full bg-background border border-border rounded">
                   <SelectValue placeholder="Select API connection" />
                 </SelectTrigger>
                 <SelectContent>
@@ -100,145 +100,157 @@ export default function GrowthDCA() {
           </CardContent>
         </div>
       </Card>
-      <form className="space-y-4">
-        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1515] p-4 font-medium text-white hover:bg-[#5A2525]">
-            <span>Growth DCA</span>
-            <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
-          </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 rounded-b-md border border-t-0 p-4">
-            <div className="space-y-2">
-              <Label className="flex items-center gap-2">
-                Strategy Name
-                <span className="text-muted-foreground">ⓘ</span>
-              </Label>
-              <Input placeholder="Enter Name" />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="flex items-center gap-2">
-                Investment
-                <span className="text-muted-foreground">ⓘ</span>
-              </Label>
-              <div className="flex gap-2">
-                <Input placeholder="Value" />
-                <Select defaultValue="USTD">
-                  <SelectTrigger className="w-[100px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="USTD">USTD</SelectItem>
-                  </SelectContent>
-                </Select>
+      <Card className="mt-4 bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
+        <form className="space-y-4 p-4">
+          <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1C24] text-white p-4 font-medium hover:bg-[#5A2525] transition-colors duration-200">
+              <span>Growth DCA</span>
+              <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="space-y-4 rounded-b-md border border-border border-t-0 bg-card p-4">
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  Strategy Name
+                  <span className="text-muted-foreground">ⓘ</span>
+                </Label>
+                <Input placeholder="Enter Name" />
               </div>
-              <p className="text-sm text-orange-500">Avbl: 389 USTD</p>
-            </div>
 
-            <div className="space-y-2">
-              <Label className="flex items-center gap-2">
-                Investment CAP
-                <span className="text-muted-foreground">ⓘ</span>
-              </Label>
-              <div className="flex gap-2">
-                <Input placeholder="Value" />
-                <Select defaultValue="USTD">
-                  <SelectTrigger className="w-[100px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="USTD">USTD</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  Investment
+                  <span className="text-muted-foreground">ⓘ</span>
+                </Label>
+                <div className="flex gap-2">
+                  <Input placeholder="Value" />
+                  <Select defaultValue="USTD">
+                    <SelectTrigger className="w-[100px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="USTD">USTD</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <p className="text-sm text-orange-500">Avbl: 389 USTD</p>
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label className="flex items-center gap-2">
-                Duration
-                <span className="text-muted-foreground">ⓘ</span>
-              </Label>
-              <div className="grid grid-cols-4 gap-2">
-                <Button variant="outline" className="flex-1">Daily</Button>
-                <Button variant="outline" className="flex-1">Weekly</Button>
-                <Button variant="outline" className="flex-1">Monthly</Button>
-                <Button variant="outline" className="flex-1">Hourly</Button>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  Investment CAP
+                  <span className="text-muted-foreground">ⓘ</span>
+                </Label>
+                <div className="flex gap-2">
+                  <Input placeholder="Value" />
+                  <Select defaultValue="USTD">
+                    <SelectTrigger className="w-[100px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="USTD">USTD</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label className="flex items-center gap-2">
-                Book Profit By
-                <span className="text-muted-foreground">ⓘ</span>
-              </Label>
-              <div className="relative">
-                <Input placeholder="Value" />
-                <span className="absolute right-3 top-2.5 text-sm text-muted-foreground">%</span>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  Duration
+                  <span className="text-muted-foreground">ⓘ</span>
+                </Label>
+                <div className="grid grid-cols-4 gap-2">
+                  <Button variant="outline" className="flex-1">Daily</Button>
+                  <Button variant="outline" className="flex-1">Weekly</Button>
+                  <Button variant="outline" className="flex-1">Monthly</Button>
+                  <Button variant="outline" className="flex-1">Hourly</Button>
+                </div>
               </div>
-              <p className="text-sm text-green-500">+ 88 Value</p>
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
 
-        <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
-          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1515] p-4 font-medium text-white hover:bg-[#5A2525]">
-            <span>Advanced Settings</span>
-            <ChevronDown className={`h-4 w-4 transition-transform ${isAdvancedOpen ? "rotate-180" : ""}`} />
-          </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 rounded-b-md border border-t-0 p-4">
-            <div className="space-y-2">
-              <Label>Price Trigger Start</Label>
-              <div className="flex gap-2">
-                <Input placeholder="Value" />
-                <Select defaultValue="USTD">
-                  <SelectTrigger className="w-[100px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="USTD">USTD</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  Book Profit By
+                  <span className="text-muted-foreground">ⓘ</span>
+                </Label>
+                <div className="relative">
+                  <Input placeholder="Value" />
+                  <span className="absolute right-3 top-2.5 text-sm text-muted-foreground">%</span>
+                </div>
+                <p className="text-sm text-green-500">+ 88 Value</p>
               </div>
-            </div>
+            </CollapsibleContent>
+          </Collapsible>
 
-            <div className="space-y-2">
-              <Label>Price Trigger Stop</Label>
-              <div className="flex gap-2">
-                <Input placeholder="Value" />
-                <Select defaultValue="USTD">
-                  <SelectTrigger className="w-[100px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="USTD">USTD</SelectItem>
-                  </SelectContent>
-                </Select>
+          <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
+            <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-primary p-4 font-medium text-primary-foreground hover:bg-primary/90">
+              <span>Advanced Settings</span>
+              <ChevronDown className={`h-4 w-4 transition-transform ${isAdvancedOpen ? "rotate-180" : ""}`} />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="space-y-4 rounded-b-md border border-border border-t-0 bg-card p-4">
+              <div className="space-y-2">
+                <Label>Price Trigger Start</Label>
+                <div className="flex gap-2">
+                  <Input placeholder="Value" />
+                  <Select defaultValue="USTD">
+                    <SelectTrigger className="w-[100px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="USTD">USTD</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label>Stop Loss By</Label>
-              <div className="relative">
-                <Input placeholder="Value" />
-                <span className="absolute right-3 top-2.5 text-sm text-muted-foreground">%</span>
+              <div className="space-y-2">
+                <Label>Price Trigger End</Label>
+                <div className="flex gap-2">
+                  <Input placeholder="Value" />
+                  <Select defaultValue="USTD">
+                    <SelectTrigger className="w-[100px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="USTD">USTD</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
 
+              <div className="space-y-2">
+                <Label>Stop Loss</Label>
+                <div className="relative">
+                  <Input placeholder="Value" />
+                  <span className="absolute right-3 top-2.5 text-sm text-muted-foreground">%</span>
+                </div>
+              </div>
 
-        <div className="flex gap-4">
-          <Button
-            className="flex-1 bg-[#4A1515] hover:bg-[#5A2525]"
-            onClick={handleProceed}
-            disabled={!selectedApi}
-          >
-            Proceed
-          </Button>
-          <Button variant="outline" className="flex-1 bg-[#D97706] text-white hover:bg-[#B45309]">
-            Reset
-          </Button>
-        </div>
-      </form>
+              <div className="space-y-2">
+                <Label>Take Profit</Label>
+                <div className="relative">
+                  <Input placeholder="Value" />
+                  <span className="absolute right-3 top-2.5 text-sm text-muted-foreground">%</span>
+                </div>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+
+          <div className="flex justify-center gap-4 pt-2">
+            <Button
+              className="w-fit px-6 bg-[#4A1C24] hover:bg-[#5A2525] text-white shadow-md transition-colors duration-200"
+              onClick={handleProceed}
+              disabled={!selectedApi}
+            >
+              Proceed
+            </Button>
+            <Button
+              className="w-fit px-4 bg-[#D97706] hover:bg-[#B45309] text-white shadow-md transition-colors duration-200"
+              onClick={() => console.log("Reset clicked")}
+            >
+              Reset
+            </Button>
+          </div>
+        </form>
+      </Card>
       <TradeConfirmationDialog
         isOpen={showConfirmation}
         onClose={() => setShowConfirmation(false)}

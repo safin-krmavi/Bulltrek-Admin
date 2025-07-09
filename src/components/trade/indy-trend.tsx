@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Checkbox } from "@/components/ui/checkbox"
-// import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 // import { cn } from "@/lib/utils"
 import { AccountDetailsCard } from "@/components/trade/AccountDetailsCard"
 import { useEffect } from "react"
@@ -39,24 +39,24 @@ export default function IndyTrend() {
   }, [])
 
   return (
-    <div className="w-full max-w-md mx-auto">
-   <AccountDetailsCard
-     selectedApi={selectedApi}
-     setSelectedApi={setSelectedApi}
-     isBrokeragesLoading={isBrokeragesLoading}
-     brokerages={brokerages}
-   />
-      <form className="space-y-4">
+    <Card className="w-full max-w-md mx-auto bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
+      <AccountDetailsCard
+        selectedApi={selectedApi}
+        setSelectedApi={setSelectedApi}
+        isBrokeragesLoading={isBrokeragesLoading}
+        brokerages={brokerages}
+      />
+      <form className="space-y-4 p-4">
         <Collapsible
           open={isIndyOpen}
           onOpenChange={setIsIndyOpen}
           className="space-y-2"
         >
-          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1515] p-4 font-medium text-white hover:bg-[#5A2525]">
+          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1C24] text-white p-4 font-medium hover:bg-[#5A2525] transition-colors duration-200">
             <span>Indy Trend</span>
             <ChevronDown className={`h-4 w-4 transition-transform ${isIndyOpen ? "rotate-180" : ""}`} />
           </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 rounded-b-md border border-t-0 p-4">
+          <CollapsibleContent className="space-y-4 rounded-b-md border border-border border-t-0 bg-card p-4">
             <div className="space-y-2">
               <Label htmlFor="strategy">Strategy Name</Label>
               <Input id="strategy" placeholder="Enter Name" />
@@ -121,11 +121,11 @@ export default function IndyTrend() {
           onOpenChange={setIsAdvancedOpen}
           className="space-y-2"
         >
-          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1515] p-4 font-medium text-white hover:bg-[#5A2525]">
+          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-primary p-4 font-medium text-primary-foreground hover:bg-primary/90">
             <span>Advanced Settings</span>
             <ChevronDown className={`h-4 w-4 transition-transform ${isAdvancedOpen ? "rotate-180" : ""}`} />
           </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 rounded-b-md border border-t-0 p-4">
+          <CollapsibleContent className="space-y-4 rounded-b-md border border-border border-t-0 bg-card p-4">
             <div className="flex items-center space-x-2">
               <Checkbox id="supertread" />
               <Label htmlFor="supertread">Supertread</Label>
@@ -172,12 +172,12 @@ export default function IndyTrend() {
           </CollapsibleContent>
         </Collapsible>
 
-        <div className="flex gap-4">
-          <Button className="flex-1 bg-[#4A1515] text-white hover:bg-[#5A2525]">Proceed</Button>
-          <Button variant="outline" className="flex-1">Reset</Button>
+        <div className="flex justify-center gap-4 pt-2">
+          <Button className="w-fit px-6 bg-[#4A1C24] hover:bg-[#5A2525] text-white shadow-md transition-colors duration-200">Proceed</Button>
+          <Button className="w-fit px-4 bg-[#D97706] hover:bg-[#B45309] text-white shadow-md transition-colors duration-200">Reset</Button>
         </div>
       </form>
-    </div>
+    </Card>
   )
 }
 

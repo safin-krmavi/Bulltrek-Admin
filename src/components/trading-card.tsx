@@ -26,12 +26,12 @@ export function TradingCard({
   aiStatus,
 }: TradingCardProps) {
   return (
-    <Card className="w-[280px] flex-shrink-0 border border-gray-200 rounded-xl bg-white">
+    <Card className="w-[280px] flex-shrink-0 border border-border dark:border-gray-700 rounded-xl bg-card dark:bg-[#232326] shadow-lg text-foreground dark:text-white transition-colors duration-300">
       <div className="p-4">
         <div className="flex justify-between items-start mb-4">
           <div>
             <div className="flex flex-col gap-2 mb-2">
-              <h3 className="font-semibold text-sm">{pair}</h3>
+              <h3 className="font-semibold text-sm dark:text-white">{pair}</h3>
               <BadgeCustom variant="green">
                 {type}
               </BadgeCustom>
@@ -39,21 +39,21 @@ export function TradingCard({
             <div className="text-2xl font-bold text-green-500 mb-1">
               {apy.toFixed(2)}%
             </div>
-            <div className="text-xs text-gray-500 mb-2">
+            <div className="text-xs text-gray-500 dark:text-gray-300 mb-2">
               30-day APY
             </div>
-            <div className="font-medium text-sm">
+            <div className="font-medium text-sm dark:text-white">
               {investment.toFixed(2)} USDT
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-gray-500 dark:text-gray-300">
               Min Investment
             </div>
           </div>
           <div className="flex items-end flex-col">
-            <div className="text-xs text-gray-500 mb-1">
+            <div className="text-xs text-gray-500 dark:text-gray-300 mb-1">
               {aiStatus}
             </div>
-            <div className="w-24 h-16">
+            <div className="w-24 h-16 bg-white dark:bg-[#232326] rounded-md">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
                   <Area
@@ -66,17 +66,17 @@ export function TradingCard({
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-            <div className="text-xs font-medium mt-1">
+            <div className="text-xs font-medium mt-1 dark:text-white">
               {duration}
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-gray-500 dark:text-gray-300">
               Recommended Duration
             </div>
           </div>
         </div>
       </div>
       <div className="flex px-4 pb-4 w-full justify-between">
-        <div className="flex items-center gap-1 text-xs text-gray-500">
+        <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-300">
           <Users className="h-3 w-3" />
           <span>{followers}</span>
         </div>

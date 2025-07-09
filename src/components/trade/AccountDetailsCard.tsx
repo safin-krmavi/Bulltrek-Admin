@@ -23,9 +23,9 @@ export const AccountDetailsCard: React.FC<AccountDetailsCardProps> = ({
   const [open, setOpen] = React.useState(true);
 
   return (
-    <Card className="border bg-white rounded-lg shadow-sm">
+    <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
       <CardHeader
-        className="flex flex-row items-center justify-between cursor-pointer p-4"
+        className="bg-[#4A1C24] text-white cursor-pointer flex flex-row items-center justify-between p-4 rounded-t-lg"
         onClick={() => setOpen((prev) => !prev)}
       >
         <CardTitle className="text-base font-medium">{title}</CardTitle>
@@ -36,7 +36,7 @@ export const AccountDetailsCard: React.FC<AccountDetailsCardProps> = ({
           <div className="space-y-2">
             <label className="text-sm font-medium">API Key</label>
             <Select value={selectedApi} onValueChange={setSelectedApi}>
-              <SelectTrigger className="w-full bg-white border rounded">
+              <SelectTrigger className="w-full bg-background border border-border rounded">
                 <SelectValue placeholder="Select API connection" />
               </SelectTrigger>
               <SelectContent>

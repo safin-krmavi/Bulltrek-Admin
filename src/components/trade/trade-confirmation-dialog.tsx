@@ -161,7 +161,7 @@ export function TradeConfirmationDialog({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden bg-white">
+        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
           <DialogHeader className="p-4 pb-0">
             <DialogTitle className="text-lg flex justify-between items-center">
               <span>Confirm Trade Settings</span>
@@ -199,15 +199,6 @@ export function TradeConfirmationDialog({
                     {selectedBot.execution_type}
                   </div>
 
-                  {selectedBot.schedule_expression && (
-                    <>
-                      <div className="text-sm">Schedule:</div>
-                      <div className="text-sm col-span-2">
-                        {selectedBot.schedule_expression}
-                      </div>
-                    </>
-                  )}
-
                   <div className="text-sm">Created:</div>
                   <div className="text-sm col-span-2">
                     {format(new Date(selectedBot.created_at), "dd MMM yyyy HH:mm")}
@@ -222,159 +213,112 @@ export function TradeConfirmationDialog({
             )}
 
             {/* Advanced Settings Section */}
-            <div className="mb-6">
+            <div className="mb-4">
               <h3 className="font-bold text-sm mb-2">Advanced Settings</h3>
               <div className="grid grid-cols-3 gap-y-2">
                 <div className="text-sm">Trading Pair:</div>
                 <div className="text-sm col-span-2">BTC/USDT</div>
-
                 <div className="text-sm">Time Frame:</div>
                 <div className="text-sm col-span-2">1 Hour</div>
               </div>
             </div>
 
-            {/* Terms and Conditions */}
-            <div className="flex items-center gap-2 mb-4">
-              <Checkbox id="terms" />
-              <label htmlFor="terms" className="text-sm">
-                I Agree Bulltrak's Terms & Conditions, Privacy policy and
-                disclaimers
+            {/* Terms Checkbox */}
+            <div className="flex items-center mb-4">
+              <Checkbox id="terms" className="mr-2" />
+              <label htmlFor="terms" className="text-xs select-none">
+                I Agree Bulltrak's Terms & Conditions, Privacy policy and disclaimers
               </label>
             </div>
 
-            {/* Buttons */}
-            <div className="flex justify-between gap-2">
+            {/* Action Buttons */}
+            <div className="flex gap-3 mt-2">
               <Button
-                variant="destructive"
-                className="bg-[#4A1C24] text-white hover:bg-[#3A161C] text-white w-1/4"
+                className="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold shadow-md transition-colors duration-200"
+                onClick={() => { /* TODO: Implement Live Market handler */ }}
               >
                 Live Market
-                {/* //Run on Live Market */}
               </Button>
-
               <Button
-                variant="destructive"
-                className="bg-[#4A1C24] text-white hover:bg-[#3A161C] text-white w-1/4"
+                className="flex-1 bg-[#7C2222] hover:bg-[#a83232] text-white font-semibold shadow-md transition-colors duration-200"
+                onClick={() => { /* TODO: Implement Edit handler */ }}
               >
                 Edit
               </Button>
-
               <Button
-                variant="destructive"
-                className="bg-[#4A1C24] text-white hover:bg-[#3A161C] text-white w-1/4"
                 onClick={handlePaperTrade}
                 disabled={isPaperTrading}
+                className="flex-1 bg-[#4A1C24] hover:bg-[#5A2525] text-white font-semibold shadow-md transition-colors duration-200"
               >
                 {isPaperTrading ? "Starting..." : "Paper Trade"}
               </Button>
-
               <Button
-                variant="default"
-                className="bg-amber-500 hover:bg-amber-600 text-white w-1/4"
                 onClick={handleBacktest}
                 disabled={isBacktesting}
+                className="flex-1 bg-[#FBBF24] hover:bg-[#F59E42] text-white font-semibold shadow-md transition-colors duration-200"
               >
-                {isBacktesting ? "Testing..." : "Backtest"}
+                {isBacktesting ? "Running..." : "Backtest"}
               </Button>
             </div>
-
-            <div className="text-center text-xs mt-4 text-gray-500">
+            <div className="text-xs text-center text-muted-foreground mt-2">
               ** For Buttons see respective user **
             </div>
           </div>
         </DialogContent>
       </Dialog>
 
+      {/* Backtest Alert Dialog */}
       <AlertDialog open={showBacktestAlert} onOpenChange={setShowBacktestAlert}>
-        <AlertDialogContent className="bg-white">
+        <AlertDialogContent className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
           <AlertDialogHeader>
-            <AlertDialogTitle>Backtest Status</AlertDialogTitle>
+            <AlertDialogTitle>Backtest Started</AlertDialogTitle>
             <AlertDialogDescription>
-              Backtest started successfully. You will be notified when the results
-              are ready.
+              Your backtest is now running. This may take a few minutes to complete.
+              You will be notified when the results are ready.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setShowBacktestAlert(false)}>
-              Close
-            </AlertDialogCancel>
+            <AlertDialogCancel>Close</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
+      {/* Paper Trade Alert Dialog */}
       <AlertDialog open={showPaperTradeAlert} onOpenChange={setShowPaperTradeAlert}>
-        <AlertDialogContent className="bg-white">
+        <AlertDialogContent className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
           <AlertDialogHeader>
-            <AlertDialogTitle>Paper Trade Status</AlertDialogTitle>
+            <AlertDialogTitle>Paper Trading Started</AlertDialogTitle>
             <AlertDialogDescription>
-              {paperTradeMessage}
+              {paperTradeMessage || "Paper trading has been started successfully."}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setShowPaperTradeAlert(false)}>
-              Close
-            </AlertDialogCancel>
+            <AlertDialogCancel>Close</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
       {/* Backtest Results Dialog */}
       <AlertDialog open={showBacktestResults} onOpenChange={setShowBacktestResults}>
-        <AlertDialogContent className="bg-white max-w-2xl">
+        <AlertDialogContent className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-xl font-bold text-gray-800">
-              Backtest Results
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-gray-600">
+            <AlertDialogTitle>Backtest Results</AlertDialogTitle>
+            <AlertDialogDescription>
               {isLoadingResults ? (
-                <div className="flex items-center justify-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
-                  <span className="ml-2">Loading results...</span>
-                </div>
+                <div className="text-center py-4">Loading results...</div>
               ) : backtestResults ? (
-                <div className="space-y-6">
-                  {/* Result Display */}
-                  <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
-                    <h3 className="font-semibold text-blue-800 mb-3">Backtest Result</h3>
-                    <div className="text-blue-700 text-lg">
-                      {backtestResults.result}
-                    </div>
-                  </div>
-                  
-                  {/* Additional Info */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h3 className="font-semibold text-gray-800 mb-3">Test Information</h3>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <div className="text-gray-600">Bot ID</div>
-                        <div className="font-semibold">{selectedBot?.id}</div>
-                      </div>
-                      <div>
-                        <div className="text-gray-600">Bot Name</div>
-                        <div className="font-semibold">{selectedBot?.name}</div>
-                      </div>
-                      <div>
-                        <div className="text-gray-600">Test Type</div>
-                        <div className="font-semibold">Historical Backtest</div>
-                      </div>
-                      <div>
-                        <div className="text-gray-600">Status</div>
-                        <div className="font-semibold text-green-600">Completed</div>
-                      </div>
-                    </div>
+                <div className="space-y-2">
+                  <div className="text-sm">
+                    <strong>Result:</strong> {backtestResults.result}
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-8 text-gray-500">
-                  No results available
-                </div>
+                <div className="text-center py-4">No results available</div>
               )}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setShowBacktestResults(false)}>
-              Close
-            </AlertDialogCancel>
+            <AlertDialogCancel>Close</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
