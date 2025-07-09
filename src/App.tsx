@@ -19,6 +19,7 @@ import TraderOverview from "./pages/trader-overview"
 import { TradersComparison } from "./pages/traders-comparison"
 import TradingReportsPage from "./pages/trading-reports"
 import StrategyBuilderPage from "./pages/strategy-builder"
+import ResetPasswordPage from "./pages/reset-password"
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState, createContext, useContext } from "react";
 
@@ -73,6 +74,7 @@ const AppRouter = ({ theme }: { theme: string }) => {
         <Route path="/smart-copy" element={<GenericLayout  children={<SmartCopyPage />} />} />
         <Route path="/traders-comparison" element={<GenericLayout  children={<TradersComparison />} />} />
         <Route path="/strategy-builder" element={<GenericLayout children={<StrategyBuilderPage />} />} />
+        <Route path="/reset-password" element={<GenericLayout children={<ResetPasswordPage />} />} />
       </Routes>
     </div>
   );

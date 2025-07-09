@@ -57,6 +57,7 @@ const LoginPage = () => {
   }
 
   const [forgotOpen, setForgotOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const forgotForm = useForm<ForgotPasswordInput>({
     resolver: zodResolver(forgotPasswordSchema),
     mode: 'onChange',
@@ -65,13 +66,85 @@ const LoginPage = () => {
   });
 
   async function onForgotSubmit(values: ForgotPasswordInput) {
+    if (isSubmitting) return; // Prevent multiple submissions
+    
+    setIsSubmitting(true);
+    
+    // Show loading toast
+    const loadingToast = toast.loading("Sending reset link...", {
+      description: "Please wait while we process your request."
+    });
+    
     try {
-      await apiClient.post("/api/v1/forgot-password", { email: values.email });
-      toast.success("Reset Link Sent", { duration: 5000 });
-      forgotForm.reset();
-      setForgotOpen(false);
+      const response = await apiClient.post("/api/v1/forgot-password", { 
+        email: values.email 
+      });
+      
+      // Validate response structure
+      if (response.status === 200 || response.status === 201) {
+        // Dismiss loading toast and show success
+        toast.dismiss(loadingToast);
+        toast.success("Password Reset Link Sent! 📧", { 
+          description: `A password reset link has been sent to ${values.email}. Please check your email inbox and spam folder.`,
+          duration: 8000,
+          action: {
+            label: "Close",
+            onClick: () => toast.dismiss()
+          }
+        });
+        forgotForm.reset();
+        setForgotOpen(false);
+      } else {
+        throw new Error("Unexpected response from server");
+      }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to send reset email. Please try again.", { duration: 5000 });
+      console.error("Forgot password error:", err);
+      
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+      
+      // Handle specific error cases
+      if (err.response?.status === 404) {
+        toast.error("Email Not Found ❌", {
+          description: `No account found with email: ${values.email}. Please check the email address or register a new account.`,
+          duration: 6000,
+          action: {
+            label: "Register",
+            onClick: () => window.location.href = '/register'
+          }
+        });
+      } else if (err.response?.status === 429) {
+        toast.error("Too Many Requests ⏰", {
+          description: "You've made too many requests. Please wait 5 minutes before trying again.",
+          duration: 6000
+        });
+      } else if (err.response?.status === 422) {
+        toast.error("Invalid Email Format 📧", {
+          description: "Please enter a valid email address.",
+          duration: 5000
+        });
+      } else if (err.response?.data?.message) {
+        toast.error("Request Failed ⚠️", {
+          description: err.response.data.message,
+          duration: 6000
+        });
+      } else if (err.code === 'NETWORK_ERROR' || err.message?.includes('Network Error')) {
+        toast.error("Network Connection Error 🌐", {
+          description: "Please check your internet connection and try again.",
+          duration: 6000,
+          action: {
+            label: "Retry",
+            onClick: () => onForgotSubmit(values)
+          }
+        });
+      } else {
+        toast.error("Service Temporarily Unavailable 🔧", {
+          description: "We're experiencing technical difficulties. Please try again in a few minutes.",
+          duration: 6000
+        });
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -209,8 +282,15 @@ const LoginPage = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full bg-[#f59120] text-white text-[18px] py-3 mt-1 rounded-lg transition-transform duration-200 hover:scale-105 active:scale-100" disabled={forgotForm.formState.isSubmitting}>
-                {forgotForm.formState.isSubmitting ? "Sending..." : "Send Reset Link"}
+              <Button type="submit" className="w-full bg-[#f59120] text-white text-[18px] py-3 mt-1 rounded-lg transition-transform duration-200 hover:scale-105 active:scale-100" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Sending...</span>
+                  </div>
+                ) : (
+                  "Send Reset Link"
+                )}
               </Button>
             </form>
           </Form>
