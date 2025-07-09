@@ -45,20 +45,20 @@ export default function StrategyBuilderPage() {
   }, []);
 
   // Test API connection
-  const testApiConnection = async () => {
-    try {
-      const token = localStorage.getItem("AUTH_TOKEN");
-      console.log('Testing API connection with token:', token ? 'Present' : 'Missing');
+  // const testApiConnection = async () => {
+  //   try {
+  //     const token = localStorage.getItem("AUTH_TOKEN");
+  //     console.log('Testing API connection with token:', token ? 'Present' : 'Missing');
       
-      const response = await apiClient.get("/api/v1/assets");
-      console.log('API connection test successful:', response.data);
-      alert('API connection successful!');
-    } catch (error: any) {
-      console.error('API connection test failed:', error);
-      const errorMessage = error.response?.data?.message || error.message || "Unknown error";
-      alert(`API connection failed: ${errorMessage}`);
-    }
-  };
+  //     const response = await apiClient.get("/api/v1/assets");
+  //     console.log('API connection test successful:', response.data);
+  //     alert('API connection successful!');
+  //   } catch (error: any) {
+  //     console.error('API connection test failed:', error);
+  //     const errorMessage = error.response?.data?.message || error.message || "Unknown error";
+  //     alert(`API connection failed: ${errorMessage}`);
+  //   }
+  // };
 
   // Create bot function
   const createBotForStrategy = async (strategyId: number) => {
@@ -213,11 +213,15 @@ export default function StrategyBuilderPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#F5F6FA] flex flex-col items-center justify-start">
-      <div className="w-full max-w-4xl mx-auto my-12 bg-white p-10 border rounded-xl shadow-lg flex flex-col" style={{ boxShadow: '0 2px 16px 0 rgba(44, 39, 56, 0.10)' }}>
+    <div className="min-h-screen w-full bg-[#F5F6FA] dark:bg-[#18181B] flex flex-col items-center justify-start">
+      {/* Card container for dark mode with gradient and shadow */}
+      <div className="w-full max-w-4xl mx-auto my-12 bg-card dark:bg-gradient-to-br dark:from-[#232326] dark:to-[#18181B] border border-border dark:border-gray-700 shadow-2xl text-foreground dark:text-white rounded-2xl transition-all duration-300 p-10 flex flex-col relative overflow-hidden">
+        {/* Accent bar */}
+        <div className="absolute left-0 top-0 h-full w-2 bg-gradient-to-b from-[#FF8C00] to-[#7B2323] rounded-l-2xl" />
         {/* Strategy Name Input */}
         <div className="mb-8">
-          <label htmlFor="strategyName" className="block text-lg font-semibold text-[#7B2323] mb-2">
+          <label htmlFor="strategyName" className="block text-2xl font-bold text-[#7B2323] mb-2 flex items-center gap-2">
+            <span className="inline-block w-2 h-6 bg-[#FF8C00] rounded-full mr-2"></span>
             Strategy Name
           </label>
           <input
@@ -226,15 +230,18 @@ export default function StrategyBuilderPage() {
             value={strategyName}
             onChange={(e) => setStrategyName(e.target.value)}
             placeholder="Enter your strategy name..."
-            className="w-full px-4 py-3 border border-[#FF8C00] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF8C00] focus:border-transparent text-[#7B2323] placeholder-gray-400"
+            className="w-full px-4 py-3 border border-[#FF8C00] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF8C00] focus:border-transparent text-[#7B2323] dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-[#232326] shadow-sm transition-all duration-200"
           />
         </div>
         {/* Entry Conditions Builder */}
         <div className="mb-8">
-          <div className="text-lg text-[#7B2323] mb-2 font-semibold">Add Entry Conditions</div>
+          <div className="text-xl text-[#7B2323] mb-2 font-bold flex items-center gap-2">
+            <span className="inline-block w-2 h-6 bg-[#FF8C00] rounded-full mr-2"></span>
+            Add Entry Conditions
+          </div>
           <div className="flex flex-col md:flex-row gap-4 mb-4">
             <select
-              className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323] dark:text-white bg-white dark:bg-[#232326] focus:ring-2 focus:ring-[#FF8C00] shadow-sm transition-all duration-200"
               value={currentCondition.indicator}
               onChange={e => setCurrentCondition({ ...currentCondition, indicator: e.target.value })}
             >
@@ -244,7 +251,7 @@ export default function StrategyBuilderPage() {
               ))}
             </select>
             <select
-              className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323] dark:text-white bg-white dark:bg-[#232326] focus:ring-2 focus:ring-[#FF8C00] shadow-sm transition-all duration-200"
               value={currentCondition.action}
               onChange={e => setCurrentCondition({ ...currentCondition, action: e.target.value })}
             >
@@ -255,14 +262,14 @@ export default function StrategyBuilderPage() {
             </select>
             <input
               type="number"
-              className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323] dark:text-white bg-white dark:bg-[#232326] focus:ring-2 focus:ring-[#FF8C00] shadow-sm transition-all duration-200 placeholder-gray-400 dark:placeholder-gray-500"
               placeholder="Value"
               value={currentCondition.value}
               onChange={e => setCurrentCondition({ ...currentCondition, value: e.target.value })}
             />
             {conditions.length > 0 && (
               <select
-                className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+                className="px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323] dark:text-white bg-white dark:bg-[#232326] focus:ring-2 focus:ring-[#FF8C00] shadow-sm transition-all duration-200"
                 value={currentOperator}
                 onChange={e => setCurrentOperator(e.target.value)}
               >
@@ -271,18 +278,20 @@ export default function StrategyBuilderPage() {
                 ))}
               </select>
             )}
-            <Button className="bg-[#FF8C00] text-white hover:bg-[#FFA500] px-6" onClick={handleAddCondition}>
+            <Button className="bg-[#FF8C00] hover:bg-[#FFA500] text-white rounded-full shadow-md px-6 font-semibold transition-all duration-200" onClick={handleAddCondition}>
               Add Condition
             </Button>
           </div>
           {/* List of added conditions */}
           {conditions.length > 0 && (
-            <div className="mb-4">
+            <div className="mb-4 flex flex-wrap gap-2 animate-fadeIn">
               {conditions.map((cond, idx) => (
-                <div key={idx} className="flex items-center bg-[#FFF3E0] text-[#7B2323] rounded px-4 py-2 mb-2 text-base font-medium border border-[#FF8C00]">
-                  <span className="mr-2">{`Condition ${idx + 1}: ${cond.indicator} ${cond.action} ${cond.value}`}</span>
+                <div key={idx} className="flex items-center bg-gradient-to-r from-[#FFF3E0] to-[#FFE0B2] dark:from-[#2d2323] dark:to-[#3a2d1a] text-[#7B2323] dark:text-[#FF8C00] rounded-full px-4 py-2 mb-2 text-base font-medium border border-[#FF8C00] shadow-sm transition-all duration-200 animate-fadeIn">
+                  <span className="mr-2">{`[${cond.indicator} ${cond.action} ${cond.value}]`}</span>
                   {idx > 0 && <span className="mx-2 text-[#FF8C00]">{operators[idx - 1]}</span>}
-                  <button className="ml-auto text-red-500 hover:text-red-700" onClick={() => handleRemoveCondition(idx)}>×</button>
+                  <button className="ml-auto text-red-500 hover:text-red-700 transition-colors duration-200" onClick={() => handleRemoveCondition(idx)}>
+                    <span className="material-icons text-lg">close</span>
+                  </button>
                 </div>
               ))}
             </div>
@@ -293,7 +302,7 @@ export default function StrategyBuilderPage() {
           <div>
             <label className="block text-[#7B2323] font-semibold mb-2">Direction</label>
             <select
-              className="w-full px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              className="w-full px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323] dark:text-white bg-white dark:bg-[#232326] focus:ring-2 focus:ring-[#FF8C00] shadow-sm transition-all duration-200"
               value={direction}
               onChange={e => setDirection(e.target.value)}
             >
@@ -306,7 +315,7 @@ export default function StrategyBuilderPage() {
             <label className="block text-[#7B2323] font-semibold mb-2">Quantity</label>
             <input
               type="number"
-              className="w-full px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              className="w-full px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323] dark:text-white bg-white dark:bg-[#232326] focus:ring-2 focus:ring-[#FF8C00] shadow-sm transition-all duration-200 placeholder-gray-400 dark:placeholder-gray-500"
               placeholder="Quantity"
               value={quantity}
               onChange={e => setQuantity(e.target.value)}
@@ -315,7 +324,7 @@ export default function StrategyBuilderPage() {
           <div>
             <label className="block text-[#7B2323] font-semibold mb-2">Asset</label>
             <select
-              className="w-full px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323]"
+              className="w-full px-4 py-2 border border-[#FF8C00] rounded-lg text-[#7B2323] dark:text-white bg-white dark:bg-[#232326] focus:ring-2 focus:ring-[#FF8C00] shadow-sm transition-all duration-200"
               value={asset}
               onChange={e => setAsset(e.target.value)}
             >
@@ -327,16 +336,17 @@ export default function StrategyBuilderPage() {
           </div>
         </div>
         {/* Submit Button */}
-        <div className="flex gap-4 justify-end">
-          <Button
-            className="bg-gray-500 text-white hover:bg-gray-600 px-6"
+        <div className="flex gap-4 justify-end mt-6">
+          {/* <Button
+            className="bg-gradient-to-r from-gray-500 to-gray-700 text-white hover:from-gray-600 hover:to-gray-800 px-8 rounded-full shadow-md flex items-center gap-2 transition-all duration-200"
             onClick={testApiConnection}
             disabled={loading}
           >
+            <span className="material-icons text-lg">cloud_done</span>
             Test API
-          </Button>
+          </Button> */}
           <Button
-            className="bg-[#7B2323] text-white hover:bg-[#FF8C00] px-8"
+            className="bg-[#FF8C00] hover:bg-[#FFA500] text-white rounded-full shadow-md px-10 py-3 font-semibold transition-all duration-200"
             onClick={handleSubmit}
             disabled={loading}
           >
@@ -356,18 +366,18 @@ export default function StrategyBuilderPage() {
         )}
       </div>
       {showSuccessPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn">
-          <div className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full mx-4 transform animate-scaleIn">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-[#7B2323] mb-2">Success!</h2>
-              <p className="text-gray-600 mb-6">{successMessage}</p>
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 animate-fadeIn">
+          <div className="bg-gradient-to-br from-[#FFF3E0] to-[#FFE0B2] dark:from-[#232326] dark:to-[#18181B] p-10 rounded-2xl shadow-2xl max-w-md w-full mx-4 transform animate-scaleIn text-[#7B2323] dark:text-white border-2 border-[#FF8C00] dark:border-[#FF8C00] relative overflow-hidden">
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-24 h-24 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-lg animate-bounceIn">
+              <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div className="text-center mt-12">
+              <h2 className="text-3xl font-extrabold text-[#7B2323] dark:text-[#FF8C00] mb-2">Success!</h2>
+              <p className="text-gray-600 dark:text-gray-200 mb-6">{successMessage}</p>
               <Button
-                className="bg-[#FF8C00] text-white hover:bg-[#FFA500] px-8 py-2 rounded-lg transition-colors duration-200"
+                className="bg-gradient-to-r from-[#FF8C00] to-[#7B2323] text-white hover:from-[#FFA500] hover:to-[#7B2323] px-10 py-3 rounded-full text-lg font-semibold shadow-md transition-all duration-200"
                 onClick={() => setShowSuccessPopup(false)}
               >
                 Continue

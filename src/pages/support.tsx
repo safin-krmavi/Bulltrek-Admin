@@ -81,7 +81,7 @@ export default function SupportPage() {
             
         <h2 className="text-[24px] font-semibold">Ticket History</h2>
 
-        <Card className="border overflow-hidden">
+        <Card className="border overflow-hidden bg-card dark:bg-[#232326] border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
           <CardContent className="p-0">
             <Table>
               <TableHeader>
@@ -103,10 +103,10 @@ export default function SupportPage() {
                         onClick={() => router("/ticket-chat") }
                         key={key}
                         className={`${
-                            rowIndex === tickets.length - 1 ? "" : "border-b-2"
+                            rowIndex === tickets.length - 1 ? "" : "border-b-2 dark:border-gray-700"
                         } ${
-                            cellIndex === Object.entries(ticket).length - 1 ? "" : "border-r-2"
-                        } cursor-pointer`}
+                            cellIndex === Object.entries(ticket).length - 1 ? "" : "border-r-2 dark:border-gray-700"
+                        } cursor-pointer dark:text-white`}
                         >
                         {key === "status" ? (
                             <div className="flex items-center gap-2">
@@ -129,7 +129,7 @@ export default function SupportPage() {
           </CardContent>
         </Card>
 
-        <Card className="p-6 bg-white">
+        <Card className="p-6 bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
           <h2 className="text-lg font-medium mb-4">Raise New Ticket</h2>
           <div className="flex gap-4 flex-col ">
             <div className="flex gap-6">
@@ -174,7 +174,7 @@ export default function SupportPage() {
         </div>  
       }
 
-      <div className="w-80 border bg-white p-6 rounded-xl">
+      <div className="w-80 border bg-card dark:bg-[#232326] border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300 p-6 rounded-xl">
         <h2 className="text-lg font-medium mb-4">Frequently Asked Questions</h2>
         <Accordion type="single" collapsible className="space-y-2">
           {faqs.map((faq, i) => (

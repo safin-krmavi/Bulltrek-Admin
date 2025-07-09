@@ -10,7 +10,7 @@ export function AddFundsSection() {
   const [amount, setAmount] = React.useState(50)
 
   return (
-    <div className="space-y-6 rounded-lg border bg-white p-6">
+    <div className="space-y-6 rounded-lg border bg-card dark:bg-[#232326] border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300 p-6">
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Add Funds</h3>
         <p className="text-sm text-muted-foreground">

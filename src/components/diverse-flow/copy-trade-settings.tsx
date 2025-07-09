@@ -11,7 +11,7 @@ export function CopyTradeSettings() {
   const [mode, setMode] = React.useState<"fixed" | "multiplier">("fixed")
 
   return (
-    <div className="space-y-6 rounded-lg border bg-white p-6">
+    <div className="space-y-6 rounded-lg border bg-card dark:bg-[#232326] border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300 p-6">
       <h3 className="text-lg font-semibold">Copy Trade Settings</h3>
 
       <div className="flex gap-2">

@@ -119,13 +119,13 @@ const RegisterPage = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-white py-2">
+    <div className="flex flex-col min-h-screen items-center justify-center bg-white py-2 text-black">
       <style>{`
         @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
         .animate-fadeIn { animation: fadeIn 0.8s cubic-bezier(0.4,0,0.2,1) both; }
       `}</style>
       <h1 className="font-medium text-[28px] text-center mb-3">Register</h1>
-      <div className="w-full max-w-xl mx-auto bg-white rounded-xl shadow-lg p-4 md:p-6 animate-fadeIn">
+      <div className="w-full max-w-xl mx-auto bg-white rounded-xl shadow-lg p-4 md:p-6 animate-fadeIn text-black">
         <Form {...registerForm}>
           <form
             onSubmit={registerForm.handleSubmit(onSubmit)}
@@ -260,7 +260,7 @@ const RegisterPage = () => {
           </form>
         </Form>
       </div>
-      <div className="flex flex-col gap-2 items-center mt-3">
+      <div className="flex flex-col gap-2 items-center mt-3 text-black">
         <p className="text-[#525252] text-[12px]">Or continue with</p>
         <div className="flex gap-4 mt-1">
           <button className="border-none rounded-full shadow-md p-2 bg-white hover:bg-gray-100 transition-transform duration-200 hover:scale-110 active:scale-100">

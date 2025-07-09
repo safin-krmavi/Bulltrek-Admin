@@ -20,28 +20,28 @@ export function TradingCard({
   chartData,
 }: TradingCardProps) {
   return (
-    <Card className="w-[280px] flex-shrink-0 border-2 border-[#581C3D] rounded-xl p-4 bg-white">
+    <Card className="w-[280px] flex-shrink-0 border-2 border-[#581C3D] dark:border-gray-700 rounded-xl p-4 bg-card dark:bg-[#232326] shadow-lg text-foreground dark:text-white transition-colors duration-300">
       <div className="space-y-4">
         <div className="flex items-start gap-3">
           <Avatar>
-            <AvatarFallback className="bg-gray-100 text-gray-600">
+            <AvatarFallback className="bg-gray-100 text-gray-600 dark:bg-[#232326] dark:text-white">
               {id}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <div className="text-sm text-gray-500">{subtitle}</div>
+            <div className="text-sm text-gray-500 dark:text-gray-300">{subtitle}</div>
             <div className="text-xl font-bold text-green-500 mt-1">
               +{percentage.toFixed(2)}%
             </div>
           </div>
         </div>
 
-        <div className="flex justify-between text-xs text-gray-500 px-1">
+        <div className="flex justify-between text-xs text-gray-500 dark:text-gray-300 px-1">
           <span>ROI</span>
           <span>30D</span>
         </div>
         
-        <div className="h-20 -mx-1">
+        <div className="h-20 -mx-1 bg-white dark:bg-[#232326] rounded-md">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartData}>
               <defs>
@@ -63,24 +63,24 @@ export function TradingCard({
 
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Total PnL</span>
+            <span className="text-gray-600 dark:text-gray-200">Total PnL</span>
             <span>₹{totalPnl.toFixed(2)}</span>
           </div>
           {aumValues.map((value, index) => (
             <div key={index} className="flex justify-between text-sm">
-              <span className="text-gray-600">AUM</span>
+              <span className="text-gray-600 dark:text-gray-200">AUM</span>
               <span>₹{value.toFixed(2)}</span>
             </div>
           ))}
         </div>
 
-        <div className="border-t border-gray-200 pt-3 space-y-3">
-          <div className="flex items-center justify-between text-xs text-gray-500">
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-3 space-y-3">
+          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-300">
             <div className="flex items-center gap-1">
               <div className="flex -space-x-1">
-                <div className="w-2 h-2 rounded-full bg-pink-200"></div>
-                <div className="w-2 h-2 rounded-full bg-pink-300"></div>
-                <div className="w-2 h-2 rounded-full bg-pink-400"></div>
+                <div className="w-2 h-2 rounded-full bg-pink-200 dark:bg-pink-400"></div>
+                <div className="w-2 h-2 rounded-full bg-pink-300 dark:bg-pink-500"></div>
+                <div className="w-2 h-2 rounded-full bg-pink-400 dark:bg-pink-600"></div>
               </div>
             </div>
             <div className="flex items-center gap-3">

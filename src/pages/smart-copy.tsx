@@ -17,12 +17,12 @@ const assetAllocationData = [
 
 export default function SmartCopyPage() {
   return (
-    <div className="mx-auto max-w-7xl p-6 w-full">
+    <div className="mx-auto max-w-7xl p-6 w-full dark:text-white">
       <div className="grid gap-6 lg:grid-cols-[1fr,400px]">
         <div className="space-y-6">
           <h1 className="text-2xl font-bold">Smart Copy</h1>
 
-          <div className="rounded-lg border bg-white p-6">
+          <div className="rounded-lg border bg-card dark:bg-[#232326] border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300 p-6">
             <div className="space-y-6">
               <InvestmentForm onSubmit={console.log} />
 
@@ -71,7 +71,7 @@ export default function SmartCopyPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border bg-white p-6">
+        <div className="rounded-lg border bg-card dark:bg-[#232326] border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300 p-6">
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <img

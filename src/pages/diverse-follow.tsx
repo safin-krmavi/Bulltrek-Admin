@@ -15,7 +15,7 @@ const assetAllocationData = [
 
 export default function DiverseFollowPage() {
   return (
-    <div className="mx-auto max-w-7xl w-full  p-6">
+    <div className="mx-auto max-w-7xl w-full  p-6 dark:text-white">
       <div className="grid gap-6 lg:grid-cols-[1fr,400px]">
         <div className="space-y-6">
           <h1 className="text-2xl font-bold">Diverse Follow</h1>
@@ -23,7 +23,7 @@ export default function DiverseFollowPage() {
           <CopyTradeSettings />
         </div>
 
-        <div className="rounded-lg border bg-white p-6">
+        <div className="rounded-lg border bg-card dark:bg-[#232326] border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300 p-6">
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <img

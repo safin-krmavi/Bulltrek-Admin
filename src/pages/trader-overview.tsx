@@ -26,7 +26,7 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("overview")
 
   return (
-    <div className="min-h-screen bg-background w-full flex flex-col gap-8 pt-16 max-w-7xl">
+    <div className="min-h-screen bg-background w-full flex flex-col gap-8 pt-16 max-w-7xl dark:text-white">
       <ProfileHeader profile={mockProfile} />
       <NavTabs activeTab={activeTab} onTabChange={setActiveTab} />
       
@@ -35,19 +35,33 @@ export default function DashboardPage() {
           <TimeFilters />
           <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-3">
             <div className="space-y-6 md:col-span-2">
-              <AreaChart data={mockChartData} title="ROI" />
-              <AreaChart data={mockChartData} title="Total Profit" />
-              <AssetAllocation data={mockAssetAllocation} />
-              <PositionDuration 
-                averageHoldingTime={mockPositionDuration.averageHoldingTime}
-                longestHoldingTime={mockPositionDuration.longestHoldingTime}
-                distributions={mockPositionDuration.distributions}
-              />
+              <div className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300 p-4">
+                <AreaChart data={mockChartData} title="ROI" />
+              </div>
+              <div className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300 p-4">
+                <AreaChart data={mockChartData} title="Total Profit" />
+              </div>
+              <div className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300 p-4">
+                <AssetAllocation data={mockAssetAllocation} />
+              </div>
+              <div className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300 p-4">
+                <PositionDuration 
+                  averageHoldingTime={mockPositionDuration.averageHoldingTime}
+                  longestHoldingTime={mockPositionDuration.longestHoldingTime}
+                  distributions={mockPositionDuration.distributions}
+                />
+              </div>
             </div>
             <div className="space-y-6">
-              <PerformanceMetrics metrics={mockPerformanceMetrics} />
-              <AssetMetrics metrics={mockAssetMetrics} />
-              <LatestCopiers copiers={mockCopiers} />
+              <div className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300 p-4">
+                <PerformanceMetrics metrics={mockPerformanceMetrics} />
+              </div>
+              <div className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300 p-4">
+                <AssetMetrics metrics={mockAssetMetrics} />
+              </div>
+              <div className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300 p-4">
+                <LatestCopiers copiers={mockCopiers} />
+              </div>
             </div>
           </div>
         </>

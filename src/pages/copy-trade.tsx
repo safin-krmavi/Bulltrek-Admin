@@ -34,7 +34,7 @@ const sections = [
 
 export default function CopyTradePage() {
   return (
-    <div className="p-6 max-w-7xl mx-auto bg-gray-50">
+    <div className="p-6 max-w-7xl mx-auto bg-gray-50 dark:bg-[#18181B] dark:text-white">
       <div className="flex justify-between items-center mb-6">
         <div className="flex gap-4">
           <button className="flex items-center gap-2 border-2  px-[16px] py-[10px] rounded-md border-[#581C3D]">

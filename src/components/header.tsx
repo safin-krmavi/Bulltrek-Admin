@@ -90,21 +90,21 @@ const Header: React.FC = () => {
               size="icon"
               onClick={() => navigate("/notifications")}
             >
-              <Bell className="h-5 w-5 text-foreground" />
+              <Bell className="h-5 w-5 text-foreground dark:text-white" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => navigate("/help")}
             >
-              <HelpCircle className="h-5 w-5 text-foreground" />
+              <HelpCircle className="h-5 w-5 text-foreground dark:text-white" />
             </Button>
             <div
               className="h-8 w-8 rounded-full bg-muted border border-border cursor-pointer"
               onClick={() => navigate("/account ")}
             />
             <Button
-              className="bg-primary text-primary-foreground rounded-2xl hover:bg-primary/90 shadow-md"
+              className="bg-primary text-primary-foreground rounded-2xl hover:bg-primary/90 shadow-md dark:text-white dark:bg-primary"
               onClick={() => navigate("/tutorial")}
             >
               Tutorial

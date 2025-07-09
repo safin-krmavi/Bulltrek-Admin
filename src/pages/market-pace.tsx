@@ -25,7 +25,7 @@ const tradingCards = Array.from({ length: 8 }, (_, i) => ({
 
 export default function MarketPlacePage() {
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto dark:text-white">
       <div className="flex justify-between items-center mb-6">
         <div className="flex gap-4">
           <button className="flex items-center gap-2 border-2  px-[16px] py-[10px] rounded-md border-[#581C3D]">
@@ -55,7 +55,7 @@ export default function MarketPlacePage() {
       </div>
 
       <Tabs defaultValue="high-yields" className="space-y-4">
-        <div className="border-b border-gray-200">
+        <div className="border-b border-gray-200 ">
           <TabsList className="bg-transparent w-full justify-start rounded-none p-0 h-auto">
             <TabsTrigger 
               value="high-roi" 

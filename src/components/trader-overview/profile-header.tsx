@@ -9,7 +9,7 @@ interface ProfileHeaderProps {
 
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
   return (
-    <div className="flex items-center justify-between p-4 py-8 bg-white">
+    <div className="  bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
       <div className="flex items-center gap-4">
         <Avatar className="h-16 w-16">
           <AvatarImage src={profile.avatar} alt={profile.name} />
