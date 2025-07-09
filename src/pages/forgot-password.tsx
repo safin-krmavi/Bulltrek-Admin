@@ -11,22 +11,28 @@ const ForgotPasswordPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+    const loadingToast = toast.loading("Sending reset link...", {
+      description: "Please wait while we process your request.",
+    });
+  
     try {
       await apiClient.post("/api/v1/forgot-password", { email });
-      toast.success("Reset Link Sent", {
-        description: "If this email is registered, a password reset link has been sent to your email address.",
+      toast.dismiss(loadingToast);
+      toast.success("Reset link sent to your email!", {
         duration: 5000,
       });
-      setEmail(""); // Clear the form
+      setEmail(""); // Clear input
     } catch (err: any) {
+      toast.dismiss(loadingToast);
       toast.error("Failed to Send Reset Link", {
         description: err.response?.data?.message || "Failed to send reset email. Please try again.",
-        duration: 5000,
+        duration: 6000,
       });
     }
+  
     setLoading(false);
   };
+  
 
   return (
     <div className="flex flex-col gap-8 justify-center items-center h-full w-full">

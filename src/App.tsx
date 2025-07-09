@@ -74,7 +74,7 @@ const AppRouter = ({ theme }: { theme: string }) => {
         <Route path="/smart-copy" element={<GenericLayout  children={<SmartCopyPage />} />} />
         <Route path="/traders-comparison" element={<GenericLayout  children={<TradersComparison />} />} />
         <Route path="/strategy-builder" element={<GenericLayout children={<StrategyBuilderPage />} />} />
-        <Route path="/reset-password" element={<GenericLayout children={<ResetPasswordPage />} />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Routes>
     </div>
   );
