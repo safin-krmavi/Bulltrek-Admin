@@ -61,28 +61,28 @@ interface PlanData {
   renewalDate: string;
 }
 
-interface LiveOrder {
-  symbol: string;
-  orderId: number;
-  orderListId: number;
-  clientOrderId: string;
-  price: string;
-  origQty: string;
-  executedQty: string;
-  cummulativeQuoteQty: string;
-  status: string;
-  timeInForce: string;
-  type: string;
-  side: string;
-  stopPrice: string;
-  icebergQty: string;
-  time: number;
-  updateTime: number;
-  isWorking: boolean;
-  workingTime: number;
-  origQuoteOrderQty: string;
-  selfTradePreventionMode: string;
-}
+// interface LiveOrder {
+//   symbol: string;
+//   orderId: number;
+//   orderListId: number;
+//   clientOrderId: string;
+//   price: string;
+//   origQty: string;
+//   executedQty: string;
+//   cummulativeQuoteQty: string;
+//   status: string;
+//   timeInForce: string;
+//   type: string;
+//   side: string;
+//   stopPrice: string;
+//   icebergQty: string;
+//   time: number;
+//   updateTime: number;
+//   isWorking: boolean;
+//   workingTime: number;
+//   origQuoteOrderQty: string;
+//   selfTradePreventionMode: string;
+// }
 
 interface StrategyDataItem {
   id: number;
@@ -117,23 +117,23 @@ function useStrategies() {
   });
 }
 
-function useLiveOrders() {
-  return useQuery({
-    queryKey: ["liveOrders"],
-    queryFn: async () => {
-      const response = await apiClient.get(
-        "/api/v1/brokerage/binance/orders/live",
-        {
-          params: {
-            symbol: "BTCUSDT",
-          },
-        }
-      );
-      return response.data;
-    },
-    refetchInterval: 30000, // Refetch every 30 seconds
-  });
-}
+// function useLiveOrders() {
+//   return useQuery({
+//     queryKey: ["liveOrders"],
+//     queryFn: async () => {
+//       const response = await apiClient.get(
+//         "/api/v1/brokerage/binance/orders/live",
+//         {
+//           params: {
+//             symbol: "BTCUSDT",
+//           },
+//         }
+//       );
+//       return response.data;
+//     },
+//     refetchInterval: 30000, // Refetch every 30 seconds
+//   });
+// }
 
 export default function Dashboard({ userId }: { userId?: string }) {
   const [showModal, setShowModal] = useState(false);
