@@ -88,6 +88,15 @@ const CountrySelect = ({
   options: countryList,
   onChange,
 }: CountrySelectProps) => {
+  const [search, setSearch] = React.useState("");
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [search]);
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -111,9 +120,14 @@ const CountrySelect = ({
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0 z-[1000]">
         <Command className="bg-white border rounded-md overflow-hidden">
-          <CommandInput placeholder="Search country..." className="bg-white text-black border-b" />
+          <CommandInput
+            placeholder="Search country..."
+            className="bg-white text-black border-b"
+            value={search}
+            onValueChange={setSearch}
+          />
           <CommandList>
-            <ScrollArea className="h-72 bg-white">
+            <ScrollArea ref={scrollRef} className="h-72 bg-white">
               <CommandEmpty className="py-2 text-center text-sm">No country found.</CommandEmpty>
               <CommandGroup>
                 {countryList.map(({ value, label }) =>
@@ -125,7 +139,7 @@ const CountrySelect = ({
                       selectedCountry={selectedCountry}
                       onChange={onChange}
                     />
-                  ) : null,
+                  ) : null
                 )}
               </CommandGroup>
             </ScrollArea>
@@ -135,6 +149,7 @@ const CountrySelect = ({
     </Popover>
   );
 };
+
 
 interface CountrySelectOptionProps extends RPNInput.FlagProps {
   selectedCountry: RPNInput.Country;

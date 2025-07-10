@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import apiClient from "@/api/apiClient";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { Eye, EyeOff, Mail, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -23,19 +23,9 @@ const ResetPasswordPage = () => {
   useEffect(() => {
     if (token) {
       localStorage.setItem("RESET_PASSWORD_TOKEN", token);
-      toast.success("Reset Link Valid! 🔐", {
-        description: "Your password reset link is valid. Please enter your new password below.",
-        duration: 5000,
-      });
+      toast.success("Your password reset link is valid. Please enter your new password below.", { duration: 5000 });
     } else {
-      toast.error("Invalid Reset Link ❌", {
-        description: "The reset link is missing or invalid. Please request a new password reset.",
-        duration: 6000,
-        action: {
-          label: "Go to Login",
-          onClick: () => navigate("/login")
-        }
-      });
+      toast.error("The reset link is missing or invalid. Please request a new password reset.", { duration: 6000 });
     }
   }, [token, navigate]);
 
@@ -43,47 +33,29 @@ const ResetPasswordPage = () => {
     e.preventDefault();
     
     if (!email || !token) {
-      toast.error("Invalid Reset Link ❌", {
-        description: "The reset link is missing or invalid. Please request a new password reset.",
-        duration: 6000,
-        action: {
-          label: "Go to Login",
-          onClick: () => navigate("/login")
-        }
-      });
+      toast.error("The reset link is missing or invalid. Please request a new password reset.", { duration: 6000 });
       return;
     }
     
     if (!password || !passwordConfirmation) {
-      toast.error("Please Fill All Fields ⚠️", {
-        description: "Please enter both password fields to continue.",
-        duration: 4000
-      });
+      toast.error("Please enter both password fields to continue.", { duration: 4000 });
       return;
     }
     
     if (password.length < 6) {
-      toast.error("Password Too Short ⚠️", {
-        description: "Password must be at least 6 characters long.",
-        duration: 4000
-      });
+      toast.error("Password must be at least 6 characters long.", { duration: 4000 });
       return;
     }
     
     if (password !== passwordConfirmation) {
-      toast.error("Passwords Don't Match ❌", {
-        description: "Please make sure both passwords are identical.",
-        duration: 4000
-      });
+      toast.error("Please make sure both passwords are identical.", { duration: 4000 });
       return;
     }
 
     setLoading(true);
     
     // Show loading toast
-    const loadingToast = toast.loading("Resetting Password...", {
-      description: "Please wait while we update your password securely."
-    });
+    const loadingToast = toast.loading("Resetting Password... Please wait.");
     
     try {
       const response = await apiClient.post("/api/v1/reset-password", {
@@ -97,14 +69,7 @@ const ResetPasswordPage = () => {
       toast.dismiss(loadingToast);
       
       if (response.status === 200 || response.status === 201) {
-        toast.success("Password Reset Successful! ✅", {
-          description: "Your password has been updated successfully. You can now login with your new password.",
-          duration: 8000,
-          action: {
-            label: "Login Now",
-            onClick: () => navigate("/login")
-          }
-        });
+        toast.success("Your password has been updated successfully. You can now login with your new password.", { duration: 8000 });
         
         // Clear stored token
         localStorage.removeItem("RESET_PASSWORD_TOKEN");
@@ -122,47 +87,17 @@ const ResetPasswordPage = () => {
       
       // Handle specific error cases
       if (err.response?.status === 400) {
-        toast.error("Invalid Request ⚠️", {
-          description: "The reset link may be expired or invalid. Please request a new password reset.",
-          duration: 6000,
-          action: {
-            label: "Request New Link",
-            onClick: () => navigate("/login")
-          }
-        });
+        toast.error("The reset link may be expired or invalid. Please request a new password reset.", { duration: 6000 });
       } else if (err.response?.status === 401) {
-        toast.error("Unauthorized Access ❌", {
-          description: "Your reset link has expired. Please request a new password reset.",
-          duration: 6000,
-          action: {
-            label: "Request New Link",
-            onClick: () => navigate("/login")
-          }
-        });
+        toast.error("Your reset link has expired. Please request a new password reset.", { duration: 6000 });
       } else if (err.response?.status === 422) {
-        toast.error("Validation Error ⚠️", {
-          description: err.response.data.message || "Please check your password requirements.",
-          duration: 5000
-        });
+        toast.error(err.response.data.message || "Please check your password requirements.", { duration: 5000 });
       } else if (err.response?.data?.message) {
-        toast.error("Reset Failed ⚠️", {
-          description: err.response.data.message,
-          duration: 6000
-        });
+        toast.error(err.response.data.message, { duration: 6000 });
       } else if (err.code === 'NETWORK_ERROR' || err.message?.includes('Network Error')) {
-        toast.error("Network Connection Error 🌐", {
-          description: "Please check your internet connection and try again.",
-          duration: 6000,
-          action: {
-            label: "Retry",
-            onClick: () => handleSubmit(e)
-          }
-        });
+        toast.error("Please check your internet connection and try again.", { duration: 6000 });
       } else {
-        toast.error("Service Temporarily Unavailable 🔧", {
-          description: "We're experiencing technical difficulties. Please try again in a few minutes.",
-          duration: 6000
-        });
+        toast.error("We're experiencing technical difficulties. Please try again in a few minutes.", { duration: 6000 });
       }
     } finally {
     setLoading(false);

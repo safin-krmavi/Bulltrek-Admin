@@ -180,7 +180,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
     error: directionsError,
   } = useDirections();
   const { getBrokerageDetails } = useBrokerageManagement();
-  const { data: liveOrders, isLoading: isLiveOrdersLoading } = useLiveOrders();
+  // const { data: liveOrders, isLoading: isLiveOrdersLoading } = useLiveOrders();
   const { bots, isLoading: isBotsLoading } = useBotManagement();
 
   // Combined loading state
@@ -772,14 +772,14 @@ export default function Dashboard({ userId }: { userId?: string }) {
         </div>
 
         {/* Live Orders Section */}
-        <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg shadow-sm mt-6 mb-6 transition-colors duration-300">
+        {/* <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg shadow-sm mt-6 mb-6 transition-colors duration-300">
           <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg flex">
             <CardTitle className="text-lg font-medium">
               Binance Live Orders
-            </CardTitle>
+            </CardTitle> */}
             {/* <RefreshCw className={`h-4 w-4 ${isLiveOrdersLoading ? 'animate-spin' : ''}`} /> */}
-          </CardHeader>
-          <CardContent className="p-0">
+          {/* </CardHeader> */}
+          {/* <CardContent className="p-0">
             <div className="max-h-[400px] overflow-y-auto">
               <Table>
                 <TableHeader className="sticky top-0 z-10">
@@ -855,8 +855,8 @@ export default function Dashboard({ userId }: { userId?: string }) {
                 </TableBody>
               </Table>
             </div>
-          </CardContent>
-        </Card>
+          </CardContent> */}
+        {/* </Card> */}
         {/* Create Strategy Button above the Strategy Table */}
         {/* Strategy Table Section */}
         <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg shadow-sm mt-0 transition-colors duration-300">

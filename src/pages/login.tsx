@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
 import { LoginInput, loginSchema } from "../schema"
-import { toast } from "sonner"
+import { toast } from "react-hot-toast"
 import { Dialog,DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { forgotPasswordSchema, ForgotPasswordInput } from "../schema";
 import apiClient from "@/api/apiClient";
@@ -71,9 +71,7 @@ const LoginPage = () => {
     setIsSubmitting(true);
     
     // Show loading toast
-    const loadingToast = toast.loading("Sending reset link...", {
-      description: "Please wait while we process your request."
-    });
+    const loadingToast = toast.loading("Sending reset link... Please wait.");
     
     try {
       const response = await apiClient.post("/api/v1/forgot-password", { 
@@ -82,16 +80,8 @@ const LoginPage = () => {
       
       // Validate response structure
       if (response.status === 200 || response.status === 201) {
-        // Dismiss loading toast and show success
         toast.dismiss(loadingToast);
-        toast.success("Password Reset Link Sent! 📧", { 
-          description: `A password reset link has been sent to ${values.email}. Please check your email inbox and spam folder.`,
-          duration: 8000,
-          action: {
-            label: "Close",
-            onClick: () => toast.dismiss()
-          }
-        });
+        toast.success(`A password reset link has been sent to ${values.email}. Please check your email inbox and spam folder.`, { duration: 8000 });
         forgotForm.reset();
         setForgotOpen(false);
       } else {
@@ -105,43 +95,17 @@ const LoginPage = () => {
       
       // Handle specific error cases
       if (err.response?.status === 404) {
-        toast.error("Email Not Found ❌", {
-          description: `No account found with email: ${values.email}. Please check the email address or register a new account.`,
-          duration: 6000,
-          action: {
-            label: "Register",
-            onClick: () => window.location.href = '/register'
-          }
-        });
+        toast.error(`No account found with email: ${values.email}. Please check the email address or register a new account.`, { duration: 6000 });
       } else if (err.response?.status === 429) {
-        toast.error("Too Many Requests ⏰", {
-          description: "You've made too many requests. Please wait 5 minutes before trying again.",
-          duration: 6000
-        });
+        toast.error("You've made too many requests. Please wait 5 minutes before trying again.", { duration: 6000 });
       } else if (err.response?.status === 422) {
-        toast.error("Invalid Email Format 📧", {
-          description: "Please enter a valid email address.",
-          duration: 5000
-        });
+        toast.error("Please enter a valid email address.", { duration: 5000 });
       } else if (err.response?.data?.message) {
-        toast.error("Request Failed ⚠️", {
-          description: err.response.data.message,
-          duration: 6000
-        });
+        toast.error(err.response.data.message, { duration: 6000 });
       } else if (err.code === 'NETWORK_ERROR' || err.message?.includes('Network Error')) {
-        toast.error("Network Connection Error 🌐", {
-          description: "Please check your internet connection and try again.",
-          duration: 6000,
-          action: {
-            label: "Retry",
-            onClick: () => onForgotSubmit(values)
-          }
-        });
+        toast.error("Please check your internet connection and try again.", { duration: 6000 });
       } else {
-        toast.error("Service Temporarily Unavailable 🔧", {
-          description: "We're experiencing technical difficulties. Please try again in a few minutes.",
-          duration: 6000
-        });
+        toast.error("We're experiencing technical difficulties. Please try again in a few minutes.", { duration: 6000 });
       }
     } finally {
       setIsSubmitting(false);
