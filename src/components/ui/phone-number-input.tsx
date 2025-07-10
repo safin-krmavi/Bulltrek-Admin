@@ -90,12 +90,25 @@ const CountrySelect = ({
 }: CountrySelectProps) => {
   const [search, setSearch] = React.useState("");
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  const firstMatchRef = React.useRef<HTMLDivElement>(null);
+
+  // Find the first visible match index
+  const filteredCountries = countryList.filter(({ label }) =>
+    label.toLowerCase().includes(search.toLowerCase())
+  );
 
   React.useEffect(() => {
-    if (scrollRef.current) {
+    // Scroll to the first match when search changes
+    if (search && firstMatchRef.current && scrollRef.current) {
+      const scrollArea = scrollRef.current;
+      const firstMatch = firstMatchRef.current;
+      // Scroll so the first match is at the top
+      scrollArea.scrollTop = firstMatch.offsetTop - scrollArea.offsetTop;
+    } else if (scrollRef.current) {
+      // Default: scroll to top
       scrollRef.current.scrollTop = 0;
     }
-  }, [search]);
+  }, [search, filteredCountries.length]);
 
   return (
     <Popover>
@@ -130,7 +143,7 @@ const CountrySelect = ({
             <ScrollArea ref={scrollRef} className="h-72 bg-white">
               <CommandEmpty className="py-2 text-center text-sm">No country found.</CommandEmpty>
               <CommandGroup>
-                {countryList.map(({ value, label }) =>
+                {filteredCountries.map(({ value, label }, idx) =>
                   value ? (
                     <CountrySelectOption
                       key={value}
@@ -138,6 +151,7 @@ const CountrySelect = ({
                       countryName={label}
                       selectedCountry={selectedCountry}
                       onChange={onChange}
+                      ref={idx === 0 ? firstMatchRef : undefined}
                     />
                   ) : null
                 )}
@@ -156,23 +170,26 @@ interface CountrySelectOptionProps extends RPNInput.FlagProps {
   onChange: (country: RPNInput.Country) => void;
 }
 
-const CountrySelectOption = ({
-  country,
-  countryName,
-  selectedCountry,
-  onChange,
-}: CountrySelectOptionProps) => {
-  return (
-    <CommandItem className="gap-2" onSelect={() => onChange(country)}>
-      <FlagComponent country={country} countryName={countryName} />
-      <span className="flex-1 text-sm">{countryName}</span>
-      <span className="text-foreground/50 text-sm">{`+${RPNInput.getCountryCallingCode(country)}`}</span>
-      <CheckIcon
-        className={`ml-auto size-4 ${country === selectedCountry ? "opacity-100" : "opacity-0"}`}
-      />
-    </CommandItem>
-  );
-};
+const CountrySelectOption = React.forwardRef<HTMLDivElement, CountrySelectOptionProps>(
+  ({
+    country,
+    countryName,
+    selectedCountry,
+    onChange,
+  }, ref) => {
+    return (
+      <CommandItem className="gap-2" onSelect={() => onChange(country)} ref={ref}>
+        <FlagComponent country={country} countryName={countryName} />
+        <span className="flex-1 text-sm">{countryName}</span>
+        <span className="text-foreground/50 text-sm">{`+${RPNInput.getCountryCallingCode(country)}`}</span>
+        <CheckIcon
+          className={`ml-auto size-4 ${country === selectedCountry ? "opacity-100" : "opacity-0"}`}
+        />
+      </CommandItem>
+    );
+  }
+);
+CountrySelectOption.displayName = "CountrySelectOption";
 
 const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
   const Flag = flags[country];
