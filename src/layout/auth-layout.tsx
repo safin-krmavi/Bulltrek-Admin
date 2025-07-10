@@ -4,7 +4,7 @@ import { Logo } from "@/pages/login/logo";
 const AuthLayout = ({children}:{children:React.ReactNode}) => {
   return (
     <div className='flex flex-row h-screen w-screen'>
-        <div className='w-2/6 h-full bg-secondary-50 dark:bg-[#18181b] p-20 transition-colors duration-300'>
+        <div className='w-2/6 h-full bg-secondary-50 p-20 transition-colors duration-300'>
             <Logo width={200} height={100} className='w-[200px] drop-shadow-lg' />
             <img src="/login.svg" alt="login logo" />
         </div>
