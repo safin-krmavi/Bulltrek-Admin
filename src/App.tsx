@@ -22,6 +22,8 @@ import StrategyBuilderPage from "./pages/strategy-builder"
 import ResetPasswordPage from "./pages/reset-password"
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState, createContext, useContext } from "react";
+import Scanner from "./pages/scanner";
+import Trends from "./pages/trends";
 
 // Theme context and hook
 const ThemeContext = createContext<{theme: string, toggleTheme: () => void}>({ theme: 'light', toggleTheme: () => {} });
@@ -75,6 +77,8 @@ const AppRouter = ({ theme }: { theme: string }) => {
         <Route path="/traders-comparison" element={<GenericLayout  children={<TradersComparison />} />} />
         <Route path="/strategy-builder" element={<GenericLayout children={<StrategyBuilderPage />} />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/scanner" element={<GenericLayout children={<Scanner />} />} />
+        <Route path="/trends" element={<GenericLayout children={<Trends />} />} />
       </Routes>
     </div>
   );

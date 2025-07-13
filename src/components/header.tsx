@@ -46,6 +46,8 @@ const Header: React.FC = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="/trading-report">Reports</SelectItem>
+                  <SelectItem value="/scanner">Scanner</SelectItem>
+                  <SelectItem value="/trends">Trends</SelectItem>
                 </SelectContent>
               </Select>
               <Select onValueChange={(value) => handleSelectChange(value)}>
