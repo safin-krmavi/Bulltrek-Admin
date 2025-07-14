@@ -411,10 +411,10 @@ export default function AccountPage() {
 </CollapsibleCard>
       </div>
 
-      <div className="grid grid-cols-5 w-full gap-4">
-        <CollapsibleCard title="Invoice Details" className='col-span-3'>
+      <div className="grid grid-cols-5 w-full gap-4 ">
+        <CollapsibleCard title="Invoice Details" className='col-span-3 '>
             <Table>
-            <TableHeader>
+            <TableHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white">
                 <TableRow>
                 <TableHead>S.No</TableHead>
                 <TableHead>Plan Name</TableHead>
@@ -488,7 +488,7 @@ export default function AccountPage() {
           </div>
 
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white">
               <TableRow>
                 <TableHead>S.No</TableHead>
                 <TableHead>Joined Date</TableHead>
@@ -800,7 +800,7 @@ export default function AccountPage() {
       <div className="grid grid-cols-5 w-full gap-4">
        <CollapsibleCard title="Transaction History" className="col-span-5">
           <div className="space-y-4">
-            <div className="flex justify-end gap-2">
+            {/* <div className="flex justify-end gap-2">
               <Select
                 defaultValue="BTCUSDT"
                 onValueChange={(value) => setSelectedSymbol(value)}
@@ -814,10 +814,10 @@ export default function AccountPage() {
                 </SelectContent>
               </Select>
             </div>
-            
+             */}
             <div className="max-h-[400px] overflow-y-auto">
               <Table>
-                <TableHeader className="sticky top-0 dark:bg-[#232326] z-10">
+                <TableHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white">
                   <TableRow>
                     <TableHead>Symbol</TableHead>
                     <TableHead>Order ID</TableHead>

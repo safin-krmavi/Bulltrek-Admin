@@ -463,7 +463,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
           className="mt-6"
         >
           <Card className="border-0">
-            <CardHeader className="bg-[#4A0D0D] dark:bg-red-900 text-white rounded-t-lg transition-colors duration-300 dark:text-white">
+            <CardHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white rounded-t-lg transition-colors duration-300 dark:text-white">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CardTitle className="text-lg font-medium">
@@ -585,7 +585,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
               onOpenChange={() => toggleSection("scanner")}
             >
               <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
-                <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg">
+                <CardHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white rounded-t-lg transition-colors duration-300 dark:text-white">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <CardTitle className="text-lg font-medium">
@@ -650,7 +650,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
               className="mt-6"
             >
               <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
-                <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg">
+                <CardHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white rounded-t-lg transition-colors duration-300 dark:text-white">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <CardTitle className="text-lg font-medium">
@@ -703,7 +703,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
 
           <div className="space-y-6">
             <CollapsibleCard
-              title="API Connect"
+              title="API Connect "
               className="col-span-2"
               contentClassName="p-0"
               action={
@@ -731,7 +731,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
               onOpenChange={() => toggleSection("support")}
             >
               <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
-                <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg">
+                <CardHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white rounded-t-lg transition-colors duration-300 dark:text-white">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <CardTitle className="text-lg font-medium">
@@ -884,7 +884,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
         {/* Create Strategy Button above the Strategy Table */}
         {/* Strategy Table Section */}
         <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg shadow-sm mt-0 transition-colors duration-300">
-          <CardHeader className="bg-[#4A0D0D] text-white rounded-t-lg">
+          <CardHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white rounded-t-lg transition-colors duration-300 dark:text-white">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg font-medium">
                 Strategy Table

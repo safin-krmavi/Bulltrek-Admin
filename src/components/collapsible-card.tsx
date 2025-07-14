@@ -27,7 +27,7 @@ export function CollapsibleCard({
   return (
     <Card className={cn("bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300", className)}>
       <CardHeader 
-        className="bg-[#4A1C24] text-white cursor-pointer flex flex-row items-center justify-between p-4 rounded-t-lg"
+        className="bg-[#4A1C24] dark:bg-[#3b3b41] text-white cursor-pointer flex flex-row items-center justify-between p-4 rounded-t-lg"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-2">

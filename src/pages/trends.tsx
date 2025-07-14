@@ -46,23 +46,23 @@ const areaData = [
 export default function Trends() {
   const [activeTab, setActiveTab] = useState("1 Minute");
   return (
-    <div className="flex flex-col min-h-screen bg-[#f6f7f9] px-4">
+    <div className="flex flex-col min-h-screen bg-[#f6f7f9] dark:bg-[#18181b] px-4 text-[#222] dark:text-white">
       {/* Top Filter Bar */}
       <div className="w-full pt-8">
-        <div className="bg-white rounded-xl shadow p-4 flex flex-col md:flex-row gap-4 items-center justify-between w-full">
+        <div className="bg-white dark:bg-[#232326] rounded-xl shadow p-4 flex flex-col md:flex-row gap-4 items-center justify-between w-full">
           <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto flex-1">
             <div className="flex-1 min-w-[180px]">
-              <label className="block text-sm font-medium mb-1">API Name</label>
-              <select className="w-full border rounded px-3 py-2 text-sm">
+              <label className="block text-sm font-medium mb-1 dark:text-white">API Name</label>
+              <select className="w-full border rounded px-3 py-2 text-sm bg-white dark:bg-[#18181b] text-[#222] dark:text-white border-gray-300 dark:border-gray-700">
                 <option>API Name</option>
               </select>
             </div>
             <div className="flex-1 min-w-[180px]">
-              <label className="block text-sm font-medium mb-1">Pair</label>
-              <input className="w-full border rounded px-3 py-2 text-sm" placeholder="API Name" />
+              <label className="block text-sm font-medium mb-1 dark:text-white">Pair</label>
+              <input className="w-full border rounded px-3 py-2 text-sm bg-white dark:bg-[#18181b] text-[#222] dark:text-white border-gray-300 dark:border-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-400" placeholder="API Name" />
             </div>
           </div>
-          <button className="bg-[#4A0D0D] text-white px-6 py-2 rounded shadow hover:bg-[#2d0a0a] transition font-semibold w-full md:w-auto">
+          <button className="bg-[#4A0D0D] text-white px-6 py-2 rounded shadow hover:bg-[#2d0a0a] transition font-semibold w-full md:w-auto self-center dark:bg-[#4A0D0D] dark:hover:bg-[#2d0a0a]">
             View Trends
           </button>
         </div>
@@ -73,15 +73,15 @@ export default function Trends() {
           {/* Left Column */}
           <div className="flex flex-col gap-6">
             {/* NVDA Card with Area Chart */}
-            <div className="bg-white rounded-xl shadow p-4">
+            <div className="bg-white dark:bg-[#232326] rounded-xl shadow p-4">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-8 rounded-full bg-[#4A0D0D] flex items-center justify-center text-white font-bold">NVDA</div>
                 <div>
-                  <div className="font-semibold text-[13px] text-[#4A0D0D] leading-tight">NVIDIA CORPORATION</div>
+                  <div className="font-semibold text-[13px] text-[#4A0D0D] dark:text-white leading-tight">NVIDIA CORPORATION</div>
                 </div>
               </div>
               <div className="flex items-end gap-2 mb-1">
-                <span className="text-2xl font-bold text-[#222]">209.23</span>
+                <span className="text-2xl font-bold text-[#222] dark:text-white">209.23</span>
                 <span className="text-xs text-[#B23B16] font-bold">D</span>
                 <span className="text-green-600 text-base font-semibold">+0.67% <span className="text-xs">(1.00)</span></span>
               </div>
@@ -109,20 +109,20 @@ export default function Trends() {
               </div> */}
             </div>
             {/* Technical Analysis Card */}
-            <div className="bg-white rounded-xl shadow p-4">
-              <div className="font-semibold text-[15px] text-[#222] mb-2">NVDA Technical Analysis</div>
+            <div className="bg-white dark:bg-[#232326] rounded-xl shadow p-4">
+              <div className="font-semibold text-[15px] text-[#222] dark:text-white mb-2">NVDA Technical Analysis</div>
               <div className="flex gap-2 mb-4 items-center">
                 {['1 Minute', '5 Minutes', '15 Minutes'].map(tab => (
                   <button
                     key={tab}
-                    className={`px-3 py-1 rounded font-medium text-xs transition-colors duration-150 ${activeTab === tab ? 'bg-[#FFE6EA] text-[#222]' : 'bg-transparent text-[#222] hover:bg-gray-100'}`}
+                    className={`px-3 py-1 rounded font-medium text-xs transition-colors duration-150 ${activeTab === tab ? 'bg-[#FFE6EA] text-[#222]' : 'bg-transparent text-[#222] hover:bg-gray-100 dark:text-white dark:hover:bg-[#232326]'}`}
                     style={activeTab === tab ? { boxShadow: '0 1px 4px #ffe6ea' } : {}}
                     onClick={() => setActiveTab(tab)}
                   >
                     {tab}
                   </button>
                 ))}
-                <div className="flex items-center gap-1 cursor-pointer text-xs text-[#222] ml-2">
+                <div className="flex items-center gap-1 cursor-pointer text-xs text-[#222] dark:text-white ml-2">
                   More <ChevronDown className="w-3 h-3" />
                 </div>
               </div>
@@ -143,20 +143,20 @@ export default function Trends() {
                       <polygon points="130,50 122,130 138,130" fill="#222" />
                     </g>
                   </svg>
-                  <div className="absolute left-0 right-0 top-[160px] text-center text-[28px] font-normal text-[#222] select-none">Neutral</div>
+                  <div className="absolute left-0 right-0 top-[160px] text-center text-[28px] font-normal text-[#222] dark:text-white select-none">Neutral</div>
                 </div>
                 {/* Sell/Neutral/Buy row, spaced further below */}
                 <div className="flex justify-between w-full mt-6 px-2">
                   <div className="flex flex-col items-center">
-                    <span className="text-base text-[#222]">Sell</span>
+                    <span className="text-base text-[#222] dark:text-white">Sell</span>
                     <span className="text-base font-semibold text-[#E57373]">7</span>
                   </div>
                   <div className="flex flex-col items-center">
-                    <span className="text-base text-[#222]">Neutral</span>
-                    <span className="text-base font-semibold text-[#888]">12</span>
+                    <span className="text-base text-[#222] dark:text-white">Neutral</span>
+                    <span className="text-base font-semibold text-[#888] dark:text-white">12</span>
                   </div>
                   <div className="flex flex-col items-center">
-                    <span className="text-base text-[#222]">Buy</span>
+                    <span className="text-base text-[#222] dark:text-white">Buy</span>
                     <span className="text-base font-semibold text-[#1976D2]">8</span>
                   </div>
                 </div>
@@ -166,20 +166,20 @@ export default function Trends() {
           {/* Center Column */}
           <div className="flex flex-col gap-6">
             {/* NVDA Stats Card */}
-            <div className="bg-white rounded-xl shadow p-4">
+            <div className="bg-white dark:bg-[#232326] rounded-xl shadow p-4">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-8 rounded-full bg-[#4A0D0D] flex items-center justify-center text-white font-bold">NVDA</div>
                 <div>
-                  <div className="font-semibold text-[13px] text-[#4A0D0D] leading-tight">NVIDIA CORPORATION</div>
+                  <div className="font-semibold text-[13px] text-[#4A0D0D] dark:text-white leading-tight">NVIDIA CORPORATION</div>
                 </div>
               </div>
               <div className="flex items-end gap-2 mb-1">
-                <span className="text-2xl font-bold text-[#222]">209.23</span>
+                <span className="text-2xl font-bold text-[#222] dark:text-white">209.23</span>
                 <span className="text-xs text-[#B23B16] font-bold">D</span>
                 <span className="text-green-600 text-base font-semibold">+0.67% <span className="text-xs">(1.00)</span></span>
               </div>
-              <div className="text-xs text-gray-500 mb-2">Market Closed (Oct 25, 01:37 UTC+5:30)</div>
-              <div className="flex gap-6 text-xs text-gray-700">
+              <div className="text-xs text-gray-500 mb-2 dark:text-gray-400">Market Closed (Oct 25, 01:37 UTC+5:30)</div>
+              <div className="flex gap-6 text-xs text-gray-700 dark:text-gray-300">
                 <div>
                   <div>October 24</div>
                   <div>6.60</div>
@@ -194,11 +194,11 @@ export default function Trends() {
               </div>
             </div>
             {/* NVDA Financials Card */}
-            <div className="bg-white rounded-xl shadow p-4">
-              <div className="font-semibold text-[15px] text-[#4A0D0D] mb-2">NVDA Financials</div>
+            <div className="bg-white dark:bg-[#232326] rounded-xl shadow p-4">
+              <div className="font-semibold text-[15px] text-[#4A0D0D] mb-2 dark:text-white">NVDA Financials</div>
               <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-xs">
                 <div>
-                  <div className="font-semibold mb-1">Valuation</div>
+                  <div className="font-semibold mb-1 dark:text-white">Valuation</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
@@ -206,16 +206,7 @@ export default function Trends() {
                   <div>Enterprise Val.: 3.83T</div>
                 </div>
                 <div>
-                  <div className="font-semibold mb-1">Valuation</div>
-                  <div>Market capital.: 3.83T</div>
-                  <div>Market capital.: 3.83T</div>
-                  <div>Market capital.: 3.83T</div>
-                  <div>Enterprise Val.: 3.83T</div>
-                  <div>Enterprise Val.: 3.83T</div>
-                  
-                </div>
-                <div>
-                  <div className="font-semibold mb-1">Valuation</div>
+                  <div className="font-semibold mb-1 dark:text-white">Valuation</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
@@ -223,7 +214,15 @@ export default function Trends() {
                   <div>Enterprise Val.: 3.83T</div>
                 </div>
                 <div>
-                  <div className="font-semibold mb-1">Valuation</div>
+                  <div className="font-semibold mb-1 dark:text-white">Valuation</div>
+                  <div>Market capital.: 3.83T</div>
+                  <div>Market capital.: 3.83T</div>
+                  <div>Market capital.: 3.83T</div>
+                  <div>Enterprise Val.: 3.83T</div>
+                  <div>Enterprise Val.: 3.83T</div>
+                </div>
+                <div>
+                  <div className="font-semibold mb-1 dark:text-white">Valuation</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
                 </div>
@@ -233,12 +232,12 @@ export default function Trends() {
           {/* Right Column */}
           <div className="flex flex-col gap-6">
             {/* NVDA Profile Card */}
-            <div className="bg-white rounded-xl shadow p-4 h-full min-h-[320px]">
-              <div className="font-semibold text-[15px] text-[#4A0D0D] mb-2">NVDA Profile</div>
-              <div className="text-sm mb-1"><span className="font-semibold">Sector:</span> Electronic Technology</div>
-              <div className="text-sm mb-1"><span className="font-semibold">Industry:</span> LoremIpsum Equipment</div>
-              <div className="text-sm mb-1"><span className="font-semibold">Employees (FY):</span> 122K</div>
-              <div className="text-md text-gray-600 mt-2">
+            <div className="bg-white dark:bg-[#232326] rounded-xl shadow p-4 h-full min-h-[320px]">
+              <div className="font-semibold text-[15px] text-[#4A0D0D] mb-2 dark:text-white">NVDA Profile</div>
+              <div className="text-sm mb-1"><span className="font-semibold dark:text-white">Sector:</span> Electronic Technology</div>
+              <div className="text-sm mb-1"><span className="font-semibold dark:text-white">Industry:</span> LoremIpsum Equipment</div>
+              <div className="text-sm mb-1"><span className="font-semibold dark:text-white">Employees (FY):</span> 122K</div>
+              <div className="text-md text-gray-600 mt-2 dark:text-gray-300">
                 Lorem ipsum dolor sit amet, consecte tur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
               </div>
             </div>
