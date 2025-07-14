@@ -196,9 +196,9 @@ export default function Trends() {
             {/* NVDA Financials Card */}
             <div className="bg-white rounded-xl shadow p-4">
               <div className="font-semibold text-[15px] text-[#4A0D0D] mb-2">NVDA Financials</div>
-              <div className="grid grid-cols-2 gap-4 text-xs">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-xs">
                 <div>
-                  <div className="font-semibold">Valuation</div>
+                  <div className="font-semibold mb-1">Valuation</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
@@ -206,19 +206,16 @@ export default function Trends() {
                   <div>Enterprise Val.: 3.83T</div>
                 </div>
                 <div>
-                  <div className="font-semibold">Valuation</div>
+                  <div className="font-semibold mb-1">Valuation</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Enterprise Val.: 3.83T</div>
                   <div>Enterprise Val.: 3.83T</div>
-                  <div>Market capital.: 3.83T</div>
-                  <div>Market capital.: 3.83T</div>
-                  <div>Enterprise Val.: 3.83T</div>
-                  <div>Enterprise Val.: 3.83T</div>
+                  
                 </div>
                 <div>
-                  <div className="font-semibold">Valuation</div>
+                  <div className="font-semibold mb-1">Valuation</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
@@ -226,7 +223,7 @@ export default function Trends() {
                   <div>Enterprise Val.: 3.83T</div>
                 </div>
                 <div>
-                  <div className="font-semibold">Valuation</div>
+                  <div className="font-semibold mb-1">Valuation</div>
                   <div>Market capital.: 3.83T</div>
                   <div>Market capital.: 3.83T</div>
                 </div>
@@ -238,9 +235,9 @@ export default function Trends() {
             {/* NVDA Profile Card */}
             <div className="bg-white rounded-xl shadow p-4 h-full min-h-[320px]">
               <div className="font-semibold text-[15px] text-[#4A0D0D] mb-2">NVDA Profile</div>
-              <div className="text-xs mb-1"><span className="font-semibold">Sector:</span> Electronic Technology</div>
-              <div className="text-xs mb-1"><span className="font-semibold">Industry:</span> LoremIpsum Equipment</div>
-              <div className="text-xs mb-1"><span className="font-semibold">Employees (FY):</span> 122K</div>
+              <div className="text-sm mb-1"><span className="font-semibold">Sector:</span> Electronic Technology</div>
+              <div className="text-sm mb-1"><span className="font-semibold">Industry:</span> LoremIpsum Equipment</div>
+              <div className="text-sm mb-1"><span className="font-semibold">Employees (FY):</span> 122K</div>
               <div className="text-md text-gray-600 mt-2">
                 Lorem ipsum dolor sit amet, consecte tur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
               </div>
