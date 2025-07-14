@@ -101,12 +101,12 @@ export default function Trends() {
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
-              <div className="flex justify-between text-xs text-gray-400 mt-1">
+              {/* <div className="flex justify-between text-xs text-gray-400 mt-1">
                 <span>Oct</span>
                 <span>2024</span>
                 <span>Apr</span>
                 <span>Jul</span>
-              </div>
+              </div> */}
             </div>
             {/* Technical Analysis Card */}
             <div className="bg-white rounded-xl shadow p-4">
@@ -130,18 +130,20 @@ export default function Trends() {
                 {/* Gauge with three colored arcs and centered label */}
                 <div className="relative flex flex-col items-center justify-center" style={{height: 180}}>
                   <svg width={260} height={140} viewBox="0 0 260 140">
-                    {/* Three colored arcs (true semicircle) */}
-                    <path d="M30,130 A100,100 0 0,1 130,30" stroke="#FFE6EA" strokeWidth="24" fill="none" strokeLinecap="round" />
-                    <path d="M130,30 A100,100 0 0,1 230,130" stroke="#C97A8D" strokeWidth="24" fill="none" strokeLinecap="round" />
-                    <path d="M230,130 A100,100 0 0,1 30,130" stroke="#4A0D0D" strokeWidth="24" fill="none" strokeLinecap="round" />
+                    {/* Three colored arcs (true semicircle, split into thirds) */}
+                    {/* Left arc: -90° to -30° */}
+                    <path d="M30,130 A100,100 0 0,1 80,55" stroke="#FFE6EA" strokeWidth="24" fill="none" strokeLinecap="butt" />
+                    {/* Middle arc: -30° to +30° */}
+                    <path d="M80,55 A100,100 0 0,1 180,55" stroke="#C97A8D" strokeWidth="24" fill="none" strokeLinecap="butt" />
+                    {/* Right arc: +30° to +90° */}
+                    <path d="M180,55 A100,100 0 0,1 230,130" stroke="#4A0D0D" strokeWidth="24" fill="none" strokeLinecap="butt" />
                     {/* Needle as a filled triangle with rounded base */}
                     <g>
                       <ellipse cx="130" cy="130" rx="8" ry="8" fill="#222" />
                       <polygon points="130,50 122,130 138,130" fill="#222" />
                     </g>
                   </svg>
-                  {/* Centered label, large and overlapping pointer base */}
-                  <div className="absolute left-0 right-0 top-[90px] text-center text-[28px] font-semibold text-[#222] select-none">Neutral</div>
+                  <div className="absolute left-0 right-0 top-[160px] text-center text-[28px] font-normal text-[#222] select-none">Neutral</div>
                 </div>
                 {/* Sell/Neutral/Buy row, spaced further below */}
                 <div className="flex justify-between w-full mt-6 px-2">

@@ -2,15 +2,15 @@
 
 export default function Scanner() {
   return (
-    <div className="min-h-screen bg-[#f6f7f9] flex items-center justify-center py-8">
-      <div className="bg-white rounded-xl shadow p-8 w-full max-w-3xl mx-auto">
+<div className="min-h-[calc(100vh-64px)] bg-[#f6f7f9] flex flex-col items-start justify-start py-8 px-8">
+      <div className="flex-start bg-white rounded-xl shadow p-8 w-[700px] max-w-none">
         {/* Counters */}
         <div className="flex justify-center gap-8 mb-8">
-          <div className="border-2 border-[#4A0D0D] rounded-md px-6 py-2 flex items-center text-lg font-medium">
-            Scanner Left: <span className="text-[#B23B16] ml-2 font-bold">2</span>
+          <div className="border-2 border-[#4A0D0D] rounded-md px-6 py-3 flex items-center text-xl font-medium min-w-[170px] justify-center">
+            Scanner Left: <span className="text-[#B23B16] ml-2 font-bold text-2xl">2</span>
           </div>
-          <div className="border-2 border-[#4A0D0D] rounded-md px-6 py-2 flex items-center text-lg font-medium">
-            SMS Left: <span className="text-[#B23B16] ml-2 font-bold">5</span>
+          <div className="border-2 border-[#4A0D0D] rounded-md px-6 py-3 flex items-center text-xl font-medium min-w-[170px] justify-center">
+            SMS Left: <span className="text-[#B23B16] ml-2 font-bold text-2xl">5</span>
           </div>
         </div>
         {/* Form */}
@@ -72,7 +72,7 @@ export default function Scanner() {
           </div>
           {/* Button (centered below both columns) */}
           <div className="md:col-span-2 flex justify-center mt-4">
-            <button type="submit" className="bg-[#4A0D0D] text-white px-8 py-2 rounded shadow hover:bg-[#2d0a0a] transition font-semibold">
+            <button type="submit" className="bg-[#4A0D0D] text-white px-8 py-2 rounded shadow-lg hover:bg-[#2d0a0a] transition font-semibold">
               Create Scanner
             </button>
           </div>
