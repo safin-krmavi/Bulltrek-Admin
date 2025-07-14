@@ -415,43 +415,44 @@ export default function Dashboard({ userId }: { userId?: string }) {
         <div className="flex flex-col md:flex-row gap-4 items-stretch">
           {/* Left: Greeting + Summary Cards in a white container */}
           <div className="flex-1 max-w-[calc(100%-250px)]">
-            <div className="bg-white dark:bg-[#232326] rounded-xl shadow p-4 flex flex-row items-center gap-6 h-[180px]">
+            <div className="bg-white dark:bg-[#232326] rounded-xl shadow p-4 flex flex-row items-center gap-6 h-[130px]">
               {/* Greeting */}
-              <div className="flex flex-col justify-center items-start min-w-[140px] pr-2">
+              <div className="flex flex-col justify-center items-start min-w-[140px] pr-2 mb-2">
                 <span className="font-semibold text-[16px] leading-tight text-black dark:text-white">Hi {userData?.name || "User"},</span>
                 <span className="text-[15px] text-black/80 dark:text-white/80">here is your summary</span>
               </div>
               {/* Summary Cards */}
               <div className="flex flex-row gap-6 flex-1 justify-end">
                 {/* Platforms Added */}
-                <div className="flex flex-row gap-2 justify-center items-center bg-[#FFE6EA] dark:bg-[#2d2326] rounded-lg min-w-[130px] w-[130px] min-h-[100px] h-[100px] px-2 py-3">
-                  <span className="text-[15px] text-[#4A0D0D] dark:text-white mb-2 text-center">Platforms Added</span>
-                  <span className="text-[20px] font-bold text-[#2D0A0A] dark:text-white text-center">{Array.isArray(getBrokerageDetails.data?.data) ? getBrokerageDetails.data.data.length : 0}</span>
+                <div className="flex flex-row items-center justify-between bg-[#FFE6EA] dark:bg-[#2d2326] rounded-lg min-w-[150px] w-[150px] min-h-[100px] h-[100px] px-4 py-3">
+                  <span className="text-[15px] text-[#4A0D0D] dark:text-white text-left leading-tight">Platforms<br/>Added</span>
+                  <span className="text-[22px] font-bold text-[#2D0A0A] dark:text-white text-right leading-none">{Array.isArray(getBrokerageDetails.data?.data) ? getBrokerageDetails.data.data.length : 0}</span>
                 </div>
                 {/* Strategies Active */}
-                <div className="flex flex-row gap-2 justify-center items-center bg-[#FFE6EA] dark:bg-[#2d2326] rounded-lg min-w-[130px] w-[130px] min-h-[100px] h-[100px] px-2 py-3">
-                  <span className="text-[15px] text-[#4A0D0D] dark:text-white mb-2 text-center">Strategies Active</span>
-                  <span className="text-[20px] font-bold text-[#2D0A0A] dark:text-white text-center">{Array.isArray(strategies?.data) ? strategies.data.length : 0}</span>
+                <div className="flex flex-row items-center justify-between bg-[#FFE6EA] dark:bg-[#2d2326] rounded-lg min-w-[150px] w-[150px] min-h-[100px] h-[100px] px-4 py-3">
+                  <span className="text-[15px] text-[#4A0D0D] dark:text-white text-left leading-tight">Strategies<br/>Active</span>
+                  <span className="text-[22px] font-bold text-[#2D0A0A] dark:text-white text-right leading-none">{Array.isArray(strategies?.data) ? strategies.data.length : 0}</span>
                 </div>
                 {/* Trades Executed */}
-                <div className="flex flex-row gap-2 justify-center items-center bg-[#FFE6EA] dark:bg-[#2d2326] rounded-lg min-w-[130px] w-[130px] min-h-[100px] h-[100px] px-2 py-3">
-                  <span className="text-[15px] text-[#4A0D0D] dark:text-white mb-2 text-center">Trades Executed</span>
-                  <span className="text-[20px] font-bold text-[#2D0A0A] dark:text-white text-center gap-2">{totalTradesExecuted}</span>
+                <div className="flex flex-row items-center justify-between bg-[#FFE6EA] dark:bg-[#2d2326] rounded-lg min-w-[150px] w-[150px] min-h-[100px] h-[100px] px-4 py-2">
+                  <span className="text-[15px] text-[#4A0D0D] dark:text-white text-left leading-tight">Trades<br/>Executed</span>
+                  <span className="text-[22px] font-bold text-[#2D0A0A] dark:text-white text-right leading-none">{totalTradesExecuted}</span>
                 </div>
                 {/* Net P/L */}
-                <div className="flex flex-row gap-2 justify-center items-center bg-[#FFE6EA] dark:bg-[#2d2326] rounded-lg min-w-[130px] w-[130px] min-h-[100px] h-[100px] px-2 py-3">
-                  <span className="text-[15px] text-[#4A0D0D] dark:text-white mb-2 text-center">Net P/L</span>
-                  <span className="text-[20px] font-bold text-green-600 dark:text-green-400 text-center">${netPL}</span>
-                  <span className="text-[14px] font-semibold text-green-600 dark:text-green-400 text-center">+{netPLPercentage}%</span>
+                <div className="flex flex-row items-center justify-between bg-[#FFE6EA] dark:bg-[#2d2326] rounded-lg min-w-[150px] w-[150px] min-h-[100px] h-[100px] px-4 py-3">
+                  <span className="text-[15px] text-[#4A0D0D] dark:text-white text-left leading-tight">Net<br/>P/L</span>
+                  <div className="flex flex-col items-end">
+                    <span className="text-[22px] font-bold text-green-600 dark:text-green-400 text-right leading-none">${netPL}</span>
+                    <span className="text-[14px] font-semibold text-green-600 dark:text-green-400 text-right leading-none">+{netPLPercentage}%</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           {/* Right: Referral Card */}
-          <div className="flex flex-col w-full md:w-[450px] max-w-[500px] h-[180px]">
-            <div className="bg-white dark:bg-[#232326] rounded-xl shadow p-4 h-full">
+          <div className="flex flex-col w-full md:w-[450px] max-w-[500px] h-[130px]">
+           
               <ShareCard />
-            </div>
           </div>
         </div>
 

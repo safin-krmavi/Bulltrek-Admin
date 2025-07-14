@@ -20,12 +20,12 @@ export default function ShareCard() {
         {/* Referral Link Row */}
         <div className="flex items-center gap-2 text-sm">
           <a
-            href="https://referral.linknameIdnameStrategy.co"
+            href="https://referralLinknameIdnameStrategy.co"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600 dark:text-blue-400 underline text-sm truncate flex-1"
           >
-            https://referral.linknameIdnameStrategy.co
+            https://referralLinknameIdnameStrategy.co
           </a>
           <Button variant="ghost" size="icon" className="h-6 w-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex-shrink-0">
             <Copy className="h-4 w-4" />
@@ -52,7 +52,7 @@ export default function ShareCard() {
         </div>
         
         {/* Referrals Row */}
-        <div className="flex items-center gap-4 text-sm pt-3 border-t border-gray-200 dark:border-gray-600">
+        <div className="flex items-center gap-4 text-sm">
           <span className="text-gray-700 dark:text-gray-300">
             Verified Referrals: <span className="font-semibold text-gray-900 dark:text-white">238</span>
           </span>
