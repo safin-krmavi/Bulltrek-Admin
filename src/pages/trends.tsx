@@ -212,6 +212,23 @@ export default function Trends() {
                   <div>Market capital.: 3.83T</div>
                   <div>Enterprise Val.: 3.83T</div>
                   <div>Enterprise Val.: 3.83T</div>
+                  <div>Market capital.: 3.83T</div>
+                  <div>Market capital.: 3.83T</div>
+                  <div>Enterprise Val.: 3.83T</div>
+                  <div>Enterprise Val.: 3.83T</div>
+                </div>
+                <div>
+                  <div className="font-semibold">Valuation</div>
+                  <div>Market capital.: 3.83T</div>
+                  <div>Market capital.: 3.83T</div>
+                  <div>Market capital.: 3.83T</div>
+                  <div>Enterprise Val.: 3.83T</div>
+                  <div>Enterprise Val.: 3.83T</div>
+                </div>
+                <div>
+                  <div className="font-semibold">Valuation</div>
+                  <div>Market capital.: 3.83T</div>
+                  <div>Market capital.: 3.83T</div>
                 </div>
               </div>
             </div>
@@ -224,7 +241,7 @@ export default function Trends() {
               <div className="text-xs mb-1"><span className="font-semibold">Sector:</span> Electronic Technology</div>
               <div className="text-xs mb-1"><span className="font-semibold">Industry:</span> LoremIpsum Equipment</div>
               <div className="text-xs mb-1"><span className="font-semibold">Employees (FY):</span> 122K</div>
-              <div className="text-xs text-gray-600 mt-2">
+              <div className="text-md text-gray-600 mt-2">
                 Lorem ipsum dolor sit amet, consecte tur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
               </div>
             </div>
