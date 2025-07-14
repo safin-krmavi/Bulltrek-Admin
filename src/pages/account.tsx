@@ -99,7 +99,7 @@ interface Transaction {
 export default function AccountPage() {
   const navigate = useNavigate();
   // State declarations - move selectedSymbol here
-  const [selectedSymbol, setSelectedSymbol] = useState<string>("BTCUSDT");
+  const [selectedSymbol] = useState<string>("BTCUSDT");
 
   // Hooks that depend on selectedSymbol
   const { 
