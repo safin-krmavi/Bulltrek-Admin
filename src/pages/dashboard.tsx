@@ -41,6 +41,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { CollapsibleCard } from "@/components/collapsible-card";
 // import StrategyBuilder from '@/components/strategy/StrategyBuilder'
+// import { Logo } from "@/components/ui/logo";
+import LoadingLogo from "@/components/ui/LoadingLogo";
 
 interface ScannerData {
   name: string;
@@ -225,8 +227,8 @@ export default function Dashboard({ userId }: { userId?: string }) {
     return (
       <div className="min-h-screen bg-background dark:bg-[#18181b] w-full flex items-center justify-center transition-colors duration-300">
         <div className="text-center">
-          <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading dashboard data...</p>
+          <LoadingLogo size={80} />
+          <p className="text-muted-foreground mt-4 dark:text-white">Loading dashboard data...</p>
         </div>
       </div>
     );
@@ -462,7 +464,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
           onOpenChange={() => toggleSection("strategy")}
           className="mt-6"
         >
-          <Card className="border-0">
+          <Card className="border-0 dark:bg-[#232326]">
             <CardHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white rounded-t-lg transition-colors duration-300 dark:text-white">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -883,7 +885,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
         {/* </Card> */}
         {/* Create Strategy Button above the Strategy Table */}
         {/* Strategy Table Section */}
-        <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg shadow-sm mt-0 transition-colors duration-300">
+        <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg shadow-sm mt-4 transition-colors duration-300">
           <CardHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white rounded-t-lg transition-colors duration-300 dark:text-white">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg font-medium">

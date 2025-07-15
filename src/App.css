@@ -64,3 +64,66 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 2s linear infinite;
+}
+
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.8,0,1,1);
+  }
+  50% {
+    transform: translateY(-20px);
+    animation-timing-function: cubic-bezier(0,0,0.2,1);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 1.5s infinite;
+}
+
+@keyframes bulltrek-bar-updown-red {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-10px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(10px); }
+}
+@keyframes bulltrek-bar-updown-green {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(10px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(-10px); }
+}
+.bulltrek-loading-bar-red {
+  animation: bulltrek-bar-updown-red 1s infinite cubic-bezier(0.4,0,0.2,1);
+}
+.bulltrek-loading-bar-green {
+  animation: bulltrek-bar-updown-green 1s infinite cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes bulltrek-bar-updown-l1 {
+  0%, 100% { transform: translateY(0); }
+  20% { transform: translateY(-10px); }
+  40% { transform: translateY(0); }
+  60% { transform: translateY(10px); }
+  80% { transform: translateY(0); }
+}
+@keyframes bulltrek-bar-updown-l2 {
+  0%, 100% { transform: translateY(0); }
+  20% { transform: translateY(10px); }
+  40% { transform: translateY(0); }
+  60% { transform: translateY(-10px); }
+  80% { transform: translateY(0); }
+}
+.bulltrek-loading-bar-l1 {
+  animation: bulltrek-bar-updown-l1 1s infinite cubic-bezier(0.4,0,0.2,1);
+}
+.bulltrek-loading-bar-l2 {
+  animation: bulltrek-bar-updown-l2 1s infinite cubic-bezier(0.4,0,0.2,1);
+}

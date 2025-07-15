@@ -106,7 +106,7 @@ const Header: React.FC = () => {
               onClick={() => navigate("/account ")}
             />
             <Button
-              className="bg-primary text-primary-foreground rounded-2xl hover:bg-primary/90 shadow-md dark:text-white dark:bg-primary"
+              className="bg-[#4A0D0D] text-white rounded-2xl hover:bg-primary/90 shadow-md dark:text-white dark:bg-[#232326]"
               onClick={() => navigate("/tutorial")}
             >
               Tutorial
