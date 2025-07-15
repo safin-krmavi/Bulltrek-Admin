@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import './LoadingLogo.css';
 
 export default function LoadingLogo({ size = 60 }: { size?: number }) {
