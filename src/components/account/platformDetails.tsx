@@ -12,7 +12,7 @@ export function PlatformDetails({ onDelete }: PlatformDetailsProps) {
   const { data: brokerageData, isLoading: isBrokerageLoading, error: brokerageError } = useBrokerageDetails();
 
   return (
-    <div className="max-h-[300px] overflow-y-auto">
+    <div className="max-h-[300px] overflow-y-auto hide-scrollbar">
       <Table>
         <TableHeader className="sticky top-0 bg-white dark:bg-[#232326] z-10">
           <TableRow>

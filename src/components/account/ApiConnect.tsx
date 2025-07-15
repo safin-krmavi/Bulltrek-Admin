@@ -145,7 +145,7 @@ export const ApiConnect: React.FC<ApiConnectProps> = ({
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-8 w-[500px] relative">
+          <div className="bg-white dark:bg-[#232326] dark:text-white dark:border dark:border-[#333] rounded-xl p-8 w-[500px] relative transition-colors">
             <button
               className="absolute top-4 right-4"
               onClick={() => setShowModal(false)}
