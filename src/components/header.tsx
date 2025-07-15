@@ -1,15 +1,87 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { Bell, HelpCircle } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Bell, HelpCircle, ChevronDown } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "@/App";
+
+const navDropdowns = [
+  {
+    label: "Trade",
+    options: [
+      { label: "Trade", value: "/trade" },
+      { label: "Indy Lesi", value: "/indie-lesi" },
+      { label: "Indy Trend", value: "/indie-trend" },
+      { label: "Growth Dca", value: "/growth-dca" },
+      { label: "Price Action", value: "/price-action" },
+      { label: "Human Grid", value: "/human-grid" },
+      { label: "Smart Grid", value: "/smart-grid" },
+    ],
+  },
+  {
+    label: "Reports",
+    options: [
+      { label: "Reports", value: "/trading-report" },
+      { label: "Scanner", value: "/scanner" },
+      { label: "Trends", value: "/trends" },
+    ],
+  },
+  {
+    label: "Copy Trade",
+    options: [
+      { label: "Copy Trade", value: "/copy-trade" },
+      { label: "Copy Trade 1", value: "/copy-trade-1" },
+      { label: "Copy Trade 2", value: "/copy-trade-2" },
+      { label: "Copy Trade 3", value: "/copy-trade-3" },
+      { label: "Trader Overview", value: "/trader-overview" },
+      { label: "Diverse Follow", value: "/diverse-follow" },
+      { label: "Smart Copy", value: "/smart-copy" },
+      { label: "Traders Comparison", value: "/traders-comparison" },
+    ],
+  },
+  {
+    label: "Market Place",
+    options: [
+      { label: "Market Place", value: "/market-place" },
+      { label: "Pricing", value: "/pricing" },
+      { label: "Payment", value: "/payment" },
+    ],
+  },
+];
+
+export const HeaderDropdown: React.FC<{
+  label: string;
+  options: { label: string; value: string }[];
+  navigate: (path: string) => void;
+}> = ({ label, options, navigate }) => {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div className="relative">
+      <button
+        className="min-w-[90px] px-3 py-1 flex items-center justify-center h-9 rounded-md bg-secondary text-secondary-foreground dark:text-white font-medium text-sm transition-colors border-transparent hover:bg-secondary/80 focus:outline-none focus:ring-1 focus:ring-ring"
+        onClick={() => setOpen((o) => !o)}
+        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        type="button"
+      >
+        {label}
+        <ChevronDown className="ml-2 w-4 h-4" />
+      </button>
+      {open && (
+        <div className="absolute left-0 mt-2 w-44 rounded-md shadow-lg z-50 bg-white dark:bg-[#232326] border border-gray-200 dark:border-[#333]">
+          {options.map((option) => (
+            <button
+              key={option.value}
+              className="block w-full text-left px-4 py-2 text-sm hover:bg-secondary/80 focus:bg-secondary/80 transition-colors text-secondary-foreground dark:text-white"
+              onMouseDown={() => navigate(option.value)}
+              tabIndex={-1}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -26,61 +98,14 @@ const Header: React.FC = () => {
             <img src="/logo.svg" alt="Builtrek" className="h-8 drop-shadow dark:drop-shadow-[0_2px_8px_rgba(255,255,255,0.5)]" />
             <nav className="flex items-center gap-6">
               <Link to="/dashboard" className="text-foreground dark:text-white hover:text-primary transition-colors">Dashboard</Link>
-              <Select onValueChange={(value) => handleSelectChange(value)}>
-                <SelectTrigger className="min-w-[100px] truncate border-transparent bg-secondary text-secondary-foreground dark:text-white" >
-                  <SelectValue placeholder="Trade" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="/trade">Trade</SelectItem>
-                  <SelectItem value="/indie-lesi">Indy Lesi</SelectItem>
-                  <SelectItem value="/indie-trend">Indy Trend</SelectItem>
-                  <SelectItem value="/growth-dca">Growth Dca</SelectItem>
-                  <SelectItem value="/price-action">Price Action</SelectItem>
-                  <SelectItem value="/human-grid">Human Grid</SelectItem>
-                  <SelectItem value="/smart-grid">Smart Grid</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select onValueChange={(value) => handleSelectChange(value)}>
-                <SelectTrigger className="min-w-[100px] border-transparent bg-secondary text-secondary-foreground dark:text-white" >
-                  <SelectValue placeholder="Analysis" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="/trading-report">Reports</SelectItem>
-                  <SelectItem value="/scanner">Scanner</SelectItem>
-                  <SelectItem value="/trends">Trends</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select onValueChange={(value) => handleSelectChange(value)}>
-                <SelectTrigger className="w-[130px] border-transparent bg-secondary text-secondary-foreground dark:text-white" >
-                  <SelectValue placeholder="Copy Trade" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="/copy-trade">Copy Trade</SelectItem>
-                  <SelectItem value="/copy-trade-1">Copy Trade 1</SelectItem>
-                  <SelectItem value="/copy-trade-2">Copy Trade 2</SelectItem>
-                  <SelectItem value="/copy-trade-3">Copy Trade 3</SelectItem>
-                  <SelectItem value="/trader-overview">
-                    Trader Overview
-                  </SelectItem>
-                  <SelectItem value="/diverse-follow">
-                    Diverse Follow
-                  </SelectItem>
-                  <SelectItem value="/smart-copy">Smart Copy</SelectItem>
-                  <SelectItem value="/traders-comparison">
-                    Traders Comparison
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <Select onValueChange={(value) => handleSelectChange(value)}>
-                <SelectTrigger className="min-w-[130px] bg-secondary text-secondary-foreground dark:text-white" >
-                  <SelectValue placeholder="Market Place" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="/market-place">Market Place</SelectItem>
-                  <SelectItem value="/pricing">Pricing</SelectItem>
-                  <SelectItem value="/payment">Payment</SelectItem>
-                </SelectContent>
-              </Select>
+              {navDropdowns.map((dropdown) => (
+                <HeaderDropdown
+                  key={dropdown.label}
+                  label={dropdown.label}
+                  options={dropdown.options}
+                  navigate={handleSelectChange}
+                />
+              ))}
               <Link to="/support" className="text-foreground dark:text-white hover:text-primary transition-colors">Support</Link>
             </nav>
           </div>

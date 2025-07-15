@@ -65,6 +65,18 @@
   }
 }
 
+.header-select {
+  background-color: transparent !important;
+}
+.header-select:focus, .header-select:active {
+  background-color: transparent !important;
+}
+@media (prefers-color-scheme: dark) {
+  .header-select {
+    background-color: transparent !important;
+  }
+}
+
 @keyframes spin-slow {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

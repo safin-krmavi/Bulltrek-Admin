@@ -62,7 +62,7 @@ export default function Trends() {
               <input className="w-full border rounded px-3 py-2 text-sm bg-white dark:bg-[#18181b] text-[#222] dark:text-white border-gray-300 dark:border-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-400" placeholder="API Name" />
             </div>
           </div>
-          <button className="bg-[#4A0D0D] text-white px-6 py-2 rounded shadow hover:bg-[#2d0a0a] transition font-semibold w-full md:w-auto self-center dark:bg-[#4A0D0D] dark:hover:bg-[#2d0a0a]">
+          <button className="bg-[#4A0D0D] text-white px-6 py-2 rounded shadow hover:bg-[#2d0a0a] transition font-semibold w-full md:w-auto self-center dark:bg-[#4A0D0D] dark:hover:bg-[#2d0a0a] mt-5">
             View Trends
           </button>
         </div>

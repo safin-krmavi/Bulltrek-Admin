@@ -267,7 +267,7 @@ export default function AccountPage() {
     : [];
 
   return (
-    <div className="px-4 flex flex-col gap-6">
+    <div className="px-4 flex flex-col gap-4 mt-2">
       <div className="grid grid-cols-5 w-full gap-4">
         <CollapsibleCard title="Account Details" className='col-span-3'>
             <div className="flex flex-col gap-6">
@@ -414,7 +414,7 @@ export default function AccountPage() {
       <div className="grid grid-cols-5 w-full gap-4 ">
         <CollapsibleCard title="Invoice Details" className='col-span-3 '>
             <Table>
-            <TableHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white">
+            <TableHeader className="dark: text-white">
                 <TableRow>
                 <TableHead>S.No</TableHead>
                 <TableHead>Plan Name</TableHead>
@@ -817,7 +817,7 @@ export default function AccountPage() {
              */}
             <div className="max-h-[400px] overflow-y-auto">
               <Table>
-                <TableHeader className="bg-[#4A0D0D] dark:bg-[#3b3b41] text-white">
+                <TableHeader className="dark:text-white">
                   <TableRow>
                     <TableHead>Symbol</TableHead>
                     <TableHead>Order ID</TableHead>

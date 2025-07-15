@@ -79,7 +79,7 @@ export default function SupportPage() {
     <div className="flex gap-10 px-6 py-4">
       {pathName === "/support" && <div className="flex-1 space-y-6">
             
-        <h2 className="text-[24px] font-semibold">Ticket History</h2>
+        <h2 className="text-[24px] font-semibold dark:text-white">Ticket History</h2>
 
         <Card className="border overflow-hidden bg-card dark:bg-[#232326] border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white transition-colors duration-300">
           <CardContent className="p-0">

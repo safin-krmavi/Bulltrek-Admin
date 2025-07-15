@@ -248,7 +248,7 @@ export default function TradingReportsPage() {
           <div className="text-sm text-gray-500">
             {startIndex + 1} to {Math.min(endIndex, MOCK_DATA.length)} of {MOCK_DATA.length} entries
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 dark:text-white">
             <Button
               variant="outline"
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
