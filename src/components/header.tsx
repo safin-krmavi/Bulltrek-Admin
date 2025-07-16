@@ -52,8 +52,13 @@ export const HeaderDropdown: React.FC<{
   label: string;
   options: { label: string; value: string }[];
   navigate: (path: string) => void;
-}> = ({ label, options, navigate }) => {
+  selectedValue?: string;
+  setSelectedValue?: (value: string) => void;
+}> = ({ label, options, navigate, selectedValue, setSelectedValue }) => {
   const [open, setOpen] = React.useState(false);
+  const selectedLabel = selectedValue
+    ? options.find((opt) => opt.value === selectedValue)?.label || label
+    : label;
   return (
     <div className="relative">
       <button
@@ -62,7 +67,7 @@ export const HeaderDropdown: React.FC<{
         onBlur={() => setTimeout(() => setOpen(false), 150)}
         type="button"
       >
-        {label}
+        {selectedLabel}
         <ChevronDown className="ml-2 w-4 h-4" />
       </button>
       {open && (
@@ -71,7 +76,10 @@ export const HeaderDropdown: React.FC<{
             <button
               key={option.value}
               className="block w-full text-left px-4 py-2 text-sm hover:bg-secondary/80 focus:bg-secondary/80 transition-colors text-secondary-foreground dark:text-white"
-              onMouseDown={() => navigate(option.value)}
+              onMouseDown={() => {
+                navigate(option.value);
+                setSelectedValue && setSelectedValue(option.value);
+              }}
               tabIndex={-1}
             >
               {option.label}
@@ -85,6 +93,7 @@ export const HeaderDropdown: React.FC<{
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
+  const [selectedTrade, setSelectedTrade] = React.useState<string>("/trade");
 
   const handleSelectChange = (path: string) => {
     navigate(path);
@@ -98,14 +107,25 @@ const Header: React.FC = () => {
             <img src="/logo.svg" alt="Builtrek" className="h-8 drop-shadow dark:drop-shadow-[0_2px_8px_rgba(255,255,255,0.5)]" />
             <nav className="flex items-center gap-6">
               <Link to="/dashboard" className="text-foreground dark:text-white hover:text-primary transition-colors">Dashboard</Link>
-              {navDropdowns.map((dropdown) => (
-                <HeaderDropdown
-                  key={dropdown.label}
-                  label={dropdown.label}
-                  options={dropdown.options}
-                  navigate={handleSelectChange}
-                />
-              ))}
+              {navDropdowns.map((dropdown) =>
+                dropdown.label === "Trade" ? (
+                  <HeaderDropdown
+                    key={dropdown.label}
+                    label={dropdown.label}
+                    options={dropdown.options}
+                    navigate={handleSelectChange}
+                    selectedValue={selectedTrade}
+                    setSelectedValue={setSelectedTrade}
+                  />
+                ) : (
+                  <HeaderDropdown
+                    key={dropdown.label}
+                    label={dropdown.label}
+                    options={dropdown.options}
+                    navigate={handleSelectChange}
+                  />
+                )
+              )}
               <Link to="/support" className="text-foreground dark:text-white hover:text-primary transition-colors">Support</Link>
             </nav>
           </div>
