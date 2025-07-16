@@ -21,6 +21,7 @@ import { useLocation } from "react-router-dom";
 import { useBotManagement } from "@/hooks/useBotManagement";
 import { format } from "date-fns";
 import { BrokerageConnection, brokerageService } from "@/api/brokerage";
+import { useTheme } from "@/App";
 
 export default function TradePage() {
   const [sections, setSections] = useState({
@@ -43,6 +44,8 @@ export default function TradePage() {
 
   // Get the selected bot details - updated to match the API response structure
   const selectedBotDetails = getBotDetails.data;
+
+  const { theme } = useTheme();
 
   useEffect(() => {
     async function fetchBrokerages() {
@@ -120,6 +123,7 @@ export default function TradePage() {
             interval: "1D",
             fullscreen: true,
             debug: true,
+            theme: theme === 'dark' ? 'dark' : 'light',
           });
         } else {
           console.error("TradingView or Datafeeds not available.");
@@ -138,7 +142,7 @@ export default function TradePage() {
         .querySelectorAll("script[src*='datafeeds']")
         .forEach((s) => s.remove());
     };
-  }, []);
+  }, [theme]);
 
   return (
     <div className="flex w-full p-4 h-full">
