@@ -703,10 +703,10 @@ export default function Dashboard({ userId }: { userId?: string }) {
             </Collapsible>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 ">
             <CollapsibleCard
               title="API Connect "
-              className="col-span-2"
+              className="col-span-2 "
               contentClassName="p-0"
               action={
                 <Button

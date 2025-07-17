@@ -12,6 +12,8 @@ import { useBotManagement } from "@/hooks/useBotManagement"
 import { useEffect, useState } from "react"
 import { BrokerageConnection, brokerageService } from "@/api/brokerage"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Fragment } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export default function GrowthDCA() {
   const [isOpen, setIsOpen] = React.useState(true)
@@ -23,6 +25,13 @@ export default function GrowthDCA() {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [brokerages, setBrokerages] = useState<BrokerageConnection[]>([])
   const [isBrokeragesLoading, setIsBrokeragesLoading] = useState(true)
+  const [selectedDuration, setSelectedDuration] = useState<string>("");
+  const [repeatHour, setRepeatHour] = useState<string>("01");
+  const [repeatMinute, setRepeatMinute] = useState<string>("00");
+  const [repeatPeriod, setRepeatPeriod] = useState<string>("AM");
+  const [selectedDate, setSelectedDate] = useState<string>("1");
+  const [openPopover, setOpenPopover] = useState<string | null>(null);
+  const [selectedDay, setSelectedDay] = useState<string>("");
 
   const {
   } = useBotManagement()
@@ -50,6 +59,39 @@ export default function GrowthDCA() {
     }
     setShowConfirmation(true)
   }
+
+  // Helper for rendering time dropdown
+  const renderTimeDropdown = () => (
+    <div className="flex gap-2 mt-2">
+      <select value={repeatHour} onChange={e => setRepeatHour(e.target.value)} className="border rounded px-2 py-1">
+        {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0")).map(h => (
+          <option key={h} value={h}>{h}</option>
+        ))}
+      </select>
+      <span>:</span>
+      <select value={repeatMinute} onChange={e => setRepeatMinute(e.target.value)} className="border rounded px-2 py-1">
+        {["00", "15", "30", "45"].map(m => (
+          <option key={m} value={m}>{m}</option>
+        ))}
+      </select>
+      <select value={repeatPeriod} onChange={e => setRepeatPeriod(e.target.value)} className="border rounded px-2 py-1">
+        <option value="AM">AM</option>
+        <option value="PM">PM</option>
+      </select>
+    </div>
+  );
+
+  // Helper for rendering date dropdown
+  const renderDateDropdown = () => (
+    <div className="flex gap-2 mt-2">
+      <select value={selectedDate} onChange={e => setSelectedDate(e.target.value)} className="border rounded px-2 py-1">
+        {Array.from({ length: 31 }, (_, i) => String(i + 1)).map(d => (
+          <option key={d} value={d}>{d}</option>
+        ))}
+      </select>
+      <span>Select Date of Month</span>
+    </div>
+  );
 
   return (
     <div className="mx-auto max-w-md p-4">
@@ -159,10 +201,125 @@ export default function GrowthDCA() {
                   <span className="text-muted-foreground">ⓘ</span>
                 </Label>
                 <div className="grid grid-cols-4 gap-2">
-                  <Button variant="outline" className="flex-1">Daily</Button>
-                  <Button variant="outline" className="flex-1">Weekly</Button>
-                  <Button variant="outline" className="flex-1">Monthly</Button>
-                  <Button variant="outline" className="flex-1">Hourly</Button>
+                  {["Daily", "Weekly", "Monthly", "Hourly"].map((dur) => (
+                    <Popover key={dur} open={openPopover === dur} onOpenChange={open => setOpenPopover(open ? dur : null)}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          type="button"
+                          variant={selectedDuration === dur ? "default" : "outline"}
+                          className={`flex-1 transition-colors ${selectedDuration === dur ? 'border-orange-500 ring-2 ring-orange-500' : ''} hover:border-orange-500 hover:ring-2 hover:ring-orange-500`}
+                          onClick={() => {
+                            setSelectedDuration(dur);
+                            setOpenPopover(openPopover === dur ? null : dur);
+                          }}
+                        >
+                          {dur}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent align="center" className="z-50 p-4 w-auto bg-white dark:bg-[#232326] border border-border shadow-lg rounded-lg">
+                        {dur === "Monthly" && (
+                          <>
+                            <label className="block text-sm font-medium mb-1">Select Date of Month</label>
+                            <select
+                              value={selectedDate}
+                              onChange={e => setSelectedDate(e.target.value)}
+                              className="border rounded px-2 py-1 w-full mb-3 focus:border-orange-500 focus:ring-2 focus:ring-orange-500 hover:border-orange-500 bg-red-50"
+                            >
+                              <option value="" disabled>Date</option>
+                              {Array.from({ length: 31 }, (_, i) => String(i + 1)).map(d => (
+                                <option key={d} value={d}>{d}</option>
+                              ))}
+                            </select>
+                            <label className="block text-sm font-medium mb-1">Repeats On</label>
+                            <div className="flex gap-2 mb-2">
+                              <select
+                                value={repeatHour}
+                                onChange={e => setRepeatHour(e.target.value)}
+                                className="border rounded px-2 py-1 focus:border-orange-500 focus:ring-2 focus:ring-orange-500 hover:border-orange-500 bg-red-50"
+                              >
+                                <option value="" disabled>HH</option>
+                                {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0")).map(h => (
+                                  <option key={h} value={h}>{h}</option>
+                                ))}
+                              </select>
+                              <span>:</span>
+                              <select
+                                value={repeatMinute}
+                                onChange={e => setRepeatMinute(e.target.value)}
+                                className="border rounded px-2 py-1 focus:border-orange-500 focus:ring-2 focus:ring-orange-500 hover:border-orange-500 bg-red-50"
+                              >
+                                <option value="" disabled>MM</option>
+                                {["00", "15", "30", "45"].map(m => (
+                                  <option key={m} value={m}>{m}</option>
+                                ))}
+                              </select>
+                              <select
+                                value={repeatPeriod}
+                                onChange={e => setRepeatPeriod(e.target.value)}
+                                className="border rounded px-2 py-1 focus:border-orange-500 focus:ring-2 focus:ring-orange-500 hover:border-orange-500 bg-red-50"
+                              >
+                                <option value="" disabled>AM/PM</option>
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                              </select>
+                            </div>
+                          </>
+                        )}
+
+                        {dur === "Weekly" && (
+                          <>
+                            <label className="block text-sm font-medium mb-1">Select Days</label>
+                            <select
+                              value={selectedDay}
+                              onChange={e => setSelectedDay(e.target.value)}
+                              className="border rounded px-2 py-1 w-full mb-3 focus:border-orange-500 focus:ring-2 focus:ring-orange-500 hover:border-orange-500 bg-red-50"
+                            >
+                              <option value="" disabled>Days</option>
+                              {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map(day => (
+                                <option key={day} value={day}>{day}</option>
+                              ))}
+                            </select>
+                            <label className="block text-sm font-medium mb-1">Repeats On</label>
+                            <div className="flex gap-2 mb-2">
+                              <select
+                                value={repeatHour}
+                                onChange={e => setRepeatHour(e.target.value)}
+                                className="border rounded px-2 py-1 focus:border-orange-500 focus:ring-2 focus:ring-orange-500 hover:border-orange-500 bg-red-50"
+                              >
+                                <option value="" disabled>HH</option>
+                                {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0")).map(h => (
+                                  <option key={h} value={h}>{h}</option>
+                                ))}
+                              </select>
+                              <span>:</span>
+                              <select
+                                value={repeatMinute}
+                                onChange={e => setRepeatMinute(e.target.value)}
+                                className="border rounded px-2 py-1 focus:border-orange-500 focus:ring-2 focus:ring-orange-500 hover:border-orange-500 bg-red-50"
+                              >
+                                <option value="" disabled>MM</option>
+                                {["00", "15", "30", "45"].map(m => (
+                                  <option key={m} value={m}>{m}</option>
+                                ))}
+                              </select>
+                              <select
+                                value={repeatPeriod}
+                                onChange={e => setRepeatPeriod(e.target.value)}
+                                className="border rounded px-2 py-1 focus:border-orange-500 focus:ring-2 focus:ring-orange-500 hover:border-orange-500 bg-red-50"
+                              >
+                                <option value="" disabled>AM/PM</option>
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                              </select>
+                            </div>
+                          </>
+                        )}
+                        <div className="flex justify-end mt-2">
+                          <Button size="sm" type="button" onClick={() => setOpenPopover(null)}>OK</Button>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  ))}
                 </div>
               </div>
 
@@ -181,7 +338,7 @@ export default function GrowthDCA() {
           </Collapsible>
 
           <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
-            <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-primary p-4 font-medium text-primary-foreground hover:bg-primary/90">
+            <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md p-4 font-medium text-primary-foreground">
               <span>Advanced Settings</span>
               <ChevronDown className={`h-4 w-4 transition-transform ${isAdvancedOpen ? "rotate-180" : ""}`} />
             </CollapsibleTrigger>

@@ -35,7 +35,7 @@ export default function SmartGrid() {
   }, [])
 
   return (
-    <Card className="mx-auto max-w-md bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
+<div className="w-full max-w-xl rounded-full mx-auto">
       <AccountDetailsCard
         selectedApi={selectedApi}
         setSelectedApi={setSelectedApi}
@@ -175,7 +175,7 @@ export default function SmartGrid() {
           </Button>
         </div>
       </form>
-    </Card>
+</div>
   )
 }
 

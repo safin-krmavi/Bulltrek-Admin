@@ -324,7 +324,7 @@ export default function AccountPage() {
 
                         <div className="space-y-1">
                             <div className="text-sm text-muted-foreground">Time Zone</div>
-                            <div className="flex items-center gap-2 max-w-[200px]">
+                            <div className="flex items-center gap-2 max-w-[200px] bg-white dark:bg-[#232326]">
                             <Clock className="h-4 w-4 text-muted-foreground" />
                             <Select value={timeZone} onValueChange={setTimeZone}>
                                 <SelectTrigger className="bg-white dark:bg-[#232326] text-black dark:text-white">
