@@ -8,8 +8,6 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Card } from "@/components/ui/card"
-// import { cn } from "@/lib/utils"
 import { AccountDetailsCard } from "@/components/trade/AccountDetailsCard"
 import { useEffect } from "react"
 
@@ -39,7 +37,7 @@ export default function IndyTrend() {
   }, [])
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
+    <div>
       <AccountDetailsCard
         selectedApi={selectedApi}
         setSelectedApi={setSelectedApi}
@@ -177,7 +175,7 @@ export default function IndyTrend() {
           <Button className="w-fit px-4 bg-[#D97706] hover:bg-[#B45309] text-white shadow-md transition-colors duration-200">Reset</Button>
         </div>
       </form>
-    </Card>
+    </div>
   )
 }
 

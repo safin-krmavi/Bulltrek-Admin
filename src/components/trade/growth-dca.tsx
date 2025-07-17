@@ -11,14 +11,15 @@ import { TradeConfirmationDialog } from "@/components/trade/trade-confirmation-d
 import { useBotManagement } from "@/hooks/useBotManagement"
 import { useEffect, useState } from "react"
 import { BrokerageConnection, brokerageService } from "@/api/brokerage"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Fragment } from "react";
+// import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+// import { Fragment } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { AccountDetailsCard } from "./AccountDetailsCard"
 
 export default function GrowthDCA() {
   const [isOpen, setIsOpen] = React.useState(true)
   const [isAdvancedOpen, setIsAdvancedOpen] = React.useState(false)
-  const [accountDetailsOpen, setAccountDetailsOpen] = useState(true)
+  // const [accountDetailsOpen, setAccountDetailsOpen] = useState(true)
 
   // Dialog and selection state
   const [selectedApi, setSelectedApi] = useState("")
@@ -60,89 +61,17 @@ export default function GrowthDCA() {
     setShowConfirmation(true)
   }
 
-  // Helper for rendering time dropdown
-  const renderTimeDropdown = () => (
-    <div className="flex gap-2 mt-2">
-      <select value={repeatHour} onChange={e => setRepeatHour(e.target.value)} className="border rounded px-2 py-1">
-        {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0")).map(h => (
-          <option key={h} value={h}>{h}</option>
-        ))}
-      </select>
-      <span>:</span>
-      <select value={repeatMinute} onChange={e => setRepeatMinute(e.target.value)} className="border rounded px-2 py-1">
-        {["00", "15", "30", "45"].map(m => (
-          <option key={m} value={m}>{m}</option>
-        ))}
-      </select>
-      <select value={repeatPeriod} onChange={e => setRepeatPeriod(e.target.value)} className="border rounded px-2 py-1">
-        <option value="AM">AM</option>
-        <option value="PM">PM</option>
-      </select>
-    </div>
-  );
-
-  // Helper for rendering date dropdown
-  const renderDateDropdown = () => (
-    <div className="flex gap-2 mt-2">
-      <select value={selectedDate} onChange={e => setSelectedDate(e.target.value)} className="border rounded px-2 py-1">
-        {Array.from({ length: 31 }, (_, i) => String(i + 1)).map(d => (
-          <option key={d} value={d}>{d}</option>
-        ))}
-      </select>
-      <span>Select Date of Month</span>
-    </div>
-  );
 
   return (
-    <div className="mx-auto max-w-md p-4">
-      <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
-        <CardHeader
-          className="bg-[#4A1C24] text-white cursor-pointer flex flex-row items-center justify-between p-4 rounded-t-lg"
-          onClick={() => setAccountDetailsOpen((open) => !open)}
-        >
-          <CardTitle className="text-base font-medium">
-            Account Details
-          </CardTitle>
-          {accountDetailsOpen ? (
-            <ChevronDown className="h-5 w-5" />
-          ) : (
-            <ChevronDown className="h-5 w-5" />
-          )}
-        </CardHeader>
-        <div
-          className={accountDetailsOpen ? "block" : "hidden"}
-        >
-          <CardContent className="p-4 pt-0 space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">API Key</label>
-              <Select value={selectedApi} onValueChange={setSelectedApi}>
-                <SelectTrigger className="w-full bg-background border border-border rounded">
-                  <SelectValue placeholder="Select API connection" />
-                </SelectTrigger>
-                <SelectContent>
-                  {isBrokeragesLoading ? (
-                    <SelectItem value="loading" disabled>
-                      Loading...
-                    </SelectItem>
-                  ) : brokerages.length === 0 ? (
-                    <SelectItem value="none" disabled>
-                      No brokerages found
-                    </SelectItem>
-                  ) : (
-                    brokerages.map((b) => (
-                      <SelectItem key={b.id} value={b.id.toString()}>
-                        {b.brokerage_name}
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-            
-          </CardContent>
-        </div>
-      </Card>
-      <Card className="mt-4 bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
+      <div>
+      <AccountDetailsCard
+        selectedApi={selectedApi}
+        setSelectedApi={setSelectedApi}
+        isBrokeragesLoading={isBrokeragesLoading}
+        brokerages={brokerages}
+      />
+
+      <div>
         <form className="space-y-4 p-4">
           <Collapsible open={isOpen} onOpenChange={setIsOpen}>
           <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1C24] text-white p-4 font-medium hover:bg-[#5A2525] transition-colors duration-200">
@@ -407,7 +336,7 @@ export default function GrowthDCA() {
             </Button>
           </div>
         </form>
-      </Card>
+      </div>
       <TradeConfirmationDialog
         isOpen={showConfirmation}
         onClose={() => setShowConfirmation(false)}

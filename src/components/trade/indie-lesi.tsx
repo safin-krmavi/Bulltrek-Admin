@@ -8,8 +8,6 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card } from "@/components/ui/card"
-// import { cn } from "@/lib/utils"
 import { useEffect } from "react"
 import { AccountDetailsCard } from "@/components/trade/AccountDetailsCard"
 import { brokerageService } from "@/api/brokerage"
@@ -38,7 +36,7 @@ export default function IndyLESI() {
   }, [])
 
   return (
-    <Card className="mx-auto max-w-md bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
+    <div>
       <AccountDetailsCard
         selectedApi={selectedApi}
         setSelectedApi={setSelectedApi}
@@ -238,7 +236,7 @@ export default function IndyLESI() {
           <Button className="w-fit px-4 bg-[#D97706] hover:bg-[#B45309] text-white shadow-md transition-colors duration-200">Reset</Button>
         </div>
       </form>
-    </Card>
+    </div>
   )
 }
 

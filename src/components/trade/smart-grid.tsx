@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useEffect } from "react"
 import { AccountDetailsCard } from "@/components/trade/AccountDetailsCard"
 import { brokerageService } from "@/api/brokerage"
-import { Card } from "@/components/ui/card"
+
 
 export default function SmartGrid() {
   const [isOpen, setIsOpen] = React.useState(true)

@@ -7,17 +7,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card } from "@/components/ui/card"
-// import { cn } from "@/lib/utils"
 import { AccountDetailsCard } from "@/components/trade/AccountDetailsCard"
 import { useEffect } from "react"
 import { brokerageService } from "@/api/brokerage"
 
-// import { BrokerageConnection, brokerageService } from "@/api/brokerage"
 
 export default function HumanGrid() {
   const [isOpen, setIsOpen] = React.useState(true)
-  // const [accountDetailsOpen, setAccountDetailsOpen] = React.useState(true);
   const [selectedApi, setSelectedApi] = React.useState("");
   const [isBrokeragesLoading, setIsBrokeragesLoading] = React.useState(false);
   const [brokerages, setBrokerages] = React.useState([]);
@@ -38,7 +34,7 @@ export default function HumanGrid() {
   }, []);
 
   return (
-    <Card className="mx-auto max-w-md bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
+    <div>
       <AccountDetailsCard
         selectedApi={selectedApi}
         setSelectedApi={setSelectedApi}
@@ -165,7 +161,7 @@ export default function HumanGrid() {
           </Button>
         </div>
       </form>
-    </Card>
+    </div>
   )
 }
 
