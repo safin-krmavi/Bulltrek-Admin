@@ -107,11 +107,11 @@ export default function PriceAction() {
         </Collapsible>
 
         <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
-          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-primary p-4 font-medium text-primary-foreground hover:bg-primary/90">
+          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1C24] rounded-b-md border border-border border-t-0 p-4 font-medium text-white dark:text-white dark:bg-[#232326]">
             <span>Advanced Settings</span>
             <ChevronDown className={`h-4 w-4 transition-transform ${isAdvancedOpen ? "rotate-180" : ""}`} />
           </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 rounded-b-md border border-border border-t-0 bg-card p-4">
+          <CollapsibleContent className="space-y-4 rounded-b-md border border-border border-t-0 bg-card p-4 dark:text-white dark:bg-[#232326]">
             <div className="space-y-2">
               <Label>Price Trigger Start</Label>
               <div className="flex gap-2">

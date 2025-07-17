@@ -25,7 +25,7 @@ export const AccountDetailsCard: React.FC<AccountDetailsCardProps> = ({
   return (
     <Card className="bg-card dark:bg-[#232326] border border-border dark:border-gray-700 shadow-lg text-foreground dark:text-white rounded-lg transition-colors duration-300">
       <CardHeader
-        className="bg-[#4A1C24] text-white cursor-pointer flex flex-row items-center justify-between p-4 rounded-t-lg"
+        className="bg-[#4A1C24]  dark:bg-[#232326] dark:border-gray-700 text-white cursor-pointer flex flex-row items-center justify-between p-4 rounded-t-lg"
         onClick={() => setOpen((prev) => !prev)}
       >
         <CardTitle className="text-base font-medium">{title}</CardTitle>
