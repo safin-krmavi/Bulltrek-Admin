@@ -43,7 +43,7 @@ export default function IndyLESI() {
         isBrokeragesLoading={isBrokeragesLoading}
         brokerages={brokerages}
       />
-      <form className="space-y-4 p-4">
+      <form className="space-y-4 dark:bg-[#232326] dark:text-white mt-2 rounded-lg">
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
           <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1C24] text-white p-4 font-medium hover:bg-[#5A2525] transition-colors duration-200">
             <span>Indy LESI</span>

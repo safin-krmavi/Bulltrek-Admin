@@ -1,4 +1,4 @@
-import { assetApi, type TradeAsset } from '@/api/tradeMaster';
+import { assetApi } from '@/api/tradeMaster';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -6,10 +6,11 @@ export const useAssets = () => {
   const queryClient = useQueryClient();
 
   // Get all assets
-  const { data: assets, isLoading, error } = useQuery<TradeAsset[]>({
+  const { data: rawAssets, isLoading, error } = useQuery({
     queryKey: ['tradeAssets'],
-    queryFn: () => assetApi.getAll().then(res => res.data)
+    queryFn: () => assetApi.getAll().then((res: any) => Array.isArray(res.data) ? res.data : res.data?.data || []),
   });
+  const assets = Array.isArray(rawAssets) ? rawAssets : [];
 
   // Create asset
   const createAsset = useMutation({

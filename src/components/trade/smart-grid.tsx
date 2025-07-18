@@ -42,7 +42,7 @@ export default function SmartGrid() {
         isBrokeragesLoading={isBrokeragesLoading}
         brokerages={brokerages}
       />
-      <form className="space-y-4 p-4">
+      <form className="space-y-4 gap-4 dark:bg-[#232326] dark:text-white mt-2">
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
           <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-[#4A1C24] text-white p-4 font-medium hover:bg-[#5A2525] transition-colors duration-200">
             <span>Smart Grid</span>
@@ -142,7 +142,7 @@ export default function SmartGrid() {
             </div>
           </CollapsibleContent>
         </Collapsible>
-
+       
         <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
           <CollapsibleTrigger className="flex w-full items-center justify-between rounded-t-md bg-primary p-4 font-medium text-primary-foreground hover:bg-primary/90">
             <span>Advanced Settings</span>

@@ -26,6 +26,8 @@ import { useQuantities } from "@/hooks/useQuantity";
 import { useTradeMappings } from "@/hooks/useTradeMapping";
 import { useIndicatorValues } from "@/hooks/useValue";
 import { useBotManagement } from "@/hooks/useBotManagement";
+import { useStrategy } from "@/hooks/useStrategy";
+import { STRATEGY_KEYWORDS } from "../strategyKeywords";
 import {
   ChevronDown,
   MessageSquare,
@@ -33,7 +35,7 @@ import {
   RefreshCw,
   Plus,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import apiClient from "@/api/apiClient";
 import { useQuery } from "@tanstack/react-query";
@@ -150,13 +152,14 @@ export default function Dashboard({ userId }: { userId?: string }) {
   const [strategyTablePage, setStrategyTablePage] = useState(1);
   const strategiesPerPage = 4;
 
+  // Add this state to track which menu is open
+  const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
+
   const { data: profileData } = useUserProfile();
   const userData = profileData?.data;
 
   // API Data Hooks
   const {
-    mappings: tradeMappings,
-    deleteMapping,
     isLoading: isMappingsLoading,
     error: mappingsError,
   } = useTradeMappings();
@@ -171,14 +174,17 @@ export default function Dashboard({ userId }: { userId?: string }) {
   const {
     isLoading: isAssetsLoading,
     error: assetsError,
+    assets
   } = useAssets();
   const {
     isLoading: isValuesLoading,
     error: valuesError,
+    values: indicatorValues
   } = useIndicatorValues();
   const {
     isLoading: isQuantitiesLoading,
     error: quantitiesError,
+    quantities
   } = useQuantities();
   const {
     isLoading: isDirectionsLoading,
@@ -187,6 +193,12 @@ export default function Dashboard({ userId }: { userId?: string }) {
   const { getBrokerageDetails } = useBrokerageManagement();
   // const { data: liveOrders, isLoading: isLiveOrdersLoading } = useLiveOrders();
   const { bots, isLoading: isBotsLoading } = useBotManagement();
+  const { updateStrategy, deleteStrategy } = useStrategy();
+  // State for edit popup
+  const [editPopupOpen, setEditPopupOpen] = useState(false);
+  const [editStrategy, setEditStrategy] = useState<any>(null);
+  const [editLoading, setEditLoading] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
 
   // Combined loading state
   const isLoading =
@@ -221,6 +233,24 @@ export default function Dashboard({ userId }: { userId?: string }) {
   useEffect(() => {
     toast.dismiss();
   }, [isLoading]);
+
+  // Add a click handler to close the menu when clicking outside
+  const menuRefs = useRef<(HTMLDivElement | null)[]>([]);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        openMenuIndex !== null &&
+        menuRefs.current[openMenuIndex] &&
+        !menuRefs.current[openMenuIndex]?.contains(event.target as Node)
+      ) {
+        setOpenMenuIndex(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openMenuIndex]);
 
   // Show loading state
   if (isLoading) {
@@ -410,6 +440,49 @@ export default function Dashboard({ userId }: { userId?: string }) {
   console.log("Net P/L Percentage:", netPLPercentage);
   console.log("=================================");
 
+  // Handler to open edit popup
+  const handleEditClick = (strategy: any) => {
+    setEditStrategy({ ...strategy });
+    setEditPopupOpen(true);
+    setOpenMenuIndex(null);
+  };
+  // Handler for edit form change
+  const handleEditChange = (field: string, value: any) => {
+    setEditStrategy((prev: any) => ({ ...prev, [field]: value }));
+  };
+  // Handler for edit form submit
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEditLoading(true);
+    setEditError(null);
+    try {
+      await updateStrategy.mutateAsync({ id: editStrategy.id, data: {
+        name: editStrategy.name,
+        direction: editStrategy.direction,
+        quantity: editStrategy.quantity,
+        asset: editStrategy.assetSymbol,
+        // Add other fields as needed
+      }});
+      setEditPopupOpen(false);
+      toast.success("Strategy updated successfully");
+    } catch (err: any) {
+      setEditError(err?.response?.data?.message || err.message || "Update failed");
+    }
+    setEditLoading(false);
+  };
+
+  // Handler for delete with confirmation
+  const handleDeleteStrategy = async (strategyId: number) => {
+    if (!window.confirm('Are you sure you want to delete this strategy?')) return;
+    try {
+      await deleteStrategy.mutateAsync(strategyId);
+      toast.success('Strategy deleted successfully');
+      setOpenMenuIndex(null);
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || err.message || 'Delete failed');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background dark:bg-[#18181b] text-foreground dark:text-white w-full transition-colors duration-300">
       <main className="max-w-7xl mx-auto py-6 w-full">
@@ -520,19 +593,33 @@ export default function Dashboard({ userId }: { userId?: string }) {
                                 {strategy.status}
                               </div>
                             </TableCell>
-                            <TableCell className="text-foreground dark:text-white">
+                            <TableCell className="text-foreground dark:text-white relative">
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => {
-                                  const globalIndex = indexOfFirstStrategy + i;
-                                  if (tradeMappings?.[globalIndex]?.id) {
-                                    deleteMapping.mutate(tradeMappings[globalIndex].id);
-                                  }
-                                }}
+                                onClick={() => setOpenMenuIndex(openMenuIndex === i ? null : i)}
                               >
                                 <MoreVertical className="h-4 w-4" />
                               </Button>
+                              {openMenuIndex === i && (
+                                <div
+                                  ref={el => (menuRefs.current[i] = el)}
+                                  className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border rounded shadow-lg z-10"
+                                >
+                                  <button
+                                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    onClick={() => handleEditClick(strategy)}
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    onClick={() => handleDeleteStrategy(strategy.id)}
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              )}
                             </TableCell>
                           </TableRow>
                         ))}
@@ -997,6 +1084,117 @@ export default function Dashboard({ userId }: { userId?: string }) {
           </CardContent>
         </Card>
       </main>
+      {/* Edit Strategy Popup */}
+      {editPopupOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <form onSubmit={handleEditSubmit} className="bg-white dark:bg-[#232326] p-6 rounded-lg w-full max-w-2xl shadow-lg relative">
+            <h2 className="text-xl font-semibold mb-4  dark:text-[#FF8C00]">Edit Strategy</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block mb-1  dark:text-[#FF8C00]">Name</label>
+                <input type="text" className="w-full border  dark: rounded px-3 py-2 bg-white dark:bg-[#232326]  dark:text-white placeholder-gray-400 dark:placeholder-gray-500" value={editStrategy?.name || ''} onChange={e => handleEditChange('name', e.target.value)} />
+              </div>
+              <div>
+                <label className="block mb-1  dark:text-[#FF8C00]">Direction</label>
+                <select className="w-full border  dark: rounded px-3 py-2 bg-white dark:bg-[#232326] dark:text-white" value={editStrategy?.direction || ''} onChange={e => handleEditChange('direction', e.target.value)}>
+                  <option value="">Select Direction</option>
+                  <option value="buy">Buy</option>
+                  <option value="sell">Sell</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1  dark:text-[#FF8C00]">Quantity</label>
+                <select
+                  className="w-full border  dark: rounded px-3 py-2 bg-white dark:bg-[#232326]  dark:text-white"
+                  value={editStrategy?.quantity || ''}
+                  onChange={e => handleEditChange('quantity', e.target.value)}
+                  disabled={isQuantitiesLoading}
+                >
+                  <option value="">Select Quantity</option>
+                  {(Array.isArray(quantities) ? quantities : []).map((q: any) => (
+                    <option key={q.id || q.quantity} value={q.quantity}>{q.quantity}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1  dark:text-[#FF8C00]">Asset</label>
+                <select
+                  className="w-full border  dark: rounded px-3 py-2 bg-white dark:bg-[#232326]  dark:text-white"
+                  value={editStrategy?.assetSymbol || ''}
+                  onChange={e => handleEditChange('assetSymbol', e.target.value)}
+                  disabled={isAssetsLoading}
+                >
+                  <option value="">Select Asset</option>
+                  {(Array.isArray(assets) ? assets : []).map((a: any) => (
+                    <option key={a.id || a.symbol || a.asset} value={a.symbol || a.asset}>{a.symbol || a.asset}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1  dark:text-[#FF8C00]">Indicator</label>
+                <select className="w-full border  dark: rounded px-3 py-2 bg-white dark:bg-[#232326]  dark:text-white" value={editStrategy?.conditions?.[0]?.indicator || ''} onChange={e => {
+                  const newCond = [...(editStrategy?.conditions || [])];
+                  if (!newCond[0]) newCond[0] = { indicator: '', action: '', value: '' };
+                  newCond[0].indicator = e.target.value;
+                  setEditStrategy((prev: any) => ({ ...prev, conditions: newCond }));
+                }}>
+                  <option value="">Select Indicator</option>
+                  {STRATEGY_KEYWORDS.indicators.map((ind: string) => (
+                    <option key={ind} value={ind}>{ind}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1  dark:text-[#FF8C00]">Action</label>
+                <select className="w-full border  dark: rounded px-3 py-2 bg-white dark:bg-[#232326]  dark:text-white" value={editStrategy?.conditions?.[0]?.action || ''} onChange={e => {
+                  const newCond = [...(editStrategy?.conditions || [])];
+                  if (!newCond[0]) newCond[0] = { indicator: '', action: '', value: '' };
+                  newCond[0].action = e.target.value;
+                  setEditStrategy((prev: any) => ({ ...prev, conditions: newCond }));
+                }}>
+                  <option value="">Select Action</option>
+                  {STRATEGY_KEYWORDS.actions.map((act: string) => (
+                    <option key={act} value={act}>{act}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1  dark:text-[#FF8C00]">Value</label>
+                <select
+                  className="w-full border  dark: rounded px-3 py-2 bg-white dark:bg-[#232326]  dark:text-white"
+                  value={editStrategy?.conditions?.[0]?.value || ''}
+                  onChange={e => {
+                    const newCond = [...(editStrategy?.conditions || [])];
+                    if (!newCond[0]) newCond[0] = { indicator: '', action: '', value: '' };
+                    newCond[0].value = e.target.value;
+                    setEditStrategy((prev: any) => ({ ...prev, conditions: newCond }));
+                  }}
+                  disabled={isValuesLoading}
+                >
+                  <option value="">Select Value</option>
+                  {(Array.isArray(indicatorValues) ? indicatorValues : []).map((v: any) => (
+                    <option key={v.id || v.value} value={v.value}>{v.value}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1  dark:text-[#FF8C00]">Provider</label>
+                <select className="w-full border  dark: rounded px-3 py-2 bg-white dark:bg-[#232326]  dark:text-white" value={editStrategy?.provider || ''} onChange={e => handleEditChange('provider', e.target.value)}>
+                  <option value="">Select Provider</option>
+                  <option value="binance">Binance</option>
+                  <option value="zerodha">Zerodha</option>
+                  {/* Add more providers as needed */}
+                </select>
+              </div>
+            </div>
+            {editError && <div className="text-red-600 mb-2">{editError}</div>}
+            <div className="flex gap-2 justify-end">
+              <Button type="button" variant="outline" onClick={() => setEditPopupOpen(false)} disabled={editLoading}>Cancel</Button>
+              <Button type="submit" className="bg-[#FF8C00] text-white" disabled={editLoading}>{editLoading ? 'Saving...' : 'Save'}</Button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

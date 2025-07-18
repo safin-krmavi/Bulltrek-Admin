@@ -55,7 +55,39 @@ export function useStrategy() {
     },
   });
 
+  const updateStrategy = useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: Partial<CreateStrategyData> }) => {
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/strategies/${id}`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['strategies'] });
+    },
+  });
+
+  const deleteStrategy = useMutation({
+    mutationFn: async (id: number) => {
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/strategies/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['strategies'] });
+    },
+  });
+
   return {
     createStrategy,
+    updateStrategy,
+    deleteStrategy,
   };
 } 

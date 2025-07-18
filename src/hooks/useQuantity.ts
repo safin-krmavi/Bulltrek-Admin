@@ -1,4 +1,4 @@
-import { quantityApi, type TradeQuantity } from '@/api/tradeMaster';
+import { quantityApi} from '@/api/tradeMaster';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -6,10 +6,11 @@ export const useQuantities = () => {
   const queryClient = useQueryClient();
 
   // Fetch all quantities
-  const { data: quantities, isLoading, error } = useQuery<TradeQuantity[]>({
+  const { data: rawQuantities, isLoading, error } = useQuery({
     queryKey: ['tradeQuantities'],
-    queryFn: () => quantityApi.getAll().then(res => res.data)
+    queryFn: () => quantityApi.getAll().then((res: any) => Array.isArray(res.data) ? res.data : res.data?.data || []),
   });
+  const quantities = Array.isArray(rawQuantities) ? rawQuantities : [];
 
   // Create quantity
   const createQuantity = useMutation({

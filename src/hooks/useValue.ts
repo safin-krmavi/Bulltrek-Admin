@@ -1,4 +1,4 @@
-import { valueApi, type IndicatorValue } from '@/api/tradeMaster';
+import { valueApi } from '@/api/tradeMaster';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -7,14 +7,15 @@ export const useIndicatorValues = () => {
 
   // Get all values
   const { 
-    data: values, 
+    data: rawValues, 
     isLoading, 
     error 
-  } = useQuery<IndicatorValue[]>({
+  } = useQuery({
     queryKey: ['indicatorValues'],
-    queryFn: () => valueApi.getAll().then(res => res.data),
+    queryFn: () => valueApi.getAll().then((res: any) => Array.isArray(res.data) ? res.data : res.data?.data || []),
     staleTime: 1000 * 60 * 5 // 5 minutes cache
   });
+  const values = Array.isArray(rawValues) ? rawValues : [];
 
   // Create value
   const createValue = useMutation({

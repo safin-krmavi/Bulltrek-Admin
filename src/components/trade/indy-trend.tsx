@@ -44,7 +44,7 @@ export default function IndyTrend() {
         isBrokeragesLoading={isBrokeragesLoading}
         brokerages={brokerages}
       />
-      <form className="space-y-4 p-4">
+      <form className="space-y-4 dark:bg-[#232326] dark:text-white gap-4 mt-2">
         <Collapsible
           open={isIndyOpen}
           onOpenChange={setIsIndyOpen}
