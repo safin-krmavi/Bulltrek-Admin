@@ -466,7 +466,14 @@ export default function Dashboard({ userId }: { userId?: string }) {
       setEditPopupOpen(false);
       toast.success("Strategy updated successfully");
     } catch (err: any) {
-      setEditError(err?.response?.data?.message || err.message || "Update failed");
+      // Enhanced error handling
+      let errorMsg = "Update failed";
+      if (err?.response) {
+        errorMsg = `Error ${err.response.status}: ${err.response.data?.message || JSON.stringify(err.response.data)}`;
+      } else if (err?.message) {
+        errorMsg = err.message;
+      }
+      setEditError(errorMsg);
     }
     setEditLoading(false);
   };
@@ -1187,7 +1194,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
                 </select>
               </div>
             </div>
-            {editError && <div className="text-red-600 mb-2">{editError}</div>}
+            {editError && <div className="text-red-600 mb-2 whitespace-pre-line">{editError}</div>}
             <div className="flex gap-2 justify-end">
               <Button type="button" variant="outline" onClick={() => setEditPopupOpen(false)} disabled={editLoading}>Cancel</Button>
               <Button type="submit" className="bg-[#FF8C00] text-white" disabled={editLoading}>{editLoading ? 'Saving...' : 'Save'}</Button>

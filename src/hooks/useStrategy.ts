@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import apiClient from '@/api/apiClient';
 
 interface StrategyCondition {
   indicator: string;
@@ -38,15 +38,9 @@ export function useStrategy() {
 
   const createStrategy = useMutation({
     mutationFn: async (data: CreateStrategyData) => {
-      const response = await axios.post<StrategyResponse>(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/strategies`,
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
+      const response = await apiClient.post<StrategyResponse>(
+        `/api/v1/strategies`,
+        data
       );
       return response.data;
     },
@@ -57,12 +51,7 @@ export function useStrategy() {
 
   const updateStrategy = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: Partial<CreateStrategyData> }) => {
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/strategies/${id}`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const response = await apiClient.put(`/api/v1/strategies/${id}`, data);
       return response.data;
     },
     onSuccess: () => {
@@ -72,12 +61,7 @@ export function useStrategy() {
 
   const deleteStrategy = useMutation({
     mutationFn: async (id: number) => {
-      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/strategies/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const response = await apiClient.delete(`/api/v1/strategies/${id}`);
       return response.data;
     },
     onSuccess: () => {
