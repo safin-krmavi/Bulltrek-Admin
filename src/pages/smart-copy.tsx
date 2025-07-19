@@ -1,10 +1,12 @@
 "use client"
 
+import { useState } from 'react'
 import { ChevronDown, Edit2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { InvestmentForm } from '@/components/diverse-flow/investment-form'
 import { AssetAllocationChart } from '@/components/diverse-flow/asset-allocation-chart'
+import { CopyTradeModal } from '@/components/ui/copy-trade-modal'
 
 
 const assetAllocationData = [
@@ -16,6 +18,18 @@ const assetAllocationData = [
 ]
 
 export default function SmartCopyPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCopyClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalConfirm = () => {
+    // Handle the copy trade confirmation here
+    console.log('Copy trade confirmed');
+    // Add your copy trade logic here
+  };
+
   return (
     <div className="mx-auto max-w-7xl p-6 w-full dark:text-white">
       <div className="grid gap-6 lg:grid-cols-[1fr,400px]">
@@ -64,7 +78,10 @@ export default function SmartCopyPage() {
                 ))}
               </div>
 
-              <Button className="w-full text-white bg-[#4A1D2F] hover:bg-[#3A1525]">
+              <Button 
+                className="w-full text-white bg-[#4A1D2F] hover:bg-[#3A1525]"
+                onClick={handleCopyClick}
+              >
                 Copy
               </Button>
             </div>
@@ -125,6 +142,13 @@ export default function SmartCopyPage() {
           </div>
         </div>
       </div>
+
+      {/* Copy Trade Agreement Modal */}
+      <CopyTradeModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleModalConfirm}
+      />
     </div>
   )
 }

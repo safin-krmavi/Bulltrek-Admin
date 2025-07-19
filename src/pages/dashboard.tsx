@@ -36,6 +36,7 @@ import {
   Plus,
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import apiClient from "@/api/apiClient";
 import { useQuery } from "@tanstack/react-query";
@@ -154,6 +155,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
 
   // Add this state to track which menu is open
   const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
+  const [dropdownPosition, setDropdownPosition] = useState<{ x: number; y: number } | null>(null);
 
   const { data: profileData } = useUserProfile();
   const userData = profileData?.data;
@@ -236,6 +238,8 @@ export default function Dashboard({ userId }: { userId?: string }) {
 
   // Add a click handler to close the menu when clicking outside
   const menuRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -244,6 +248,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
         !menuRefs.current[openMenuIndex]?.contains(event.target as Node)
       ) {
         setOpenMenuIndex(null);
+        setDropdownPosition(null);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -440,11 +445,30 @@ export default function Dashboard({ userId }: { userId?: string }) {
   console.log("Net P/L Percentage:", netPLPercentage);
   console.log("=================================");
 
+  // Handler to toggle dropdown with position calculation
+  const handleDropdownToggle = (index: number) => {
+    if (openMenuIndex === index) {
+      setOpenMenuIndex(null);
+      setDropdownPosition(null);
+    } else {
+      const button = buttonRefs.current[index];
+      if (button) {
+        const rect = button.getBoundingClientRect();
+        setDropdownPosition({
+          x: rect.right - 128, // 128px is the width of the dropdown (w-32)
+          y: rect.bottom + 4
+        });
+      }
+      setOpenMenuIndex(index);
+    }
+  };
+
   // Handler to open edit popup
   const handleEditClick = (strategy: any) => {
     setEditStrategy({ ...strategy });
     setEditPopupOpen(true);
     setOpenMenuIndex(null);
+    setDropdownPosition(null);
   };
   // Handler for edit form change
   const handleEditChange = (field: string, value: any) => {
@@ -485,6 +509,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
       await deleteStrategy.mutateAsync(strategyId);
       toast.success('Strategy deleted successfully');
       setOpenMenuIndex(null);
+      setDropdownPosition(null);
     } catch (err: any) {
       toast.error(err?.response?.data?.message || err.message || 'Delete failed');
     }
@@ -559,14 +584,14 @@ export default function Dashboard({ userId }: { userId?: string }) {
               </div>
             </CardHeader>
             <CollapsibleContent>
-              <CardContent className="p-0">
+              <CardContent className="p-0 overflow-visible">
                 {isLoading ? (
                   <div className="flex justify-center items-center h-64">
                     <RefreshCw className="h-8 w-8 animate-spin" />
                   </div>
                 ) : (
                   <>
-                    <Table className="bg-card dark:bg-[#232326] text-foreground dark:text-white transition-colors duration-300">
+                    <Table className="bg-card dark:bg-[#232326] text-foreground dark:text-white transition-colors duration-300 relative">
                       <TableHeader>
                         <TableRow>
                           <TableHead className="text-foreground dark:text-white">Broker/Exchange</TableHead>
@@ -579,7 +604,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
                           <TableHead className="text-foreground dark:text-white">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
-                      <TableBody>
+                      <TableBody className="relative">
                         {currentStrategies.map((strategy: any, i: number) => (
                           <TableRow key={strategy.id || i} className="border-border dark:text-white">
                             <TableCell className="text-foreground dark:text-white">{strategy.broker}</TableCell>
@@ -602,31 +627,13 @@ export default function Dashboard({ userId }: { userId?: string }) {
                             </TableCell>
                             <TableCell className="text-foreground dark:text-white relative">
                               <Button
+                                ref={el => (buttonRefs.current[i] = el)}
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => setOpenMenuIndex(openMenuIndex === i ? null : i)}
+                                onClick={() => handleDropdownToggle(i)}
                               >
                                 <MoreVertical className="h-4 w-4" />
                               </Button>
-                              {openMenuIndex === i && (
-                                <div
-                                  ref={el => (menuRefs.current[i] = el)}
-                                  className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border rounded shadow-lg z-10"
-                                >
-                                  <button
-                                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    onClick={() => handleEditClick(strategy)}
-                                  >
-                                    Edit
-                                  </button>
-                                  <button
-                                    className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    onClick={() => handleDeleteStrategy(strategy.id)}
-                                  >
-                                    Delete
-                                  </button>
-                                </div>
-                              )}
                             </TableCell>
                           </TableRow>
                         ))}
@@ -802,6 +809,7 @@ export default function Dashboard({ userId }: { userId?: string }) {
               title="API Connect "
               className="col-span-2 "
               contentClassName="p-0"
+              showInfoIcon={true}
               action={
                 <Button
                   className="bg-[#FF8C00] text-white hover:bg-[#FFA500] rounded"
@@ -1201,6 +1209,32 @@ export default function Dashboard({ userId }: { userId?: string }) {
             </div>
           </form>
         </div>
+      )}
+      
+      {/* Portal-based dropdown menu */}
+      {openMenuIndex !== null && dropdownPosition && createPortal(
+        <div
+          ref={el => (menuRefs.current[openMenuIndex] = el)}
+          className="fixed w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg z-[9999]"
+          style={{
+            left: `${dropdownPosition.x}px`,
+            top: `${dropdownPosition.y}px`
+          }}
+        >
+          <button
+            className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white transition-colors"
+            onClick={() => handleEditClick(currentStrategies[openMenuIndex])}
+          >
+            Edit
+          </button>
+          <button
+            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-red-400 transition-colors"
+            onClick={() => handleDeleteStrategy(currentStrategies[openMenuIndex].id)}
+          >
+            Delete
+          </button>
+        </div>,
+        document.body
       )}
     </div>
   );

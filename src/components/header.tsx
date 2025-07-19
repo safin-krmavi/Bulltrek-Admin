@@ -60,7 +60,7 @@ export const HeaderDropdown: React.FC<{
     ? options.find((opt) => opt.value === selectedValue)?.label || label
     : label;
   return (
-    <div className="relative">
+    <div className="relative" style={{ zIndex: 9999 }}>
       <button
         className="min-w-[90px] px-3 py-1 flex items-center justify-center h-9 rounded-md bg-secondary text-secondary-foreground dark:text-white font-medium text-sm transition-colors border-transparent hover:bg-secondary/80 focus:outline-none focus:ring-1 focus:ring-ring"
         onClick={() => setOpen((o) => !o)}
@@ -71,11 +71,11 @@ export const HeaderDropdown: React.FC<{
         <ChevronDown className="ml-2 w-4 h-4" />
       </button>
       {open && (
-        <div className="absolute left-0 mt-2 w-44 rounded-md shadow-lg z-50 bg-white dark:bg-[#232326] border border-gray-200 dark:border-[#333]">
+        <div className="absolute left-0 mt-2 w-44 rounded-md shadow-xl z-[9999] bg-white/95 dark:bg-[#232326]/95 border border-gray-200 dark:border-[#333] backdrop-blur-md">
           {options.map((option) => (
             <button
               key={option.value}
-              className="block w-full text-left px-4 py-2 text-sm hover:bg-secondary/80 focus:bg-secondary/80 transition-colors text-secondary-foreground dark:text-white"
+              className="block w-full text-left px-4 py-2 text-sm hover:bg-secondary/80 focus:bg-secondary/80 transition-colors text-secondary-foreground dark:text-white first:rounded-t-md last:rounded-b-md"
               onMouseDown={() => {
                 navigate(option.value);
                 setSelectedValue && setSelectedValue(option.value);
@@ -100,7 +100,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="border-b border-border bg-background/90 w-full transition-colors duration-300 shadow-sm backdrop-blur-md">
+    <header className="border-b border-border bg-background/95 w-full transition-colors duration-300 shadow-sm backdrop-blur-md z-[9998] relative">
       <div className="max-w-[1400px] mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-8">

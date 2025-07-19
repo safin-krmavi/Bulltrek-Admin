@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Clock } from "lucide-react";
+import { Clock, HelpCircle } from "lucide-react";
 import { RefreshCw } from "lucide-react";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import apiClient from "@/api/apiClient";
+
 
 interface ApiConnectProps {
   userId?: string;
@@ -76,16 +77,14 @@ export function ApiConnect({ userId }: ApiConnectProps) {
     <div className="flex flex-col gap-4 w-full">
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-2">
-          <Clock className="h-4 w-4 text-muted-foreground" />
-          <span>Zerodha</span>
+          <HelpCircle className="h-4 w-4 text-muted-foreground" />
+          <span>Binance Account</span>
         </div>
         <div className='w-full text-center'>REST API</div>
         <Button 
-          variant="default"
-          className="bg-[#4A1C24] text-white hover:bg-[#3A161C] w-fit"
-          onClick={() => {
-            window.open(`https://kite.zerodha.com/connect/login?v=3&api_key=jcramxjcrjejdr80&user_id=${userId}`, '_blank');
-          }}
+          variant="outline"
+          className="border-gray-300 text-gray-600 hover:bg-gray-50 w-fit"
+          disabled
         >
           Connect
         </Button>
@@ -93,20 +92,35 @@ export function ApiConnect({ userId }: ApiConnectProps) {
 
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-2">
-          <Clock className="h-4 w-4 text-muted-foreground" />
-          <span>Binance</span>
+          <HelpCircle className="h-4 w-4 text-muted-foreground" />
+          <span>Binance Account</span>
         </div>
         <div className='w-full text-center'>REST API</div>
         <Button 
-          variant={brokerageState?.binance ? "outline" : "default"}
-          className={brokerageState?.binance ? "border-green-500 text-green-500 hover:bg-green-50" : "bg-[#4A1C24] text-white hover:bg-[#3A161C]"}
+          variant="default"
+          className="bg-[#4A1C24] text-white hover:bg-[#3A161C] w-fit"
           onClick={handleBinanceConnect}
-          disabled={isConnecting || brokerageState?.binance}
+          disabled={isConnecting}
         >
           {isConnecting ? (
             <RefreshCw className="h-4 w-4 animate-spin mr-2" />
           ) : null}
-          {brokerageState?.binance ? "Connected" : "Connect"}
+          Connect
+        </Button>
+      </div>
+
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center gap-2">
+          <HelpCircle className="h-4 w-4 text-muted-foreground" />
+          <span>Binance Account</span>
+        </div>
+        <div className='w-full text-center'>REST API</div>
+        <Button 
+          variant="outline"
+          className="border-gray-300 text-gray-600 hover:bg-gray-50 w-fit"
+          disabled
+        >
+          Connect
         </Button>
       </div>
     </div>

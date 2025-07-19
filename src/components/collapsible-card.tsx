@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronDown, ChevronUp, Info } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface CollapsibleCardProps {
@@ -12,6 +12,7 @@ interface CollapsibleCardProps {
   defaultExpanded?: boolean
   action?: React.ReactNode
   contentClassName?: string
+  showInfoIcon?: boolean
 }
 
 export function CollapsibleCard({ 
@@ -20,7 +21,8 @@ export function CollapsibleCard({
   className,
   defaultExpanded = true,
   action,
-  contentClassName
+  contentClassName,
+  showInfoIcon = false
 }: CollapsibleCardProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)
 
@@ -31,6 +33,7 @@ export function CollapsibleCard({
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-2">
+          {showInfoIcon && <Info className="h-4 w-4 text-white" />}
           <CardTitle className="text-lg font-semibold">{title}</CardTitle>
         </div>
         <div className="flex items-center gap-2">
