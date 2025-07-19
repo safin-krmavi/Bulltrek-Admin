@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Clock, HelpCircle } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import { RefreshCw } from "lucide-react";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
