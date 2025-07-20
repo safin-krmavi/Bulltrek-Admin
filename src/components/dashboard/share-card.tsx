@@ -1,9 +1,31 @@
-import { Copy, Share2, Instagram, Linkedin, Twitter, HelpCircle, Settings } from 'lucide-react'
+import { Copy, Share2, Settings, Instagram, Linkedin, Twitter, Facebook } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { SharePopup } from "@/components/ui/share-popup"
+import { useState } from "react"
 
 export default function ShareCard() {
+  const [isSharePopupOpen, setIsSharePopupOpen] = useState(false)
+
+  const handleShareClick = () => {
+    setIsSharePopupOpen(true)
+  }
+
+  const handleSocialShare = (platform: string) => {
+    const shareText = `Check out my referral link: https://referralLinknameIdnameStrategy.co`
+    const shareUrl = "https://referralLinknameIdnameStrategy.co"
+    
+    const shareUrls = {
+      instagram: `https://www.instagram.com/?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`
+    }
+    
+    window.open(shareUrls[platform as keyof typeof shareUrls], '_blank', 'width=600,height=400')
+  }
+
   return (
     <Card className="bg-white dark:bg-[#232326] rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 w-full max-w-md">
       <CardContent className="p-4 space-y-3">
@@ -30,25 +52,50 @@ export default function ShareCard() {
           <Button variant="ghost" size="icon" className="h-6 w-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex-shrink-0">
             <Copy className="h-4 w-4" />
           </Button>
-          <span className="text-gray-500 dark:text-gray-400 text-sm">Share on</span>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-6 w-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                  <Share2 className="h-4 w-4" />
-                </Button>
+                <span className="text-gray-500 dark:text-gray-400 text-sm cursor-pointer hover:text-gray-700 dark:hover:text-gray-200">Share on</span>
               </TooltipTrigger>
-              <TooltipContent className="p-2">
-                <div className="text-sm">You can share link on:</div>
-                <div className="flex gap-2 mt-2">
-                  <Instagram className="h-5 w-5" />
-                  <Linkedin className="h-5 w-5" />
-                  <Twitter className="h-5 w-5" />
-                  <HelpCircle className="h-5 w-5" />
+              <TooltipContent className="p-3 bg-[#f5f5dc] dark:bg-[#2a2a2a] border border-gray-200 dark:border-gray-700">
+                <div className="text-sm text-gray-800 dark:text-gray-200 mb-2">You can share link on:</div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleSocialShare('instagram')}
+                    className="w-8 h-8 bg-orange-500 rounded flex items-center justify-center hover:bg-orange-600 transition-colors"
+                  >
+                    <Instagram className="w-4 h-4 text-white" />
+                  </button>
+                  <button
+                    onClick={() => handleSocialShare('linkedin')}
+                    className="w-8 h-8 bg-orange-500 rounded flex items-center justify-center hover:bg-orange-600 transition-colors"
+                  >
+                    <Linkedin className="w-4 h-4 text-white" />
+                  </button>
+                  <button
+                    onClick={() => handleSocialShare('twitter')}
+                    className="w-8 h-8 bg-orange-500 rounded flex items-center justify-center hover:bg-orange-600 transition-colors"
+                  >
+                    <Twitter className="w-4 h-4 text-white" />
+                  </button>
+                  <button
+                    onClick={() => handleSocialShare('facebook')}
+                    className="w-8 h-8 bg-orange-500 rounded flex items-center justify-center hover:bg-orange-600 transition-colors"
+                  >
+                    <Facebook className="w-4 h-4 text-white" />
+                  </button>
                 </div>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-6 w-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            onClick={handleShareClick}
+          >
+            <Share2 className="h-4 w-4" />
+          </Button>
         </div>
         
         {/* Referrals Row */}
@@ -62,6 +109,19 @@ export default function ShareCard() {
           </span>
         </div>
       </CardContent>
+      
+      {/* Share Popup */}
+      <SharePopup
+        isOpen={isSharePopupOpen}
+        onClose={() => setIsSharePopupOpen(false)}
+        predictionData={{
+          title: "Your Trading Success Story",
+          percentage: "+ 14.80 %",
+          pair: "mETH/USDT",
+          referrals: "238",
+          duration: "153d 18h 24m"
+        }}
+      />
     </Card>
   )
 }

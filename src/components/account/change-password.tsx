@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 
 export function ChangePassword() {
   return (
-    <Card className="w-[400px]">
+    <Card className="w-[400px] bg-white/95 dark:bg-[#232326]/95 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-2xl">
       <CardContent className="p-6">
         <div className="flex justify-between items-start mb-6">
           <p className="text-sm pr-8">

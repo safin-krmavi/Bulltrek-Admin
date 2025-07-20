@@ -13,6 +13,7 @@ import { useEffect, useState } from "react"
 import { brokerageService } from "@/api/brokerage"
 import apiClient from "@/api/apiClient"
 import { useToast } from "@/hooks/use-toast"
+import { StrategyResponsePopup } from "@/components/ui/strategy-response-popup"
 
 interface TrendStrategyConfig {
   symbol: string;
@@ -34,7 +35,15 @@ export default function IndyTrend() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [strategyDetails, setStrategyDetails] = useState<StrategyDetails | null>(null)
   const [isStrategyLoading, setIsStrategyLoading] = useState(false)
+  const [showResponsePopup, setShowResponsePopup] = useState(false)
+  const [responseData, setResponseData] = useState<any>(null)
+  const [isSuccess, setIsSuccess] = useState(false)
   const { toast } = useToast()
+
+  // Function to handle banner close - only called when user explicitly clicks close
+  const handleBannerClose = () => {
+    setShowResponsePopup(false)
+  }
 
   // Form state
   const [formData, setFormData] = useState<TrendStrategyConfig>({
@@ -71,27 +80,22 @@ export default function IndyTrend() {
     async function fetchStrategyDetails() {
       setIsStrategyLoading(true)
       try {
-        console.log('Fetching strategy details...')
-        const response = await apiClient.get('/api/v1/strategies/22')
-        console.log('Strategy details response:', response.data)
+        const response = await apiClient.get('/api/v1/strategies/5')
         
         // Handle different possible response structures
         const strategyData = response.data?.data || response.data
-        console.log('Processed strategy data:', strategyData)
         
         if (strategyData && strategyData.name) {
           setStrategyDetails(strategyData)
         } else {
-          console.warn('Strategy data does not contain name field:', strategyData)
           // Set a fallback with the data we have
           setStrategyDetails({
-            id: 22,
+            id: 5,
             name: strategyData?.name || 'Indy Trend Strategy'
           })
         }
       } catch (error: any) {
         console.error('Failed to fetch strategy details:', error)
-        console.error('Error response:', error.response?.data)
         toast({
           title: "Error",
           description: `Failed to load strategy details: ${error.response?.data?.message || error.message}`,
@@ -99,7 +103,7 @@ export default function IndyTrend() {
         })
         // Set fallback strategy details
         setStrategyDetails({
-          id: 22,
+          id: 5,
           name: 'Indy Trend Strategy'
         })
       } finally {
@@ -148,23 +152,20 @@ export default function IndyTrend() {
 
     setIsSubmitting(true)
     try {
-      const response = await apiClient.post('/api/v1/strategies/22/run', {
+      const response = await apiClient.post('/api/v1/strategies/5/run', {
         config: formData
       })
       
-      toast({
-        title: "Success",
-        description: "Strategy executed successfully",
-      })
+      setResponseData(response.data)
+      setIsSuccess(true)
+      setShowResponsePopup(true)
       
       console.log('Strategy response:', response.data)
     } catch (error: any) {
       console.error('Strategy execution error:', error)
-      toast({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to execute strategy",
-        variant: "destructive"
-      })
+      setResponseData(error.response?.data || { message: error.message })
+      setIsSuccess(false)
+      setShowResponsePopup(true)
     } finally {
       setIsSubmitting(false)
     }
@@ -199,15 +200,6 @@ export default function IndyTrend() {
             <ChevronDown className={`h-4 w-4 transition-transform ${isIndyOpen ? "rotate-180" : ""}`} />
           </CollapsibleTrigger>
           <CollapsibleContent className="space-y-4 rounded-b-md border border-border border-t-0 bg-card p-4">
-            {/* Debug section - remove this after fixing */}
-            {process.env.NODE_ENV === 'development' && (
-              <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-                <p className="text-sm font-medium text-yellow-800">Debug Info:</p>
-                <p className="text-xs text-yellow-700">Strategy Details: {JSON.stringify(strategyDetails)}</p>
-                <p className="text-xs text-yellow-700">Form Data: {JSON.stringify(formData)}</p>
-                <p className="text-xs text-yellow-700">Loading: {isStrategyLoading.toString()}</p>
-              </div>
-            )}
 
             <div className="space-y-2">
               <Label className="flex items-center gap-2">
@@ -289,6 +281,14 @@ export default function IndyTrend() {
           </Button>
         </div>
       </form>
+      
+      <StrategyResponsePopup
+        isOpen={showResponsePopup}
+        onClose={handleBannerClose}
+        response={responseData}
+        isSuccess={isSuccess}
+        strategyName={strategyDetails?.name || "Indy Trend Strategy"}
+      />
     </div>
   )
 }

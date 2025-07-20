@@ -46,6 +46,7 @@ import { CollapsibleCard } from "@/components/collapsible-card";
 // import StrategyBuilder from '@/components/strategy/StrategyBuilder'
 // import { Logo } from "@/components/ui/logo";
 import LoadingLogo from "@/components/ui/LoadingLogo";
+import { PromotionalBanner } from "@/components/ui/promotional-banner";
 
 interface ScannerData {
   name: string;
@@ -142,6 +143,7 @@ function useStrategies() {
 
 export default function Dashboard({ userId }: { userId?: string }) {
   const [showModal, setShowModal] = useState(false);
+  const [showDemoBanner, setShowDemoBanner] = useState(true); // Demo banner state
   const [openSections, setOpenSections] = useState({
     strategy: true,
     scanner: true,
@@ -1236,6 +1238,12 @@ export default function Dashboard({ userId }: { userId?: string }) {
         </div>,
         document.body
       )}
+
+      {/* Promotional Banner */}
+      <PromotionalBanner
+        isOpen={showDemoBanner}
+        onClose={() => setShowDemoBanner(false)}
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { Bell, HelpCircle, ChevronDown } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "@/App";
+import { useNotifications } from "@/contexts/NotificationContext";
 
 const navDropdowns = [
   {
@@ -94,6 +95,7 @@ export const HeaderDropdown: React.FC<{
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const [selectedTrade, setSelectedTrade] = React.useState<string>("/trade");
+  const { hasUnreadNotifications} = useNotifications();
 
   const handleSelectChange = (path: string) => {
     navigate(path);
@@ -136,8 +138,12 @@ const Header: React.FC = () => {
               variant="ghost"
               size="icon"
               onClick={() => navigate("/notifications")}
+              className="relative"
             >
-              <Bell className="h-5 w-5 text-foreground dark:text-white" />
+              <Bell className="h-9 w-9 text-foreground dark:text-white" />
+              {hasUnreadNotifications && (
+                <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-orange-500 rounded-full"></div>
+              )}
             </Button>
             <Button
               variant="ghost"

@@ -546,8 +546,8 @@ export default function AccountPage() {
 
 
 {showPasswordModal && (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div className=" dark:bg-[#232326] p-6 rounded-lg w-[400px]">
+  <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
+    <div className="bg-white dark:bg-[#232326] dark:text-white p-6 rounded-lg w-[400px] max-w-full shadow-2xl border border-gray-200 dark:border-gray-700">
       <h2 className="text-xl font-semibold mb-4">Change Password</h2>
       <div className="space-y-4">
         <div>

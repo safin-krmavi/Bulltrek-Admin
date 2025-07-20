@@ -24,6 +24,8 @@ import { Toaster } from "react-hot-toast";
 import { useEffect, useState, createContext, useContext } from "react";
 import Scanner from "./pages/scanner";
 import Trends from "./pages/trends";
+import NotificationsPage from "./pages/notifications";
+import { NotificationProvider } from "./contexts/NotificationContext";
 
 // Theme context and hook
 const ThemeContext = createContext<{theme: string, toggleTheme: () => void}>({ theme: 'light', toggleTheme: () => {} });
@@ -79,6 +81,7 @@ const AppRouter = ({ theme }: { theme: string }) => {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/scanner" element={<GenericLayout children={<Scanner />} />} />
         <Route path="/trends" element={<GenericLayout children={<Trends />} />} />
+        <Route path="/notifications" element={<GenericLayout children={<NotificationsPage />} />} />
       </Routes>
     </div>
   );
@@ -96,9 +99,11 @@ const App = () => {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <Router>
-        <AppRouter theme={theme} />
-      </Router>
+      <NotificationProvider>
+        <Router>
+          <AppRouter theme={theme} />
+        </Router>
+      </NotificationProvider>
     </ThemeContext.Provider>
   );
 }
