@@ -2,6 +2,7 @@ import { useState } from "react";
 import Tickets from "@/components/DeleteInfo/Tickets";
 import User from "@/components/DeleteInfo/User";
 import List from "@/components/DeleteInfo/list";
+
 const tabs = [
   "User",
   "List",
@@ -9,7 +10,7 @@ const tabs = [
 ];
 
 export default function UserDetailsPage() {
-  const [activeTab, setActiveTab] = useState("User Details");
+  const [activeTab, setActiveTab] = useState("User"); // Fix: default to first tab
 
   return (
     <div className="w-full max-w-[1200px] mx-auto px-6 py-8 bg-grey-700">
