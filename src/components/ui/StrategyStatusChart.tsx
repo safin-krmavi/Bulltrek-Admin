@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -35,6 +35,17 @@ export default function StrategyStatusChart() {
   const [strategyTab, setStrategyTab] = useState("Strategy Status");
   const [activeRange, setActiveRange] = useState("6M");
   const [selectedTrade, setSelectedTrade] = useState(tradeOptions[0]);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+
+  // Trigger animation on component mount (reload/refresh)
+  useEffect(() => {
+    setShouldAnimate(true);
+    // Optionally reset animation after it completes to allow future animations
+    const timeout = setTimeout(() => {
+      setShouldAnimate(false);
+    }, 1000); // Adjust timeout to match animation duration (default Recharts animation is ~800ms)
+    return () => clearTimeout(timeout);
+  }, []); // Empty dependency array ensures this runs only on mount
 
   return (
     <Card className="col-span-2 p-6 border border-gray-200 rounded-2xl bg-[#f7f7fb]">
@@ -95,7 +106,11 @@ export default function StrategyStatusChart() {
                         ? "1px solid #f59120"
                         : "1px solid #ececec",
                   }}
-                  onClick={() => setActiveRange(range)}
+                  onClick={() => {
+                    setActiveRange(range);
+                    setShouldAnimate(true); // Trigger animation on time range change
+                    setTimeout(() => setShouldAnimate(false), 1000); // Reset after animation
+                  }}
                 >
                   {range}
                 </button>
@@ -126,7 +141,7 @@ export default function StrategyStatusChart() {
               stroke="#222"
               strokeWidth={2.5}
               dot={false}
-              isAnimationActive={false}
+              isAnimationActive={shouldAnimate}
             />
             <Line
               type="monotone"
@@ -135,7 +150,7 @@ export default function StrategyStatusChart() {
               strokeWidth={2.5}
               strokeDasharray="6 4"
               dot={false}
-              isAnimationActive={false}
+              isAnimationActive={shouldAnimate}
             />
           </LineChart>
         </ResponsiveContainer>

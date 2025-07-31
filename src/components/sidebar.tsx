@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Children, useState } from "react";
+import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 
 const menu = [
@@ -29,29 +29,38 @@ const menu = [
       { label: "Create Staff", path: "/create-staff" },
     ],
   },
-  { label: "Payment", icon: "💳", path: "/payment",
-     children: [
+  {
+    label: "Payment",
+    icon: "💳",
+    path: "/payment",
+    children: [
       { label: "Finance Info", path: "/finance-info" },
       { label: "Affiliate", path: "/affiliate" },
       { label: "Coupon & Discount", path: "/coupon" },
     ],
-   },
-  { label: "Subscription", icon: "📦", path: "/subscriptions",
-     children: [
+  },
+  {
+    label: "Subscription",
+    icon: "📦",
+    path: "/subscriptions",
+    children: [
       { label: "Subscription List", path: "/subscriptions" },
       { label: "Create Plan", path: "/create-plan" },
     ],
-   },
-  { label: "Push Notification", icon: "🔔", path: "/push-notification"},
+  },
+  { label: "Push Notification", icon: "🔔", path: "/push-notification" },
   { label: "Logs", icon: "📄", path: "/logs" },
   { label: "Chat History", icon: "💬", path: "/chat-history" },
-  { label: "Setting", icon: "⚙️", path: "/settings",
-    children:[
+  {
+    label: "Setting",
+    icon: "⚙️",
+    path: "/settings",
+    children: [
       { label: "Accounts", path: "/account" },
       { label: "Delete Info", path: "/delete-info" },
       { label: "Notification", path: "/language" },
-    ]
-   },
+    ],
+  },
 ];
 
 export default function Sidebar() {
@@ -95,14 +104,14 @@ export default function Sidebar() {
                   </span>
                 </button>
                 {openMenus[item.label] && (
-                  <div className="ml-8 flex flex-col gap-1">
+                  <div className="ml-8 mt-2 flex flex-col gap-2">
                     {item.children.map((sub) => (
                       <button
                         key={sub.label}
-                        className={`px-2 py-1 rounded text-sm text-left ${
+                        className={`px-3 py-1.5 rounded-md text-sm text-left hover:bg-[#f59120]/10 transition ${
                           isActive(sub.path)
                             ? "bg-[#f59120] text-white font-semibold"
-                            : "hover:bg-[#f59120]/10"
+                            : "text-[#222]"
                         }`}
                         onClick={() => navigate(sub.path)}
                       >
@@ -135,7 +144,7 @@ export default function Sidebar() {
             src="/avatar.svg"
             alt="User"
             className="w-8 h-8 rounded-full border"
-            onError={e => (e.currentTarget.style.display = "none")}
+            onError={(e) => (e.currentTarget.style.display = "none")}
           />
           <div>
             <div className="text-xs font-semibold">Rajkiran Kondaveeti</div>
