@@ -1,31 +1,36 @@
 import { Route, BrowserRouter as Router, Routes, useLocation } from "react-router-dom"
 import AuthLayout from "./layout/auth-layout"
 import GenericLayout from "./layout/generic-layout"
-import AccountPage from "./pages/account"
+import AccountPage from "./pages/Accounts";
 import AuthenticationPage from "./pages/authentication"
-import CopyTradePage from "./pages/copy-trade"
 import DashboardPage from "./pages/dashboard"
-import DiverseFollowPage from "./pages/diverse-follow"
+import ForgotPasswordPage from "./pages/forgot-password";
 import LoginPage from "./pages/login"
-import MarketPlacePage from "./pages/market-pace"
-import PaymentPage from "./pages/payment"
-import PricingPage from "./pages/pricing"
 import RecoverPasswordPage from "./pages/recover-password"
 import RegisterPage from "./pages/register"
-import SmartCopyPage from "./pages/smart-copy"
-import SupportPage from "./pages/support"
-import TradePage from "./pages/trade"
-import TraderOverview from "./pages/trader-overview"
-import { TradersComparison } from "./pages/traders-comparison"
-import TradingReportsPage from "./pages/trading-reports"
-import StrategyBuilderPage from "./pages/strategy-builder"
 import ResetPasswordPage from "./pages/reset-password"
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState, createContext, useContext } from "react";
-import Scanner from "./pages/scanner";
-import Trends from "./pages/trends";
-import NotificationsPage from "./pages/notifications";
 import { NotificationProvider } from "./contexts/NotificationContext";
+import TicketDetailsPage from "./pages/ticket-details"
+import UserListPage from "./pages/UserList";
+import CreateUserPage from "./pages/Createuser";
+import Userdetails from "./pages/Userdetails";
+import StaffList from "./pages/StaffList"
+import Staffdetails from "./pages/Staffdetails";
+import CreateStaff from "./pages/CreateStaff";
+import PlanInvoice from "./components/Users/Userdetails/PlanInvoice";
+import  Subscription  from "./pages/subscription";
+import CreatePlan from "./pages/CreatePlan";
+import PushNotification from "./pages/PushNotification";
+import Chathistory from "./pages/ChatHistory";
+import FinanceInfo from "./components/Payment/FinanceInfo" ;
+import Affiliate from "./pages/Affiliate";
+import Coupon from "./pages/Coupon";
+import Settings from "./pages/Settings";
+import DeleteInfo from "./pages/DeleteInfo";
+// import change from "./components"
+
 
 // Theme context and hook
 const ThemeContext = createContext<{theme: string, toggleTheme: () => void}>({ theme: 'light', toggleTheme: () => {} });
@@ -50,38 +55,32 @@ const AppRouter = ({ theme }: { theme: string }) => {
       <Toaster position="top-center" />
       <Routes>
         <Route path="/" element={<AuthLayout children={<LoginPage />} />} />
-        <Route path="/login" element={<AuthLayout children={<LoginPage /> } />} />
+        <Route path="/login" element={<AuthLayout children={<LoginPage />} />} />
+        <Route path="/forgot-password" element={<AuthLayout children={<ForgotPasswordPage />} />} />
+         <Route path="/reset-password" element={<AuthLayout children={<ResetPasswordPage />} />} />
+        <Route path="/account" element={<GenericLayout children={<AccountPage />} />} />
+        <Route path="/dashboard" element={<GenericLayout children={<DashboardPage />} />} />
+        <Route path="/ticket-details" element={<GenericLayout children={<TicketDetailsPage />} />} />
+        <Route path="/user-list" element={<GenericLayout children={<UserListPage />} />} />
+        <Route path="/create-user" element={<GenericLayout children={<CreateUserPage />} />} />
+        <Route path="/staff-list" element={<GenericLayout children={<StaffList />} />} />
         <Route path="/register" element={<AuthLayout children={<RegisterPage /> } />} />
         <Route path="/authentication" element={<AuthLayout children={<AuthenticationPage /> } />} />
         <Route path="/recover-password" element={<AuthLayout children={<RecoverPasswordPage  /> } />} />
-        <Route path="/pricing" element={<PricingPage />} />
-        <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/dashboard" element={<GenericLayout children={<DashboardPage />} />} />
-        <Route path="/account" element={<GenericLayout  children={<AccountPage />} />} />
-        <Route path="/support" element={<GenericLayout  children={<SupportPage />} />} />
-        <Route path="/ticket-chat" element={<GenericLayout  children={<SupportPage />} />} />
-        <Route path="/trade" element={<GenericLayout  children={<TradePage />} />} />
-        <Route path="/growth-dca" element={<GenericLayout  children={<TradePage />} />} />
-        <Route path="/human-grid" element={<GenericLayout  children={<TradePage />} />} />
-        <Route path="/smart-grid" element={<GenericLayout  children={<TradePage />} />} />
-        <Route path="/indie-lesi" element={<GenericLayout  children={<TradePage />} />} />
-        <Route path="/price-action" element={<GenericLayout  children={<TradePage />} />} />
-        <Route path="/indie-trend" element={<GenericLayout  children={<TradePage />} />} />
-        <Route path="/trading-report" element={<GenericLayout  children={<TradingReportsPage />} />} />
-        <Route path="/market-place" element={<GenericLayout  children={<MarketPlacePage />} />} />
-        <Route path="/copy-trade" element={<GenericLayout  children={<CopyTradePage />} />} />
-        <Route path="/copy-trade-1" element={<GenericLayout  children={<CopyTradePage />} />} />
-        <Route path="/copy-trade-2" element={<GenericLayout  children={<CopyTradePage />} />} />
-        <Route path="/copy-trade-3" element={<GenericLayout  children={<CopyTradePage />} />} />
-        <Route path="/trader-overview" element={<GenericLayout  children={<TraderOverview />} />} />
-        <Route path="/diverse-follow" element={<GenericLayout  children={<DiverseFollowPage />} />} />
-        <Route path="/smart-copy" element={<GenericLayout  children={<SmartCopyPage />} />} />
-        <Route path="/traders-comparison" element={<GenericLayout  children={<TradersComparison />} />} />
-        <Route path="/strategy-builder" element={<GenericLayout children={<StrategyBuilderPage />} />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/scanner" element={<GenericLayout children={<Scanner />} />} />
-        <Route path="/trends" element={<GenericLayout children={<Trends />} />} />
-        <Route path="/notifications" element={<GenericLayout children={<NotificationsPage />} />} />
+        <Route path="/user-details" element={<GenericLayout children={<Userdetails />} />} />
+        <Route path="/staff-details" element={<GenericLayout children={<Staffdetails />} />} />
+        <Route path="/create-staff" element={<GenericLayout children={<CreateStaff />} />} />
+        <Route path="/subscriptions-plans" element={<GenericLayout children={<PlanInvoice />} />} />
+        <Route path="/subscriptions" element={<GenericLayout children={<Subscription />} />} />
+        <Route path="/create-plan" element={<GenericLayout children={<CreatePlan />} />} />
+        <Route path="/push-notification" element={<GenericLayout children={<PushNotification />} />}/>
+        <Route path="/chat-history" element={<GenericLayout children={<Chathistory />} />} />
+        <Route path="/finance-info" element={<GenericLayout children={<FinanceInfo />} />} />
+        <Route path="/affiliate" element={<GenericLayout children={<Affiliate />} />} />
+        <Route path="/coupon" element={<GenericLayout children={<Coupon />} />} />
+        <Route path="/settings" element={<GenericLayout children={<Settings />} />} />
+        <Route path="/delete-info" element={<GenericLayout children={<DeleteInfo />} />} />
+        {/* Add more routes as needed */}
       </Routes>
     </div>
   );
