@@ -29,7 +29,7 @@ import Affiliate from "./pages/Affiliate";
 import Coupon from "./pages/Coupon";
 import Settings from "./pages/Settings";
 import DeleteInfo from "./pages/DeleteInfo";
-// import change from "./components"
+import NotificationBanner from "./pages/NotificationBanner";
 
 
 // Theme context and hook
@@ -80,6 +80,7 @@ const AppRouter = ({ theme }: { theme: string }) => {
         <Route path="/coupon" element={<GenericLayout children={<Coupon />} />} />
         <Route path="/settings" element={<GenericLayout children={<Settings />} />} />
         <Route path="/delete-info" element={<GenericLayout children={<DeleteInfo />} />} />
+        <Route path="/notification-banner" element={<GenericLayout children={<NotificationBanner />} />} />
         {/* Add more routes as needed */}
       </Routes>
     </div>

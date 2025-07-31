@@ -49,7 +49,7 @@ const menu = [
     children:[
       { label: "Accounts", path: "/account" },
       { label: "Delete Info", path: "/delete-info" },
-      { label: "Notification", path: "/language" },
+      { label: "Notification Banner", path: "/notification-banner" },
     ]
    },
 ];
