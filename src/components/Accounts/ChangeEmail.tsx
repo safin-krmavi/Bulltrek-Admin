@@ -7,13 +7,13 @@ export default function ChangeEmail() {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div className="bg-[#f7f7fb] min-h-screen px-8 py-8">
-      <div className="bg-white rounded-xl shadow p-8 max-w-[600px] mx-auto">
+    <>
+    <div className="bg-white rounded-lg min-h-screen px-8 py-8">
         <div className="mb-6">
           <label className="block text-xs text-gray-500 mb-1">Enter New Email</label>
           <input
             type="email"
-            className="w-full border rounded px-3 py-2"
+            className=" border rounded px-3 py-2"
             placeholder="Enter New Email"
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -24,7 +24,7 @@ export default function ChangeEmail() {
           <div className="flex items-center gap-2">
             <input
               type="text"
-              className="w-full border rounded px-3 py-2"
+              className="border rounded px-3 py-2"
               placeholder="Enter Verification Code"
               value={code}
               onChange={e => setCode(e.target.value)}
@@ -38,7 +38,7 @@ export default function ChangeEmail() {
             </button>
           </div>
         </div>
-        <div className="mb-4 text-xs text-gray-700">
+        <div className="mb-4 text-xs text-gray-700 mt-5">
           We Will Send Verification code on your email id.
           <div>
             <a href="#" className="text-[#1a73e8] underline text-xs">Did not Receive Email?</a>
@@ -82,6 +82,6 @@ export default function ChangeEmail() {
           </div>
         </div>
       )}
-    </div>
+  </>
   );
 }

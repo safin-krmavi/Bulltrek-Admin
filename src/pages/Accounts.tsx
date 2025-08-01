@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Bell, Search } from "lucide-react";
 import  ChangePassword  from "@/components/Accounts/Changepassword";
-import  ChangeEmail  from "@/components/Accounts/Changeemail";
+import  ChangeEmail  from "@/components/Accounts/ChangeEmail";
 import  AddFundsSection  from "@/components/Accounts/AddRemove2RFS";
 
 export default function AccountPage() {

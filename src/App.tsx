@@ -30,6 +30,9 @@ import Coupon from "./pages/Coupon";
 import Settings from "./pages/Settings";
 import DeleteInfo from "./pages/DeleteInfo";
 import NotificationBanner from "./pages/NotificationBanner";
+import Userlogs from "./pages/Userlogs";
+import Staff from "./pages/Staff";
+import Strategies from "./pages/Strategy";
 
 
 // Theme context and hook
@@ -55,6 +58,7 @@ const AppRouter = ({ theme }: { theme: string }) => {
       <Toaster position="top-center" />
       <Routes>
         <Route path="/" element={<AuthLayout children={<LoginPage />} />} />
+        {/* <Route path="/detailsForm" element={<GenericLayout children={<DetailsForm />} />} /> changes */}
         <Route path="/login" element={<AuthLayout children={<LoginPage />} />} />
         <Route path="/forgot-password" element={<AuthLayout children={<ForgotPasswordPage />} />} />
          <Route path="/reset-password" element={<AuthLayout children={<ResetPasswordPage />} />} />
@@ -81,7 +85,9 @@ const AppRouter = ({ theme }: { theme: string }) => {
         <Route path="/settings" element={<GenericLayout children={<Settings />} />} />
         <Route path="/delete-info" element={<GenericLayout children={<DeleteInfo />} />} />
         <Route path="/notification-banner" element={<GenericLayout children={<NotificationBanner />} />} />
-        {/* Add more routes as needed */}
+        <Route path="/user-logs" element={<GenericLayout children={<Userlogs />} />} /> 
+        <Route path="/staff" element={<GenericLayout children={<Staff />} />} />
+        <Route path="/strategies" element={<GenericLayout children={<Strategies />} />} />
       </Routes>
     </div>
   );

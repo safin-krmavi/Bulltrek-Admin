@@ -15,15 +15,15 @@ export default function ChangePassword() {
   };
 
   return (
-    <div className="bg-[#f7f7fb] min-h-screen px-8 py-8">
+    <>
+    <div className="bg-white min-h-screen px-8 py-8">
       {/* Card */}
-      <div className="bg-white rounded-xl shadow p-8 max-w-[600px] mx-auto">
         <div className="mb-6">
           <label className="block text-xs text-gray-500 mb-1">Old Password</label>
           <div className="relative">
             <input
               type={showOld ? "text" : "password"}
-              className="w-full border rounded px-3 py-2 pr-12"
+              className=" border rounded px-3 py-2 pr-12"
               placeholder="Old Password"
             />
             <button
@@ -42,7 +42,7 @@ export default function ChangePassword() {
           <div className="relative">
             <input
               type={showNew ? "text" : "password"}
-              className="w-full border rounded px-3 py-2 pr-12"
+              className=" border rounded px-3 py-2 pr-12"
               placeholder="New Password"
               value={newPassword}
               onChange={handleNewPasswordChange}
@@ -86,6 +86,6 @@ export default function ChangePassword() {
           Change Password
         </button>
       </div>
-    </div>
+    </>
   );
 }

@@ -4,8 +4,8 @@ export default function AddRemove2RFS() {
   const [kycActive, setKycActive] = useState(true);
 
   return (
-    <div className="bg-[#f7f7fb] min-h-screen px-8 py-8">
-      <div className="bg-white rounded-xl shadow p-8 max-w-[600px] mx-auto">
+    <>
+    <div className="bg-white rounded min-h-screen px-8 py-8">
         <div className="flex items-center gap-3 mb-2">
           <label className="text-sm text-gray-700">Activate 2FA KYC</label>
           <label className="relative inline-flex items-center cursor-pointer">
@@ -24,6 +24,6 @@ export default function AddRemove2RFS() {
           </label>
         </div>
       </div>
-    </div>
+    </>
   );
 }
