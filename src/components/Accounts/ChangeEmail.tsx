@@ -8,49 +8,59 @@ export default function ChangeEmail() {
 
   return (
     <>
-    <div className="bg-white rounded-lg min-h-screen px-8 py-8">
-        <div className="mb-6">
-          <label className="block text-xs text-gray-500 mb-1">Enter New Email</label>
+      <div className="bg-white rounded-lg min-h-screen px-8 py-8 shadow-lg flex flex-col">
+        {/* Enter New Email */}
+        <div className="mb-6 w-full max-w-md">
+          <div className="flex justify-between items-center mb-1">
+            <label className="text-xs text-gray-500">Enter New Email</label>
+          </div>
           <input
             type="email"
-            className=" border rounded px-3 py-2"
+            className="w-full border rounded px-3 py-2"
             placeholder="Enter New Email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="mb-2">
-          <label className="block text-xs text-gray-500 mb-1">Enter Verification Code</label>
-          <div className="flex items-center gap-2">
+
+        {/* Verification Code */}
+        <div className="mb-4 w-full max-w-md">
+          <label className="text-xs text-gray-500 mb-1 block">Enter Verification Code</label>
+          <div className="relative">
             <input
               type="text"
-              className="border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 pr-20" 
               placeholder="Enter Verification Code"
               value={code}
-              onChange={e => setCode(e.target.value)}
+              onChange={(e) => setCode(e.target.value)}
             />
             <button
               type="button"
-              className="text-[#1a73e8] font-medium px-3"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-[#1a73e8] font-medium text-xs bg-white"
               onClick={() => setSent(true)}
             >
               Send
             </button>
           </div>
         </div>
-        <div className="mb-4 text-xs text-gray-700 mt-5">
-          We Will Send Verification code on your email id.
+
+        {/* Info text */}
+        <div className="mb-6 text-xs text-gray-700 w-full max-w-md">
+          We will send a verification code to your email ID.
           <div>
-            <a href="#" className="text-[#1a73e8] underline text-xs">Did not Receive Email?</a>
+            <a href="#" className="text-[#1a73e8] underline text-xs">Did not receive email?</a>
           </div>
         </div>
+
+        {/* Confirm Button */}
         <button
-          className="w-full bg-[#f59120] text-white py-3 rounded font-medium text-base"
+          className="w-full max-w-md bg-[#f59120] text-white py-3 rounded font-medium text-base"
           onClick={() => setShowModal(true)}
         >
           Confirm
         </button>
       </div>
+
       {/* Success Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
@@ -82,6 +92,6 @@ export default function ChangeEmail() {
           </div>
         </div>
       )}
-  </>
+    </>
   );
 }

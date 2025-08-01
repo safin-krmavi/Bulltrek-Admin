@@ -5,9 +5,9 @@ export default function AddRemove2RFS() {
 
   return (
     <>
-    <div className="bg-white rounded min-h-screen px-8 py-8">
-        <div className="flex items-center gap-3 mb-2">
-          <label className="text-sm text-gray-700">Activate 2FA KYC</label>
+      <div className="bg-white rounded min-h-screen shadow-lg px-8 py-8">
+        <div className="mb-2">
+          <label className="text-sm text-gray-700 block mb-2">Activate 2FA KYC</label>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"

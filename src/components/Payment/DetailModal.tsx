@@ -50,7 +50,7 @@ export default function DetailModal({ open, onClose }: DetailModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-lg p-8 w-[700px] max-w-full">
+      <div className="bg-white rounded-xl shadow-lg p-8 w-[900px] max-w-full">
         {/* Search Bar */}
         <div className="relative mb-6">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
