@@ -1,4 +1,4 @@
-import UserLogs from "@/components/Logs/UserLogs";
+import UserLogs from "../components/Logs/UserLogs";
 import { Search, Bell } from "lucide-react";
 
 export default function UserDetailsPage() {
