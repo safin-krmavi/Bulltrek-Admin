@@ -1,8 +1,7 @@
-import UserLogs from "../components/Logs/UserLogs";
+import UserLogs from "@/components/Logs/UserLogs";
 import { Search, Bell } from "lucide-react";
 
 export default function UserDetailsPage() {
-
 	return (
 		<div className="w-full max-w-[1200px] mx-auto px-6 py-8 bg-[#fafbfc]">
 				{/* Search Bar */}
