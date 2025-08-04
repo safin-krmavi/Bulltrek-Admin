@@ -1,11 +1,12 @@
 import { useState } from "react";
-import StaffLogin from "../components/Logs/Staff/StaffLogin";
-import TicketLoad from "../components/Logs/Staff/TicketLoad";
+import StaffLogin from "../components/Logs/StaffLogin";
+import TicketLoad from "../components/Logs/TicketLoad";
 
 export default function UserDetailsPage() {
   const [activeTab, setActiveTab] = useState("create");
 
   return (
+    <>
     <div className="w-full max-w-[1200px] mx-auto px-6 py-8">
       {/* Tabs */}
       <div className="flex gap-4 border-b mb-6">
@@ -34,5 +35,6 @@ export default function UserDetailsPage() {
       {/* Tab Content */}
       {activeTab === "create" ? <StaffLogin /> : <TicketLoad />}
     </div>
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import UserLogin from "../components/Logs/Staff/UserLogin";
+import UserLogin from "../components/Logs/UserLogin";
 import { Search, Bell } from "lucide-react";
 
 export default function UserDetailsPage() {
