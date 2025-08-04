@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input"
 import { PasswordInput } from "@/components/ui/password-input"
 import { useAuth } from "@/hooks/useAuth"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { LoginInput, loginSchema } from "../schema"
 import { toast } from "react-hot-toast"
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -25,7 +25,7 @@ const roles = [
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth()
+  const { login } = useAuth();
 
   const loginForm = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
@@ -35,15 +35,13 @@ const LoginPage = () => {
       email: '',
       password: '',
       rememberMe: false,
-      role: roles[0].value,
+      role: roles[0].value, // <-- Add role to defaultValues
     },
-  })
+  });
 
-  async function onSubmit(values: LoginInput) {
+  async function onSubmit() {
     try {
-      // You can show the OTP modal after successful login, or for demo, after clicking login:
-      // await login.mutateAsync({ ... });
-      // toast.success("Login Successfull...");
+      // await login.mutateAsync(values);
       setOtpOpen(true); // Show OTP modal
     } catch (error: any) {
       if (error?.response?.status === 404 || error?.response?.data?.message?.toLowerCase().includes("not found")) {
@@ -83,7 +81,7 @@ const LoginPage = () => {
     }
     // TODO: Verify OTP here
     setOtpOpen(false);
-    // Proceed to dashboard or next step
+    navigate("/dashboard");
   };
 
   return (
@@ -111,11 +109,12 @@ const LoginPage = () => {
         <Form {...loginForm}>
           <form onSubmit={loginForm.handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
             {/* Role Dropdown */}
-            <FormField
+            <Controller
               control={loginForm.control}
               name="role"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel className="mb-1 text-[15px] font-medium text-[#222]">Role</FormLabel>
                   <FormControl>
                     <select
                       className="w-full border border-gray-300 rounded-md px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#f59120]"
@@ -126,6 +125,7 @@ const LoginPage = () => {
                       ))}
                     </select>
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -207,7 +207,7 @@ const LoginPage = () => {
             aria-label="Close"
             type="button"
           >
-            
+            ×
           </button>
           <div className="mb-6 mt-2 text-[16px] text-[#222]">
             Please enter the 2 factor authentication code below<br />

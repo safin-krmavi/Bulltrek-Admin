@@ -42,7 +42,7 @@ export default function TopProfitableUsers() {
             </tr>
           </thead>
           <tbody>
-            {mockUsers.map((user, idx) => (
+            {mockUsers.map((user) => (
               <tr key={user.id} className="border-b last:border-b-0 hover:bg-[#f3f3f7]">
                 <td className="py-2 px-2">{user.id}</td>
                 <td className="py-2 px-2 text-[#1a73e8] cursor-pointer hover:underline">{user.userId}</td>

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { XCircleIcon, EnvelopeIcon, PauseCircleIcon,AdjustmentsHorizontalIcon  } from "@heroicons/react/24/solid";
-import { FileText,Plus} from "lucide-react";
+import {AdjustmentsHorizontalIcon, PencilSquareIcon  } from "@heroicons/react/24/solid";
+import { FileText,Plus, Trash2} from "lucide-react";
 
 const userHistoryData = [
   { id: "01", PlanType: "Copy Trade", Price: "1400", expiry: "03/02/2024/02:30" },
@@ -64,14 +64,14 @@ export default function Userhistory() {
                   <td className="py-2 px-2">{row.Price}</td>
                   <td className="py-2 px-2">{row.expiry}</td>
                   <td className="py-2 px-2 flex gap-2">
-                    <button className="text-[#1a73e8] bg-white rounded p-1" title="Send Mail">
+                    {/* <button className="text-[#1a73e8] bg-white rounded p-1" title="Send Mail">
                       <EnvelopeIcon className="w-5 h-5"/>
-                    </button>
+                    </button> */}
                     <button className="text-[#1a73e8] bg-white rounded p-1" title="Send Mail">
-                      <PauseCircleIcon className="w-5 h-5" />
+                      <PencilSquareIcon className="w-5 h-5" />
                     </button>
-                    <button className="text-[#f59120] hover:text-red-600 bg-white rounded p-1" title="Delete">
-                      <XCircleIcon className="w-5 h-5" />
+                    <button className="text-red-600 hover:text-red-600 bg-white rounded p-1" title="Delete">
+                      <Trash2 className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>

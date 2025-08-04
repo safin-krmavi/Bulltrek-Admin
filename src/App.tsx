@@ -33,6 +33,7 @@ import NotificationBanner from "./pages/NotificationBanner";
 import Userlogs from "./pages/Userlogs";
 import Staff from "./pages/Staff";
 import Strategies from "./pages/Strategy";
+import User from "./pages/User";
 
 
 // Theme context and hook
@@ -87,6 +88,7 @@ const AppRouter = ({ theme }: { theme: string }) => {
         <Route path="/notification-banner" element={<GenericLayout children={<NotificationBanner />} />} />
         <Route path="/user-logs" element={<GenericLayout children={<Userlogs />} />} /> 
         <Route path="/staff" element={<GenericLayout children={<Staff />} />} />
+        <Route path="/user" element={<GenericLayout children={<User/>} />} />
         <Route path="/strategies" element={<GenericLayout children={<Strategies />} />} />
       </Routes>
     </div>

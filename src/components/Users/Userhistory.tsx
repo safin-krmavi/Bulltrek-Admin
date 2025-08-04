@@ -78,7 +78,7 @@ export default function Userhistory() {
                     <button className="text-[#1a73e8] bg-white rounded p-1" title="Send Mail">
                       <PauseCircleIcon className="w-5 h-5" />
                     </button>
-                    <button className="text-[#f59120] hover:text-red-600 bg-white rounded p-1" title="Delete">
+                    <button className="text-red-600 hover:text-red-600 bg-white rounded p-1" title="Delete">
                       <XCircleIcon className="w-5 h-5" />
                     </button>
                   </td>

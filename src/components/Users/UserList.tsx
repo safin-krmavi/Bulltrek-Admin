@@ -4,25 +4,25 @@ import { FileText, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const userHistoryData = [
-  { id: "01", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024", status: "Pending" },
-  { id: "02", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024", status: "Pending" },
-  { id: "03", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024", status: "Success" },
-  { id: "04", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024", status: "Success" },
-  { id: "05", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024", status: "Success" },
-  { id: "06", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024", status: "Success" },
-  { id: "07", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024", status: "Success" },
-  { id: "08", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024", status: "Success" },
-  { id: "09", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024", status: "Success" },
+  { id: "01", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024" },
+  { id: "02", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024" },
+  { id: "03", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024" },
+  { id: "04", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024" },
+  { id: "05", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024" },
+  { id: "06", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024" },
+  { id: "07", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024" },
+  { id: "08", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024" },
+  { id: "09", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",create:"03/02/2024" ,expiry: "03/02/2024" },
 ];
 
 export default function UserList() {
   const [page, setPage] = useState(1);
   const pageCount = 10;
-  const [editUserId, setEditUserId] = useState<string | null>(null);
+  // const [editUserId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Find the user to edit
-  const userToEdit = userHistoryData.find(u => u.id === editUserId);
+  // const userToEdit = userHistoryData.find(u => u.id === editUserId);
 
   // if (editUserId && userToEdit) {
   //   // Show the details page for the selected user
@@ -65,7 +65,7 @@ export default function UserList() {
                 <th className="py-2 px-2 font-medium">Plan</th>
                 <th className="py-2 px-2 font-medium">Crated Date</th>
                 <th className="py-2 px-2 font-medium">Expiry Date</th>
-                <th className="py-2 px-2 font-medium">Status</th>
+                {/* <th className="py-2 px-2 font-medium">Status</th> */}
                 <th className="py-2 px-2 font-medium">Action</th>
               </tr>
             </thead>
@@ -81,11 +81,11 @@ export default function UserList() {
                   <td className="py-2 px-2">{row.phone}</td>
                   <td className="py-2 px-2">{row.create}</td>
                   <td className="py-2 px-2">{row.expiry}</td>
-                  <td className="py-2 px-2">
+                  {/* <td className="py-2 px-2">
                     <span className={row.status === "Pending" ? "text-[#f59120] font-medium" : "text-[#22c55e] font-medium"}>
                       {row.status}
                     </span>
-                  </td>
+                  </td> */}
                   <td className="py-2 px-2 flex gap-2">
                     {/* Edit */}
                     <button

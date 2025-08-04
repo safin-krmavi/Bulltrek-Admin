@@ -1,6 +1,6 @@
 import { useState } from "react";
 import UserDetailsTable from "@/components/Staff/CreateStaff";
-import Userhistory from "@/components/Users/Userhistory";
+import Staffhistory from "@/components/Staff/Staffhistory";
 
 export default function StaffDetailsPage() {
   const [activeTab, setActiveTab] = useState("create");
@@ -32,7 +32,7 @@ export default function StaffDetailsPage() {
       </div>
 
       {/* Tab Content */}
-      {activeTab === "create" ? <UserDetailsTable /> : <Userhistory />}
+      {activeTab === "create" ? <UserDetailsTable /> : <Staffhistory />}
     </div>
   );
 }

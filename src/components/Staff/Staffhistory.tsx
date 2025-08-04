@@ -3,19 +3,18 @@ import { XCircleIcon, EnvelopeIcon, PauseCircleIcon,AdjustmentsHorizontalIcon  }
 import { FileText,Plus} from "lucide-react";
 
 const userHistoryData = [
-  { id: "01", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Pending" },
-  { id: "02", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Pending" },
-  { id: "03", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Success" },
-  { id: "04", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Success" },
-  { id: "05", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Success" },
-  { id: "06", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Success" },
-  { id: "07", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Success" },
+  { id: "01", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",Department: "Calling" },
+  { id: "02", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",Department: "Calling" },
+  { id: "03", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",Department: "Calling" },
+  { id: "04", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",Department: "Calling" },
+  { id: "05", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",Department: "Calling" },
+  { id: "06", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",Department: "Calling" },
+  { id: "07", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870",Department: "Calling" },
 ];
 
-export default function Userhistory() {
+export default function Userhistory(){
   const [page, setPage] = useState(1);
   const pageCount = 10;
-
   return (
     <div className="bg-[#f7f7fb] min-h-screen px-4">
       {/* Card/Table */}
@@ -50,8 +49,8 @@ export default function Userhistory() {
                 <th className="py-2 px-2 font-medium">User ID</th>
                 <th className="py-2 px-2 font-medium">Name</th>
                 <th className="py-2 px-2 font-medium">Phone Number</th>
-                <th className="py-2 px-2 font-medium">Expiry Date</th>
-                <th className="py-2 px-2 font-medium">Status</th>
+                <th className="py-2 px-2 font-medium">Department</th>
+                {/* <th className="py-2 px-2 font-medium">Status</th> */}
                 <th className="py-2 px-2 font-medium">Action</th>
               </tr>
             </thead>
@@ -65,12 +64,12 @@ export default function Userhistory() {
                   <td className="py-2 px-2 text-[#1a73e8] cursor-pointer hover:underline">{row.userId}</td>
                   <td className="py-2 px-2">{row.name}</td>
                   <td className="py-2 px-2">{row.phone}</td>
-                  <td className="py-2 px-2">{row.expiry}</td>
-                  <td className="py-2 px-2">
+                  <td className="py-2 px-2">{row.Department}</td>
+                  {/* <td className="py-2 px-2">
                     <span className={row.status === "Pending" ? "text-[#f59120] font-medium" : "text-[#22c55e] font-medium"}>
                       {row.status}
                     </span>
-                  </td>
+                  </td> */}
                   <td className="py-2 px-2 flex gap-2">
                     <button className="text-[#1a73e8] bg-white rounded p-1" title="Send Mail">
                       <EnvelopeIcon className="w-5 h-5"/>
@@ -78,7 +77,7 @@ export default function Userhistory() {
                     <button className="text-[#1a73e8] bg-white rounded p-1" title="Send Mail">
                       <PauseCircleIcon className="w-5 h-5" />
                     </button>
-                    <button className="text-[#f59120] hover:text-red-600 bg-white rounded p-1" title="Delete">
+                    <button className="text-red-600 hover:text-red-600 bg-white rounded p-1" title="Delete">
                       <XCircleIcon className="w-5 h-5" />
                     </button>
                   </td>

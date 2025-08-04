@@ -9,6 +9,7 @@ const marketPlaceOptions = ["Yes", "No"];
 const smartAnalysisOptions = ["250 Allowed", "100 Allowed"];
 const copyTradeOptions = ["Yes", "No"];
 const alertsOptions = ["Email: Unlimited", "Email: 100", "SMS: 300"];
+const SMSoptions = ["SMS:300"];
 const addOnOptions = ["Allowed Buy", "Allowed Sell"];
 
 export default function CreatePlan() {
@@ -43,7 +44,7 @@ export default function CreatePlan() {
         </div>
         <div className="flex items-center justify-between mb-4">
           <div className="font-semibold text-lg">User Details</div>
-          <button className="bg-[#f59120] text-white rounded-full p-2">
+          <button className=" text rounded-full p-2 h-8 w-8">
             <span className="text-xl font-bold">+</span>
           </button>
         </div>
@@ -137,6 +138,11 @@ export default function CreatePlan() {
                 <option key={opt}>{opt}</option>
               ))}
             </select>
+            <select className="w-full border rounded px-3 py-2 mt-6">
+              {SMSoptions.map(opt => (
+                <option key={opt}>{opt}</option>
+              ))}
+            </select> 
           </div>
           <div>
             <label className="block text-xs text-gray-500 mb-1">Add-on</label>

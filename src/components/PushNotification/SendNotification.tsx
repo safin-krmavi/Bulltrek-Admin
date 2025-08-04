@@ -3,7 +3,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 
 const notificationPurposes = ["New Plans", "Updates", "Reminders"];
 const userIds = ["All", "User 01", "User 02"];
-const intervals = ["Every Wednesday", "Daily"];
+// const intervals = ["Every Wednesday", "Daily"];
 
 const notificationRows = [
   {

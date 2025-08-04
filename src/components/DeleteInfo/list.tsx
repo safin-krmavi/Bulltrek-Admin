@@ -18,11 +18,11 @@ const userHistoryData = [
 export default function Settings() {
   const [page, setPage] = useState(1);
   const pageCount = 10;
-  const [editUserId, setEditUserId] = useState<string | null>(null);
+  // const [editUserId, setEditUserId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Find the user to edit
-  const userToEdit = userHistoryData.find(u => u.id === editUserId);
+  // const userToEdit = userHistoryData.find(u => u.id === editUserId);
 
   // if (editUserId && userToEdit) {
   //   // Show the details page for the selected user

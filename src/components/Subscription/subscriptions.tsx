@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { XCircleIcon, PencilSquareIcon, PauseCircleIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
-import { FileText, Plus } from "lucide-react";
+import { PencilSquareIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
+import { FileText, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const userHistoryData = [
@@ -18,7 +18,7 @@ const userHistoryData = [
 export default function UserList() {
   const [page, setPage] = useState(1);
   const pageCount = 10;
-  const [editUserId] = useState<string | null>(null);
+  // const [editUserId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // if (editUserId && userToEdit) {
@@ -87,12 +87,12 @@ export default function UserList() {
                       <PencilSquareIcon className="w-5 h-5" />
                     </button>
                     {/* Pause */}
-                    <button className="text-[#1a73e8] bg-white rounded-xl p-1" title="Pause">
+                    {/* <button className="text-[#1a73e8] bg-white rounded-xl p-1" title="Pause">
                       <PauseCircleIcon className="w-5 h-5" />
-                    </button>
+                    </button> */}
                     {/* Cancel */}
-                    <button className="text-[#f59120] hover:text-red-600 bg-white rounded-xl p-1" title="Delete">
-                      <XCircleIcon className="w-5 h-5" />
+                    <button className="text-red-600 hover:text-red-600 bg-white rounded-xl p-1" title="Delete">
+                      <Trash2 className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>

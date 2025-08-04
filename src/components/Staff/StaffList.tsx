@@ -1,28 +1,28 @@
 import { useState } from "react";
-import { XCircleIcon, PencilSquareIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
-import { FileText, Plus } from "lucide-react";
+import {PencilSquareIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
+import { FileText, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const StaffData = [
-  { id: "01", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Admin",  status: "Pending" },
-  { id: "02", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Supervisor", status: "Pending" },
-  { id: "03", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Help Desk", status: "Success" },
-  { id: "04", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Live Chat", status: "Success" },
-  { id: "05", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Supervisor", status: "Success" },
-  { id: "06", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Help Desk", status: "Success" },
-  { id: "07", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Supervisor", status: "Success" },
-  { id: "08", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Live Chat", status: "Success" },
-  { id: "09", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Help Desk",  status: "Success" },
+  { id: "01", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Admin",  status: "Active" },
+  { id: "02", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Supervisor", status: "Active" },
+  { id: "03", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Help Desk", status: "Inactive" },
+  { id: "04", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Live Chat", status: "Inactive" },
+  { id: "05", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Supervisor", status: "Inactive" },
+  { id: "06", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Help Desk", status: "Active" },
+  { id: "07", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Supervisor", status: "Active" },
+  { id: "08", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Live Chat", status: "Inactive" },
+  { id: "09", StaffId: "#AHGA68", name: "Sanjay Singh",role:"Help Desk",  status: "Inactive" },
 ];
 
 export default function UserList() {
   const [page, setPage] = useState(1);
   const pageCount = 10;
-  const [editUserId, setEditUserId] = useState<string | null>(null);
+  // const [editUserId, setEditUserId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Find the user to edit
-  const userToEdit = StaffData.find(u => u.id === editUserId);
+  // const userToEdit = StaffData.find(u => u.id === editUserId);
 
   // if (editUserId && userToEdit) {
   //   // Show the details page for the selected user
@@ -55,14 +55,14 @@ export default function UserList() {
         <div className="overflow-x-auto">
           <table className="min-w-full text-sm">
             <thead>
-              <tr className="text-left text-gray-700 border-b bg-[#f7f7fb]">
+              <tr className="text-gray-700 border-b bg-[#f7f7fb]">
                 <th className="py-2 px-2 font-medium">
                   <input type="checkbox" />
                 </th>
                 <th className="py-2 px-2 font-medium">No.</th>
                 <th className="py-2 px-2 font-medium">Staff ID</th>
                 <th className="py-2 px-2 font-medium">Staff Name</th>
-                <th className="py-2 px-2 font-medium ">role</th>
+                <th className="py-2 px-2 font-medium ">Role</th>
                 <th className="py-2 px-2 font-medium">Status</th>
                 <th className="py-2 px-2 font-medium">Action</th>
               </tr>
@@ -70,15 +70,15 @@ export default function UserList() {
             <tbody>
               {StaffData.map((row) => (
                 <tr key={row.id} className="border-b last:border-b-0 hover:bg-[#f7f7fb]">
-                  <td className="py-2 px-2">
+                  <td className="py-2 px-1">
                     <input type="checkbox" />
                   </td>
-                  <td className="py-2 px-2">{row.id}</td>
+                  <td className="py-2 px-3">{row.id}</td>
                   <td className="py-2 px-2 text-[#1a73e8] cursor-pointer hover:underline">{row.StaffId}</td>
                   <td className="py-2 px-2">{row.name}</td>
                   <td className="py-2 px-2 text-gray-700">{row.role}</td>
                   <td className="py-2 px-2">
-                    <span className={row.status === "Pending" ? "text-[#f59120] font-medium" : "text-[#22c55e] font-medium"}>
+                    <span className={row.status === "Inactive" ? "text-red-600 font-medium" : "text-[#22c55e] font-medium"}>
                       {row.status}
                     </span>
                   </td>
@@ -92,8 +92,8 @@ export default function UserList() {
                       <PencilSquareIcon className="w-5 h-5" />
                     </button>
                     {/* Cancel */}
-                    <button className="text-[#f59120] hover:text-red-600 bg-white rounded-xl p-1" title="Delete">
-                      <XCircleIcon className="w-5 h-5" />
+                    <button className="text-red-600 hover:text-red-600 bg-white rounded-xl p-1" title="Delete">
+                      <Trash2 className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>

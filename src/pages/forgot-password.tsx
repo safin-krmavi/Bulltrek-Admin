@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordPage = () => {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,7 +20,9 @@ const ForgotPasswordPage = () => {
     setTimeout(() => {
       setLoading(false);
       toast.success("Code verified!");
-      // Redirect or show next step
+      setTimeout(() => {
+        navigate("/reset-password");
+      }, 1000); // Wait for toast to show before navigating
     }, 1200);
   };
 
@@ -32,12 +36,14 @@ const ForgotPasswordPage = () => {
             An authentication code has been sent to your email/Phone Number.
           </p>
           <form onSubmit={handleVerify} className="w-full flex flex-col gap-4">
-            <label className="text-[15px] font-medium text-[#222] mb-1">Enter Code</label>
+            <label className="text-[15px] font-medium text-[#222] mb-1">
+              Enter Code
+            </label>
             <Input
               placeholder=""
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#f59120]"
               value={code}
-              onChange={e => setCode(e.target.value)}
+              onChange={(e) => setCode(e.target.value)}
             />
             <Button
               type="submit"

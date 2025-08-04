@@ -17,7 +17,7 @@ export default function StaffDetailsPage() {
           }`}
           onClick={() => setActiveTab("create")}
         >
-          Create Staff
+          Create Plan
         </button>
         <button
           className={`py-2 px-4 text-base font-medium ${

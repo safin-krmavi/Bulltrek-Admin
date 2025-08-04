@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import StrategyStatusChart from "@/components/ui/StrategyStatusChart";
 import TopProfitableUsers from "@/components/dashboard/TopProfitableUsers";
@@ -210,7 +210,7 @@ export default function UserDashboard() {
               </PieChart>
             </ResponsiveContainer>
             <div className="ml-6 flex-1">
-              {trafficByLocation.map((item, idx) => (
+              {trafficByLocation.map((item) => (
                 <div key={item.name} className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <span

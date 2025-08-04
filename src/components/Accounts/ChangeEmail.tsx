@@ -3,7 +3,7 @@ import { useState } from "react";
 export default function ChangeEmail() {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
-  const [sent, setSent] = useState(false);
+  // const [setSent] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -37,7 +37,7 @@ export default function ChangeEmail() {
             <button
               type="button"
               className="absolute right-2 top-1/2 -translate-y-1/2 text-[#1a73e8] font-medium text-xs bg-white"
-              onClick={() => setSent(true)}
+              // onClick={() => setSent(true)}
             >
               Send
             </button>

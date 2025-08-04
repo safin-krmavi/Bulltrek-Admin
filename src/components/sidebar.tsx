@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Children, useState } from "react";
+import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 
 const menu = [
@@ -51,7 +51,7 @@ const menu = [
   { label: "Push Notification", icon: "🔔", path: "/push-notification" },
   { label: "Logs", icon: "📄", path: "/logs" ,
     children: [
-      { label: "User", path: "/user-logs" },
+      { label: "User", path: "/User" },
       { label: "Staff", path: "/staff" },
       { label: "Strategy", path: "/strategies" },
       { label: "Trades", path: "/Trades" },

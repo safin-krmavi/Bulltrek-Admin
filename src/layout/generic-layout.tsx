@@ -1,6 +1,6 @@
 import Sidebar from "@/components/sidebar";
-import Footer from '@/components/footer'
-import Header from '@/components/header'
+// import Footer from '@/components/footer'
+// import Header from '@/components/header'
 import { ReactNode } from 'react'
 
 const GenericLayout = ({children}:{children:ReactNode}) => {

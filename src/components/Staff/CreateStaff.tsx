@@ -1,7 +1,7 @@
-import { useState } from "react";
+// import { useState } from "react";
 
 export default function CreateUser() {
-  const [kyc, setKyc] = useState(true);
+  // const [kyc, setKyc] = useState(true);
 
   return (
     <div className="bg-white rounded-xl shadow p-4 w-full max-w-[1200px] mx-auto flex flex-col justify-center">

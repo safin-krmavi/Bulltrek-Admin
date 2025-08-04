@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { XCircleIcon, EnvelopeIcon, PauseCircleIcon,AdjustmentsHorizontalIcon  } from "@heroicons/react/24/solid";
-import { FileText,Plus} from "lucide-react";
+import {AdjustmentsHorizontalIcon, PencilSquareIcon  } from "@heroicons/react/24/solid";
+import { FileText,Plus, Trash2} from "lucide-react";
 
 const userHistoryData = [
-  { id: "01", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Pending" },
-  { id: "02", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Pending" },
-  { id: "03", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Success" },
-  { id: "04", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Success" },
-  { id: "05", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Success" },
-  { id: "06", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Success" },
-  { id: "07", userId: "#AHGA68", name: "Sanjay Singh", phone: "3214569870", expiry: "03/02/2024", status: "Success" },
+  { id: "01", userId: "#AHGA68", StartDate: "Sanjay Singh",StartTime:"00:02PM", EndDate: "3214569870", EndTime: "00:05PM", status: "Active" },
+  { id: "02", userId: "#AHGA68", StartDate: "Sanjay Singh",StartTime:"00:02PM", EndDate: "3214569870", EndTime: "00:05PM", status: "Expired" },
+  { id: "03", userId: "#AHGA68", StartDate: "Sanjay Singh",StartTime:"00:02PM", EndDate: "3214569870", EndTime: "00:05PM", status: "Active" },
+  { id: "04", userId: "#AHGA68", StartDate: "Sanjay Singh",StartTime:"00:02PM", EndDate: "3214569870", EndTime: "00:05PM", status: "Expired" },
+  { id: "05", userId: "#AHGA68", StartDate: "Sanjay Singh",StartTime:"00:02PM", EndDate: "3214569870", EndTime: "00:05PM", status: "Active" },
+  { id: "06", userId: "#AHGA68", StartDate: "Sanjay Singh",StartTime:"00:02PM", EndDate: "3214569870", EndTime: "00:05PM", status: "Expired" },
+  { id: "07", userId: "#AHGA68", StartDate: "Sanjay Singh",StartTime:"00:02PM", EndDate: "3214569870", EndTime: "00:05PM", status: "Active" },
 ];
 
 export default function Userhistory() {
@@ -21,7 +21,7 @@ export default function Userhistory() {
       {/* Card/Table */}
       <div className="bg-white rounded-xl shadow p-3 max-w-[1200px] mx-auto">
         <div className="flex items-center justify-between mb-4">
-          <div className="text-lg font-semibold text-gray-800">User List</div>
+          <div className="text-lg font-semibold text-gray-800">Coupan List</div>
           <div className="flex gap-2">
             <button className="flex items-center gap-1 px-4 py-2 bg-[#f59120] text-white rounded-md font-medium text-sm hover:bg-[#e07d13] shadow">
               {/* PDF */}
@@ -48,9 +48,10 @@ export default function Userhistory() {
                 </th>
                 <th className="py-2 px-2 font-medium">No.</th>
                 <th className="py-2 px-2 font-medium">User ID</th>
-                <th className="py-2 px-2 font-medium">Name</th>
-                <th className="py-2 px-2 font-medium">Phone Number</th>
-                <th className="py-2 px-2 font-medium">Expiry Date</th>
+                <th className="py-2 px-2 font-medium">StartDate</th>
+                <th className="py-2 px-2 font-medium">StartTime</th>
+                <th className="py-2 px-2 font-medium">EndDate</th>
+                <th className="py-2 px-2 font-medium">EndTime</th>
                 <th className="py-2 px-2 font-medium">Status</th>
                 <th className="py-2 px-2 font-medium">Action</th>
               </tr>
@@ -63,23 +64,24 @@ export default function Userhistory() {
                   </td>
                   <td className="py-2 px-2">{row.id}</td>
                   <td className="py-2 px-2 text-[#1a73e8] cursor-pointer hover:underline">{row.userId}</td>
-                  <td className="py-2 px-2">{row.name}</td>
-                  <td className="py-2 px-2">{row.phone}</td>
-                  <td className="py-2 px-2">{row.expiry}</td>
+                  <td className="py-2 px-2">{row.StartDate}</td>
+                  <td className="py-2 px-2">{row.StartTime}</td>
+                  <td className="py-2 px-2">{row.EndDate}</td>
+                  <td className="py-2 px-2">{row.EndTime}</td>
                   <td className="py-2 px-2">
                     <span className={row.status === "Pending" ? "text-[#f59120] font-medium" : "text-[#22c55e] font-medium"}>
                       {row.status}
                     </span>
                   </td>
                   <td className="py-2 px-2 flex gap-2">
-                    <button className="text-[#1a73e8] bg-white rounded p-1" title="Send Mail">
+                    {/* <button className="text-[#1a73e8] bg-white rounded p-1" title="Send Mail">
                       <EnvelopeIcon className="w-5 h-5"/>
-                    </button>
+                    </button> */}
                     <button className="text-[#1a73e8] bg-white rounded p-1" title="Send Mail">
-                      <PauseCircleIcon className="w-5 h-5" />
+                      <PencilSquareIcon className="w-5 h-5" />
                     </button>
-                    <button className="text-[#f59120] hover:text-red-600 bg-white rounded p-1" title="Delete">
-                      <XCircleIcon className="w-5 h-5" />
+                    <button className="text-red-600 hover:text-red-600 bg-white rounded p-1" title="Delete">
+                      <Trash2 className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>

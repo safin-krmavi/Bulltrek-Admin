@@ -1,7 +1,7 @@
-import { useState } from "react";
+// import { useState } from "react";
 
 export default function Createcoupan() {
-  const [activeTab, setActiveTab] = useState("Create Coupon");
+  // const [activeTab, setActiveTab] = useState("Create Coupon");
 
   return (
     <div className="bg-[#f7f7fb] min-h-screen px-8 py-8">
