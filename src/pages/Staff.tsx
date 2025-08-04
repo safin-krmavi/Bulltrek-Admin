@@ -1,6 +1,6 @@
 import { useState } from "react";
-import StaffLogin from "@/components/Logs/Staff/StaffLogin";
-import TicketLoad from "@/components/Logs/Staff/TicketLoad";
+import StaffLogin from "../components/Logs/Staff/StaffLogin";
+import TicketLoad from "../components/Logs/Staff/TicketLoad";
 
 export default function UserDetailsPage() {
   const [activeTab, setActiveTab] = useState("create");
