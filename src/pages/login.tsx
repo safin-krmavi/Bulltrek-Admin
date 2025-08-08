@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 const roles = [
   { label: "Admin", value: "admin" },
+  { label: "Support / Live Staff", value: "staff" }
   // Add more roles if needed
 ];
 
@@ -39,10 +40,12 @@ const LoginPage = () => {
     },
   });
 
-  async function onSubmit() {
+  async function onSubmit(values: LoginInput) {
     try {
       // await login.mutateAsync(values);
       setOtpOpen(true); // Show OTP modal
+      // Save role for OTP submit
+      setPendingRole(values.role);
     } catch (error: any) {
       if (error?.response?.status === 404 || error?.response?.data?.message?.toLowerCase().includes("not found")) {
         toast.error("Account does not exist. Please check your email or register.")
@@ -57,6 +60,9 @@ const LoginPage = () => {
   const [otpOpen, setOtpOpen] = useState(false);
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [otpError, setOtpError] = useState("");
+
+  // Track the role for OTP submit
+  const [pendingRole, setPendingRole] = useState<string>("admin");
 
   // Handle OTP input change
   const handleOtpChange = (index: number, value: string) => {
@@ -79,9 +85,13 @@ const LoginPage = () => {
       setOtpError("Please enter all 4 digits.");
       return;
     }
-    // TODO: Verify OTP here
     setOtpOpen(false);
-    navigate("/dashboard");
+    // Redirect based on role
+    if (pendingRole === "staff") {
+      navigate("/staffdashboard");
+    } else {
+      navigate("/dashboard");
+    }
   };
 
   return (

@@ -100,7 +100,7 @@ export default function UserList() {
                       <PauseCircleIcon className="w-5 h-5" />
                     </button>
                     {/* Cancel */}
-                    <button className="text-[#f59120] hover:text-red-600 bg-white rounded-xl p-1" title="Delete">
+                    <button className="text-red-600 hover:text-red-600 bg-white rounded-xl p-1" title="Delete">
                       <XCircleIcon className="w-5 h-5" />
                     </button>
                   </td>

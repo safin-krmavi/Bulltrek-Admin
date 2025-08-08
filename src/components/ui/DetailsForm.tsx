@@ -1,11 +1,14 @@
 import { ChevronLeft } from "lucide-react";
 
-export default function DetailsForm() {
+export default function DetailsForm({ onBack }: { onBack?: () => void }) {
   return (
     <div className="bg-gray-100 min-h-screen p-4">
       {/* Header */}
       <div className="flex items-center mb-6">
-        <button className="mr-3 text-gray-600 hover:text-orange-500">
+        <button
+          className="mr-3 text-gray-600 hover:text-orange-500"
+          onClick={onBack}
+        >
           <ChevronLeft size={20} />
         </button>
         <span className="text-lg font-medium text-gray-800">Ticket List</span>

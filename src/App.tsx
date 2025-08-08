@@ -1,6 +1,7 @@
 import { Route, BrowserRouter as Router, Routes, useLocation } from "react-router-dom"
 import AuthLayout from "./layout/auth-layout"
 import GenericLayout from "./layout/generic-layout"
+import StaffLayout from "./layout/staff-layout"
 import AccountPage from "./pages/Accounts";
 import AuthenticationPage from "./pages/authentication"
 import DashboardPage from "./pages/dashboard"
@@ -34,6 +35,11 @@ import Userlogs from "./pages/Userlogs";
 import Staff from "./pages/Staff";
 import Strategies from "./pages/Strategy";
 import User from "./pages/User";
+import Staffdashboard from "./pages/StaffLogin/Staffdashboard";
+import StaffTicketDetailsTable from "@/pages/StaffLogin/Tickets";
+import StaffLiveChat from "@/pages/StaffLogin/LiveChat";
+import AccountSettings from "@/pages/StaffLogin/Accountsettings";
+import Profile from "@/pages/StaffLogin/Profile";
 
 
 // Theme context and hook
@@ -90,6 +96,12 @@ const AppRouter = ({ theme }: { theme: string }) => {
         <Route path="/staff" element={<GenericLayout children={<Staff />} />} />
         <Route path="/user" element={<GenericLayout children={<User/>} />} />
         <Route path="/strategies" element={<GenericLayout children={<Strategies />} />} />
+        {/* Staff Layout routes */}
+        <Route path="/staffdashboard" element={<StaffLayout children={<Staffdashboard />} />} />
+        <Route path="/staffTickets" element={<StaffLayout children={<StaffTicketDetailsTable />} />} />
+        <Route path="/livechats" element={<StaffLayout children={<StaffLiveChat />} />} />
+        <Route path="/staffaccounts" element={<StaffLayout children={<AccountSettings />} />} />
+        <Route path="/profile" element={<StaffLayout children={<Profile  />} />} />
       </Routes>
     </div>
   );
