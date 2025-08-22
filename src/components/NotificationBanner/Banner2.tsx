@@ -1,84 +1,116 @@
 import { useState } from "react";
 
-export default function CreateUser() {
-  const [kyc, setKyc] = useState(true);
+export default function Banner2() {
+  const [textMessage, setTextMessage] = useState("10");
+  const [buttonName, setButtonName] = useState("1000");
+  const [buttonUrl, setButtonUrl] = useState("https://");
+  const [countdown, setCountdown] = useState<string>("");
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: call save API
+    setIsEditing(false);
+  };
+
+  const handleEdit = () => setIsEditing(true);
+  const handleCancel = () => {
+    // reset or cancel edits
+    setTextMessage("10");
+    setButtonName("1000");
+    setButtonUrl("https://");
+    setCountdown("");
+    setIsEditing(false);
+  };
 
   return (
-    <div className="bg-white rounded-xl shadow p-4 w-full max-w-[1200px] mx-auto flex flex-col justify-center">
-      <div className="font-semibold text-lg mb-6">Personal Detail</div>
-      <form>
-        <div className="grid grid-cols-2 gap-6">
+    <div className="bg-[#f7f7fb] min-h-[360px] rounded-lg">
+      <div className="bg-white rounded-lg shadow-sm p-6 max-w-[1100px] mx-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-[#222]">Banner 2</h3>
+          <div className="text-sm text-gray-500">Configure banner with countdown</div>
+        </div>
+
+        <form onSubmit={handleSave} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Text Message</label>
+              <input
+                value={textMessage}
+                onChange={(e) => setTextMessage(e.target.value)}
+                disabled={!isEditing}
+                className={`w-full px-3 py-2 rounded-md border ${
+                  isEditing ? "border-gray-300" : "border-transparent bg-gray-50"
+                } focus:outline-none focus:ring-2 focus:ring-[#f59120]`}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Button Name</label>
+              <input
+                value={buttonName}
+                onChange={(e) => setButtonName(e.target.value)}
+                disabled={!isEditing}
+                className={`w-full px-3 py-2 rounded-md border ${
+                  isEditing ? "border-gray-300" : "border-transparent bg-gray-50"
+                } focus:outline-none focus:ring-2 focus:ring-[#f59120]`}
+              />
+            </div>
+          </div>
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email ID</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Button URL Link</label>
             <input
-              type="email"
-              className="w-full border rounded px-3 py-2"
-              placeholder="abhinavvw32156@gmail.com"
+              value={buttonUrl}
+              onChange={(e) => setButtonUrl(e.target.value)}
+              disabled={!isEditing}
+              className={`w-full px-3 py-2 rounded-md border ${
+                isEditing ? "border-gray-300" : "border-transparent bg-gray-50"
+              } focus:outline-none focus:ring-2 focus:ring-[#f59120]`}
             />
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Countdown Timer</label>
             <input
-              type="text"
-              className="w-full border rounded px-3 py-2"
-              placeholder="7043000000"
+              type="datetime-local"
+              value={countdown}
+              onChange={(e) => setCountdown(e.target.value)}
+              disabled={!isEditing}
+              className={`w-full px-3 py-2 rounded-md border ${
+                isEditing ? "border-gray-300" : "border-transparent bg-gray-50"
+              } focus:outline-none focus:ring-2 focus:ring-[#f59120]`}
             />
           </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-          <textarea
-            className="w-full border rounded px-3 py-2"
-            rows={3}
-            defaultValue="jfiafai ajfigoj fgpfg pgekwj glkqaj alpejglej sgphjwjt4w4ji"
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-6 items-center">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Plan Name</label>
-            <select className="w-full border rounded px-3 py-2">
-              <option>7043000000</option>
-              {/* Add more options as needed */}
-            </select>
-          </div>
-          <div className="flex items-center gap-4 mt-6">
-            <label className="block text-sm font-medium text-gray-700">KYC</label>
+
+          <div className="flex items-center gap-4 pt-2">
             <button
               type="button"
-              className={`w-12 h-7 rounded-full flex items-center px-1 transition ${
-                kyc ? "bg-[#4ade80]" : "bg-gray-300"
-              }`}
-              onClick={() => setKyc(!kyc)}
+              onClick={handleCancel}
+              className="px-4 py-2 rounded-md bg-white border border-gray-300 text-sm font-medium hover:bg-gray-50"
             >
-              <span
-                className={`block w-5 h-5 bg-white rounded-full shadow transition ${
-                  kyc ? "translate-x-5" : ""
-                }`}
-              />
+              Cancel
             </button>
+
+            {!isEditing ? (
+              <button
+                type="button"
+                onClick={handleEdit}
+                className="px-5 py-2 rounded-md bg-[#f59120] text-white font-medium text-sm hover:bg-[#e07d13]"
+              >
+                Edit
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="px-5 py-2 rounded-md bg-[#f59120] text-white font-medium text-sm hover:bg-[#e07d13]"
+              >
+                Save
+              </button>
+            )}
           </div>
-        </div>
-      </form>
-       <div className="flex gap-4 mt-8">
-          <button
-            type="submit"
-            className="bg-[#f59120] text-white px-6 py-2 rounded font-medium"
-          >
-            Create User
-          </button>
-          <button
-            type="button"
-            className="bg-[#f59120] text-white px-6 py-2 rounded font-medium"
-          >
-            Send Invite Mail
-          </button>
-          <button
-            type="button"
-            className="bg-[#f59120] text-white px-6 py-2 rounded font-medium"
-          >
-            Resend Invite Mail
-          </button>
-        </div>
+        </form>
+      </div>
     </div>
   );
 }

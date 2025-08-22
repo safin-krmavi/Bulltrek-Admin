@@ -217,7 +217,7 @@ const LoginPage = () => {
             aria-label="Close"
             type="button"
           >
-            ×
+            
           </button>
           <div className="mb-6 mt-2 text-[16px] text-[#222]">
             Please enter the 2 factor authentication code below<br />

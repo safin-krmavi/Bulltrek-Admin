@@ -76,3 +76,37 @@ export async function authFetch<T = any>(
     );
   }
 }
+
+export interface SendOtpResponse {
+  status: string;
+  message: string;
+  data: any;
+  code: number;
+}
+
+export interface VerifyOtpResponse {
+  status: string;
+  message: string;
+  data: {
+    token?: string;
+    user?: any;
+  };
+  code: number;
+}
+
+export async function sendOtp(email: string, purpose = "login") {
+  const res = await apiClient.post<SendOtpResponse>("/api/v1/send-otp", {
+    email,
+    purpose,
+  });
+  return res.data;
+}
+
+export async function verifyOtp(email: string, otp_code: string, purpose = "login") {
+  const res = await apiClient.post<VerifyOtpResponse>("/api/v1/verify-otp", {
+    email,
+    otp_code,
+    purpose,
+  });
+  return res.data;
+}
