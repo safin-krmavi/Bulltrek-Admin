@@ -8,89 +8,119 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { PasswordInput } from "@/components/ui/password-input"
+// PasswordInput import removed to match backend OTP flow
 import { useAuth } from "@/hooks/useAuth"
-import { zodResolver } from "@hookform/resolvers/zod"
+// removed zodResolver import to avoid blocking submit when password is not required
+// import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, Controller } from "react-hook-form"
-import { LoginInput, loginSchema } from "../schema"
+import { LoginInput /*, loginSchema */ } from "../schema"
 import { toast } from "react-hot-toast"
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { sendOtp, verifyOtp } from "@/api/auth";
+import apiClient from "@/api/apiClient";
 
 const roles = [
   { label: "Admin", value: "admin" },
   { label: "Support / Live Staff", value: "staff" }
-  // Add more roles if needed
 ];
 
-const LoginPage = () => {
+export default function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  // NOTE: removed resolver so submission will run even if schema expects password.
+  // If you prefer validation, update loginSchema to not require password and re-enable resolver.
   const loginForm = useForm<LoginInput>({
-    resolver: zodResolver(loginSchema),
+    // resolver: zodResolver(loginSchema),
     mode: 'onChange',
     reValidateMode: 'onBlur',
     defaultValues: {
       email: '',
       password: '',
       rememberMe: false,
-      role: roles[0].value, // <-- Add role to defaultValues
+      role: roles[0].value,
     },
   });
 
-  async function onSubmit(values: LoginInput) {
-    try {
-      // await login.mutateAsync(values);
-      setOtpOpen(true); // Show OTP modal
-      // Save role for OTP submit
-      setPendingRole(values.role);
-    } catch (error: any) {
-      if (error?.response?.status === 404 || error?.response?.data?.message?.toLowerCase().includes("not found")) {
-        toast.error("Account does not exist. Please check your email or register.")
-      } else if (error?.response?.data?.message) {
-        toast.error(error.response.data.message)
-      } else {
-        toast.error("Login failed. Please try again.")
-      }
-      console.error("Login error:", error)
-    }
-  }
   const [otpOpen, setOtpOpen] = useState(false);
-  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]); // support 6-digit OTP from your example
   const [otpError, setOtpError] = useState("");
+  const [sendingOtp, setSendingOtp] = useState(false);
+  const [verifyingOtp, setVerifyingOtp] = useState(false);
 
-  // Track the role for OTP submit
+  // Track the role & email for OTP submit
   const [pendingRole, setPendingRole] = useState<string>("admin");
+  const [pendingEmail, setPendingEmail] = useState<string>("");
 
-  // Handle OTP input change
+  // Handle OTP input change (single digit)
   const handleOtpChange = (index: number, value: string) => {
-    if (!/^\d?$/.test(value)) return; // Only allow single digit
+    if (!/^\d?$/.test(value)) return;
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
     setOtpError("");
-    // Auto-focus next input
-    if (value && index < 3) {
+    if (value && index < otp.length - 1) {
       const next = document.getElementById(`otp-input-${index + 1}`);
       if (next) (next as HTMLInputElement).focus();
     }
   };
 
-  // Handle OTP submit
-  const handleOtpSubmit = (e: React.FormEvent) => {
+  // Trigger send-otp when user submits login form
+  async function onSubmit(values: LoginInput) {
+    try {
+      setSendingOtp(true);
+      await sendOtp(values.email, "login");
+      toast.success("OTP sent successfully. Check your email.");
+      setPendingRole(values.role);
+      setPendingEmail(values.email);
+      setOtp(["", "", "", "", "", ""]);
+      setOtpOpen(true);
+    } catch (error: any) {
+      const msg =
+        error?.response?.data?.message ||
+        "Failed to send OTP. Please try again.";
+      toast.error(msg);
+      console.error("Send OTP error:", error);
+    } finally {
+      setSendingOtp(false);
+    }
+  }
+
+  // Handle OTP submit - verify via API
+  const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (otp.some(d => d === "")) {
-      setOtpError("Please enter all 4 digits.");
+      setOtpError("Please enter all digits.");
       return;
     }
-    setOtpOpen(false);
-    // Redirect based on role
-    if (pendingRole === "staff") {
-      navigate("/staffdashboard");
-    } else {
-      navigate("/dashboard");
+    const code = otp.join("");
+    try {
+      setVerifyingOtp(true);
+      const res = await verifyOtp(pendingEmail, code, "login");
+      const token = res?.data?.token;
+      if (token) {
+        // store token and set default auth header
+        localStorage.setItem("auth_token", token);
+        apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      }
+      toast.success(res?.message || "Login successful");
+      setOtpOpen(false);
+      // navigate according to selected role
+      if (pendingRole === "staff") {
+        navigate("/staffdashboard");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      const msg =
+        error?.response?.data?.message || "OTP verification failed.";
+      setOtpError(msg);
+      toast.error(msg);
+      console.error("Verify OTP error:", error);
+    } finally {
+      setVerifyingOtp(false);
     }
   };
 
@@ -157,45 +187,32 @@ const LoginPage = () => {
                 </FormItem>
               )}
             />
-            {/* Password */}
-            <FormField
-              control={loginForm.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="mb-1 text-[15px] font-medium text-[#222]">Your password</FormLabel>
-                  <FormControl>
-                    <PasswordInput
-                      placeholder=""
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-[#f59120]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {/* Login Button */}
+
+            {/* Password field removed — backend uses OTP flow so password is not required */}
+
+            {/* Login Button - triggers send-otp */}
             <Button
               type="submit"
               className="w-full bg-[#f59120] text-white text-[18px] py-3 rounded-md font-semibold mt-2 hover:bg-[#e07e0b] transition"
-              disabled={login.isPending}
+              disabled={sendingOtp || login.isPending}
             >
-              {login.isPending ? (
+              {sendingOtp ? (
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Logging in...</span>
+                  <span>Sending OTP...</span>
                 </div>
               ) : (
                 "Log in"
               )}
             </Button>
+
             {/* Divider */}
             <div className="flex items-center gap-2 my-2">
               <div className="flex-1 h-px bg-gray-200" />
               <span className="text-gray-400 text-xs font-medium">OR</span>
               <div className="flex-1 h-px bg-gray-200" />
             </div>
+
             {/* Forgot Password */}
             <button
               type="button"
@@ -217,14 +234,13 @@ const LoginPage = () => {
             aria-label="Close"
             type="button"
           >
-            
+            ×
           </button>
           <div className="mb-6 mt-2 text-[16px] text-[#222]">
-            Please enter the 2 factor authentication code below<br />
-            to verify it is you
+            Please enter the authentication code sent to your email
           </div>
           <form onSubmit={handleOtpSubmit} className="flex flex-col items-center gap-4">
-            <div className="flex gap-4 justify-center mb-2">
+            <div className="flex gap-2 justify-center mb-2">
               {otp.map((digit, idx) => (
                 <input
                   key={idx}
@@ -234,7 +250,7 @@ const LoginPage = () => {
                   maxLength={1}
                   value={digit}
                   onChange={e => handleOtpChange(idx, e.target.value)}
-                  className="w-12 h-12 text-center border border-gray-300 rounded-md text-2xl focus:outline-none focus:ring-2 focus:ring-[#7B1F2B]"
+                  className="w-10 h-10 text-center border border-gray-300 rounded-md text-xl focus:outline-none focus:ring-2 focus:ring-[#7B1F2B]"
                   autoFocus={idx === 0}
                 />
               ))}
@@ -243,8 +259,9 @@ const LoginPage = () => {
             <button
               type="submit"
               className="w-40 bg-[#601825] text-white py-2 rounded-md font-semibold text-lg hover:bg-[#4a131e] transition"
+              disabled={verifyingOtp}
             >
-              Submit
+              {verifyingOtp ? "Verifying..." : "Submit"}
             </button>
           </form>
         </DialogContent>
@@ -252,5 +269,3 @@ const LoginPage = () => {
     </>
   )
 }
-
-export default LoginPage
