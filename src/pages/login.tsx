@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { useAuth } from "@/hooks/useAuth"
 // removed zodResolver import to avoid blocking submit when password is not required
 // import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, Controller } from "react-hook-form"
+import { useForm} from "react-hook-form"
 import { LoginInput /*, loginSchema */ } from "../schema"
 import { toast } from "react-hot-toast"
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -51,7 +51,7 @@ export default function LoginPage() {
   const [verifyingOtp, setVerifyingOtp] = useState(false);
 
   // Track the role & email for OTP submit
-  const [pendingRole, setPendingRole] = useState<string>("admin");
+  // const [pendingRole, setPendingRole] = useState<string>("admin");
   const [pendingEmail, setPendingEmail] = useState<string>("");
 
   // Handle OTP input change (single digit)
@@ -73,7 +73,7 @@ export default function LoginPage() {
       setSendingOtp(true);
       await sendOtp(values.email, "login");
       toast.success("OTP sent successfully. Check your email.");
-      setPendingRole(values.role);
+      // setPendingRole(values.role);
       setPendingEmail(values.email);
       setOtp(["", "", "", "", "", ""]);
       setOtpOpen(true);
@@ -91,7 +91,7 @@ export default function LoginPage() {
   // Handle OTP submit - verify via API
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (otp.some(d => d === "")) {
+    if (otp.some((d) => d === "")) {
       setOtpError("Please enter all digits.");
       return;
     }
@@ -99,16 +99,38 @@ export default function LoginPage() {
     try {
       setVerifyingOtp(true);
       const res = await verifyOtp(pendingEmail, code, "login");
-      const token = res?.data?.token;
+
+      // Normalize result safely (support axios-like and direct payload shapes)
+      let token: string | undefined;
+      let user: any;
+      let message: string | undefined;
+
+      if (res && typeof res === "object" && "data" in res && res.data) {
+        // axios-like response: res.data might be wrapper { status, message, data }
+        const outer = (res as any).data;
+        const payload = outer.data ?? outer; // unwrap if nested
+        token = payload?.token;
+        user = payload?.user;
+        message = outer?.message ?? payload?.message;
+      } else {
+        // direct payload or helper-returned object
+        const payload = (res as any).data ?? (res as any);
+        token = payload?.token;
+        user = payload?.user;
+        message = (res as any).message ?? payload?.message;
+      }
+
       if (token) {
-        // store token and set default auth header
         localStorage.setItem("auth_token", token);
         apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       }
-      toast.success(res?.message || "Login successful");
+
+      const userType = (user?.user_type ?? user?.userType ?? "").toString().toLowerCase();
+
+      toast.success(message ?? "Login successful");
       setOtpOpen(false);
-      // navigate according to selected role
-      if (pendingRole === "staff") {
+
+      if (userType.includes("staff")) {
         navigate("/staffdashboard");
       } else {
         navigate("/dashboard");
@@ -149,7 +171,7 @@ export default function LoginPage() {
         <Form {...loginForm}>
           <form onSubmit={loginForm.handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
             {/* Role Dropdown */}
-            <Controller
+            {/* <Controller
               control={loginForm.control}
               name="role"
               render={({ field }) => (
@@ -168,7 +190,7 @@ export default function LoginPage() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             {/* Email/Phone */}
             <FormField
               control={loginForm.control}
