@@ -105,16 +105,26 @@ export default function Sidebar() {
         </nav>
       </div>
       <div className="p-4">
-        <div className="bg-[#F5F5F5] rounded-lg p-3 flex items-center gap-2">
-          <img
-            src="/avatar.svg"
-            alt="User"
-            className="w-8 h-8 rounded-full border"
-            onError={(e) => (e.currentTarget.style.display = "none")}
-          />
-          <div>
-            <div className="text-xs font-semibold">Rajkiran Kondaveeti</div>
-            <div className="text-xs text-gray-500">rajkirankondaveeti@gmail.com</div>
+        <div className="bg-gradient-to-br from-[#E8E1FF] to-[#F0ECFF] rounded-xl p-4 flex items-center gap-3 shadow-sm border border-[#E0D9FF]">
+          <div className="relative">
+            <img
+              src="/avatar.svg"
+              alt="User"
+              className="w-12 h-12 rounded-full border-2 border-white shadow-md"
+              onError={(e) => (e.currentTarget.style.display = "none")}
+            />
+            {/* Fallback avatar with initials */}
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#6366F1] to-[#8B5CF6] flex items-center justify-center text-white font-semibold text-sm border-2 border-white shadow-md hidden">
+              RK
+            </div>
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-semibold text-[#1F2937] truncate">
+              Rajesham Kondavali
+            </div>
+            <div className="text-xs text-[#6B7280] truncate">
+              rajeshm.kondavali@gmail.com
+            </div>
           </div>
         </div>
       </div>
